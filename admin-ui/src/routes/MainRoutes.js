@@ -16,6 +16,9 @@ const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
 const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
 
+// render - view all student page
+const ViewAllStudent = Loadable(lazy(() => import('pages/student/ViewAllStudent')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -24,7 +27,7 @@ const MainRoutes = {
   children: [
     {
       path: '/',
-      element: <DashboardDefault />
+      element: <ViewAllStudent />
     },
     {
       path: 'color',
@@ -38,6 +41,10 @@ const MainRoutes = {
           element: <DashboardDefault />
         }
       ]
+    },
+    {
+      path: 'hocvien',
+      element: <ViewAllStudent />
     },
     {
       path: 'sample-page',
