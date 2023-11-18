@@ -11,17 +11,17 @@ const icons = {
 
 const dashboard = {
   id: 'group-dashboard',
-  title: 'Navigation',
+  title: 'Quản lí học viên',
   type: 'group',
   children: [
-    {
-      id: 'dashboard',
-      title: 'Dashboard',
-      type: 'item',
-      url: '/dashboard/default',
-      icon: icons.DashboardOutlined,
-      breadcrumbs: false
-    },
+    // {
+    //   id: 'dashboard',
+    //   title: 'Dashboard',
+    //   type: 'item',
+    //   url: '/dashboard/default',
+    //   icon: icons.DashboardOutlined,
+    //   breadcrumbs: false
+    // },
     {
       id: 'hocvien',
       title: 'Học Viên',

@@ -10,7 +10,7 @@ const VewAllStudent = () => {
   const [formLayout, setFormLayout] = useState('horizontal');
   const [gender, SetGender] = useState(0);
   const [file, SetFile] = useState('');
-  const [detoxForm, SetDetoxForm] = useState('');
+  const [detoxForm, SetDetoxForm] = useState('tunguyen');
 
   const handleSelectFile = (e) => SetFile(e.target.files[0]);
 
@@ -71,6 +71,7 @@ const VewAllStudent = () => {
       <Title style={{ color: '#00A9FF' }}> Đăng Kí Đối Tượng </Title>
       <Divider style={{ marginBottom: '50px' }}></Divider>
 
+      {/* Form for "Thông tin đối tượng" */}
       <Title level={4} style={{ color: '#00A9FF' }}>
         Thông tin cá nhân đối tượng{' '}
       </Title>
@@ -625,6 +626,7 @@ const VewAllStudent = () => {
         </Col>
       </Row>
 
+      {/* Form for "Thôn tin hình thức cai nghiện "*/}
       <Title level={4} style={{ color: '#00A9FF' }}>
         Thông tin hình thức cai nghiện
       </Title>
@@ -731,7 +733,193 @@ const VewAllStudent = () => {
                 layout: formLayout
               }}
             >
-              <p>bat buoc</p>
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px' }}>
+                Tạm giữ xác định tình trạng nghiện
+              </Title>
+
+              <Form.Item label="Số quyết định tạm giữ">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày ký quyết định tạm giữ">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày có kết quả nghiện">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Kết quả">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày hoàn thành xác định tình trạng nghiện">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Theo quyết định quản lý
+              </Title>
+
+              <Form.Item label="Số quyết định quản lý">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày ký quyết định">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Tiền án
+              </Title>
+
+              <Form.Item label="Tiền án ma túy hoặc tiền án khác">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Tội danh">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Thời hạn tù">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Tiền sự
+              </Title>
+
+              <Form.Item label="Số lần cai">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Nơi cai nghiện">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Khác">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Tài sản
+              </Title>
+
+              <Form.Item label="Loại tài sản">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Tình trạng tài sản">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Bàn giao (nơi nhận hoặc người thân)">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày giao">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Kỷ luật
+              </Title>
+
+              <Form.Item label="Số quyết định kỷ luật">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày ra quyết định">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Thời hạn kỷ luật">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày vi phạm">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày hết hạn kỷ luật">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Hình thức kỷ luật">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Hành vi vi phạm khác">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Khác">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Khen thưởng
+              </Title>
+
+              <Form.Item label="Số quyết định khen thưởng">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày ra quyết định">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Hình thức khen thưởng">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Khác">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Thăm gặp
+              </Title>
+
+              <Form.Item label="Họ tên người thăm">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Mối quan hệ">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Số người thăm">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày thăm">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Chuyển viện
+              </Title>
+
+              <Form.Item label="Nơi chuyển viện">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày chuyển viện">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày nhập lại">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Thông tin liên hệ gia đình">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ghi chú">
+                <Input />
+              </Form.Item>
             </Form>
           </Col>
 
@@ -749,11 +937,242 @@ const VewAllStudent = () => {
                 layout: formLayout
               }}
             >
-              <p>bat buoc</p>
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px' }}>
+                Tòa án
+              </Title>
+
+              <Form.Item label="Ngày họp - Ngày quyết định">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Giờ họp">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Hình thức họp">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Thẩm phán phiên họp">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Thư ký phiên họp">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Hoãn phiên họp">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Khiếu nại">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Tình trạng xử lý đơn vắng mặt">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Số quyết định tòa án">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Thời hạn quyết định">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Nơi chấp hành quyết định">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ghi chú">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Di lý
+              </Title>
+
+              <Form.Item label="Công văn di lý">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày di lý">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Cơ quan nhận">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Thời gian di lý">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Thời gian gia hạn di lý">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Số quyết định đưa ra khỏi cơ sở">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày nhập lại hoặc cắt giảm">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Trốn viện - Trốn phép
+              </Title>
+
+              <Form.Item label="Ngày trốn viện/trốn phép">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Số thông báo">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày ra thông báo">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày cắt giảm">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Chuyển cơ sở
+              </Title>
+
+              <Form.Item label="Ngày chuyển cơ sở">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Cán bộ bàn giao">
+                <Input />
+              </Form.Item>
+
+              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
+                Bàn giao cho cơ quan khác
+              </Title>
+
+              <Form.Item label="Số văn bản bàn giao">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày ra văn bản">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Ngày giao">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Lý do bàn giao">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Cán bộ bên nhận">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Cơ quan nhận">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Thông tin liên lạc bên nhận (Số điện thoại)">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Cán bộ giải quyết">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Lãnh đạo giao - chức vụ">
+                <Input />
+              </Form.Item>
             </Form>
           </Col>
         </Row>
       )}
+
+      {/* Form for "Thông tin gia đình" */}
+      <Title level={4} style={{ color: '#00A9FF' }}>
+        Thông tin gia đình
+      </Title>
+
+      <Row
+        style={{
+          border: '1px solid #d9d9d9',
+          borderRadius: '4px', // optional: add border-radius for rounded corners
+          padding: '16px'
+        }}
+      >
+        {/*  First column */}
+        <Col span={12}>
+          <Form
+            {...formItemLayout}
+            layout={formLayout}
+            form={form}
+            labelWrap
+            labelCol={{ flex: '200px' }}
+            colon={false}
+            labelAlign="left"
+            initialValues={{
+              layout: formLayout
+            }}
+          >
+            <Form.Item label="Họ tên cha">
+              <Input />
+            </Form.Item>
+
+            <Form.Item label="Họ tên mẹ">
+              <Input />
+            </Form.Item>
+
+            <Form.Item label="Nơi ở cha">
+              <Input />
+            </Form.Item>
+
+            <Form.Item label="Họ tên vợ/chồng">
+              <Input />
+            </Form.Item>
+          </Form>
+        </Col>
+
+        {/*  Second column */}
+        <Col span={12}>
+          <Form
+            {...formItemLayout}
+            layout={formLayout}
+            form={form}
+            labelCol={{ flex: '200px' }}
+            labelWrap
+            colon={false}
+            labelAlign="left"
+            initialValues={{
+              layout: formLayout
+            }}
+          >
+            <Form.Item label="Ngày sinh cha">
+              <Input />
+            </Form.Item>
+
+            <Form.Item label="Ngày sinh mẹ">
+              <Input />
+            </Form.Item>
+
+            <Form.Item label="Nơi ở mẹ">
+              <Input />
+            </Form.Item>
+
+            <Form.Item label="Ngày sinh vợ/chồng">
+              <Input />
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
     </div>
   );
 };
