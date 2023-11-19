@@ -10,7 +10,7 @@ const VewAllStudent = () => {
   const [formLayout, setFormLayout] = useState('horizontal');
   const [gender, SetGender] = useState(0);
   const [file, SetFile] = useState('');
-  const [detoxForm, SetDetoxForm] = useState('tunguyen');
+  const [treatmentForm, SetTreatmentForm] = useState('tunguyen');
   const [division, SetDivision] = useState([]);
   const [district, SetDistrict] = useState([]);
   const [ward, SetWard] = useState([]);
@@ -39,7 +39,7 @@ const VewAllStudent = () => {
 
   const onDetoxFormChange = (e) => {
     console.log('radio checked', e.target.value);
-    SetDetoxForm(e.target.value);
+    SetTreatmentForm(e.target.value);
   };
 
   const handleChangeRace = (value) => {
@@ -108,7 +108,7 @@ const VewAllStudent = () => {
 
       {/* Form for "Thông tin đối tượng" */}
       <Title level={4} style={{ color: '#00A9FF' }}>
-        Thông tin cá nhân đối tượng{' '}
+        I. Thông tin cá nhân đối tượng{' '}
       </Title>
 
       <Row
@@ -640,11 +640,11 @@ const VewAllStudent = () => {
 
       {/* Form for "Thôn tin hình thức cai nghiện "*/}
       <Title level={4} style={{ color: '#00A9FF' }}>
-        Thông tin hình thức cai nghiện
+        II. Thông tin hình thức cai nghiện
       </Title>
 
       {/* Form for "cai nghiện tự nguyện" */}
-      {detoxForm === 'tunguyen' && (
+      {treatmentForm === 'tunguyen' && (
         <Row
           style={{
             border: '1px solid #d9d9d9',
@@ -723,7 +723,7 @@ const VewAllStudent = () => {
       )}
 
       {/* Form for "cai nghiện bắt buộc"*/}
-      {detoxForm === 'batbuoc' && (
+      {treatmentForm === 'batbuoc' && (
         <Row
           style={{
             border: '1px solid #d9d9d9',
@@ -1111,7 +1111,7 @@ const VewAllStudent = () => {
 
       {/* Form for "Thông tin gia đình" */}
       <Title level={4} style={{ color: '#00A9FF' }}>
-        Thông tin gia đình
+        III. Thông tin gia đình
       </Title>
 
       <Row
@@ -1168,11 +1168,11 @@ const VewAllStudent = () => {
             }}
           >
             <Form.Item label="Ngày sinh cha">
-              <Input />
+              <DatePicker format={dateFormat} style={{ width: '100%' }} />
             </Form.Item>
 
             <Form.Item label="Ngày sinh mẹ">
-              <Input />
+              <DatePicker format={dateFormat} style={{ width: '100%' }} />
             </Form.Item>
 
             <Form.Item label="Nơi ở mẹ">
@@ -1180,7 +1180,7 @@ const VewAllStudent = () => {
             </Form.Item>
 
             <Form.Item label="Ngày sinh vợ/chồng">
-              <Input />
+              <DatePicker format={dateFormat} style={{ width: '100%' }} />
             </Form.Item>
           </Form>
         </Col>
