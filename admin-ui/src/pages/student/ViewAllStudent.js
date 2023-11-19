@@ -1,8 +1,8 @@
 import { Typography, Divider, Row, Col, DatePicker } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input, Radio } from 'antd';
-import { Select, Space, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Select, Space } from 'antd';
+import axios from 'axios';
 
 const VewAllStudent = () => {
   const { Title } = Typography;
@@ -11,10 +11,26 @@ const VewAllStudent = () => {
   const [gender, SetGender] = useState(0);
   const [file, SetFile] = useState('');
   const [detoxForm, SetDetoxForm] = useState('tunguyen');
-
+  const [division, SetDivision] = useState([]);
+  const [district, SetDistrict] = useState([]);
+  const [ward, SetWard] = useState([]);
+  const [disableDistrict, SetDisableDistrict] = useState(true);
+  const [defaultDistrictValue, SetDefaultDistrictValue] = useState('');
+  const [disableWard, SetDisableWard] = useState(true);
+  const [defaultWardValue, SetDefaultWardValue] = useState('');
   const handleSelectFile = (e) => SetFile(e.target.files[0]);
 
   const dateFormat = 'DD/MM/YYYY';
+
+  const getVietnameseAdministrativeDivision = async () => {
+    await axios.get('https://provinces.open-api.vn/api/?depth=3').then((response) => {
+      SetDivision(response.data);
+    });
+  };
+
+  useEffect(() => {
+    getVietnameseAdministrativeDivision();
+  }, []);
 
   const onGenderChange = (e) => {
     console.log('radio checked', e.target.value);
@@ -32,6 +48,29 @@ const VewAllStudent = () => {
 
   const handleChangeProvinceCity = (value) => {
     console.log(`selected ${value}`);
+    const filteredProvinceCityResult = division.filter((division) => division.codename === value);
+    SetDistrict(filteredProvinceCityResult[0].districts);
+    SetDisableDistrict(false);
+    SetDefaultDistrictValue(filteredProvinceCityResult[0].districts[0].name);
+  };
+
+  const handleChangeDistrict = (value) => {
+    console.log(`Selected: ${value}`);
+    const filteredDistrictResult = district.filter((district) => district.codename === value);
+    SetDefaultDistrictValue(value);
+    SetWard(filteredDistrictResult[0].wards);
+    if (filteredDistrictResult[0].wards.length > 0) {
+      SetDefaultWardValue(filteredDistrictResult[0].wards[0].name);
+      SetDisableWard(false);
+    } else {
+      SetDefaultWardValue('');
+      SetDisableWard(true);
+    }
+  };
+
+  const handleChangeWard = (value) => {
+    console.log(`Selected: ${value}`);
+    SetDefaultWardValue(value);
   };
 
   const handleChangeMarriageStatus = (value) => {
@@ -43,10 +82,6 @@ const VewAllStudent = () => {
   };
 
   const handleChangeReligion = (value) => {
-    console.log(`selected ${value}`);
-  };
-
-  const handleChangeDistrict = (value) => {
     console.log(`selected ${value}`);
   };
 
@@ -161,53 +196,39 @@ const VewAllStudent = () => {
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
                   showSearch
-                  defaultValue="Chọn Tỉnh/TP"
+                  defaultValue="-- Chọn Tỉnh/Thành Phố --"
                   style={{
                     width: '100%'
                   }}
                   onChange={handleChangeProvinceCity}
                   optionFilterProp="children"
                   filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                  options={[
-                    {
-                      value: 'angiang',
-                      label: 'An Giang'
-                    },
-                    {
-                      value: 'brvt',
-                      label: 'Bà Rịa - Vũng Tàu'
-                    },
-                    {
-                      value: 'tpdn',
-                      label: 'TP. Đà Nẵng'
-                    },
-                    {
-                      value: 'daklak',
-                      label: 'Đắk Lắk'
-                    },
-                    {
-                      value: 'tphcm',
-                      label: 'TP. Hồ Chí Minh'
-                    },
-                    {
-                      value: 'khac',
-                      label: 'Khác'
-                    },
-                    {
-                      value: 'langthang',
-                      label: 'Lang thang'
-                    },
-                    {
-                      value: 'nuocngoai',
-                      label: 'Nước ngoài'
-                    }
-                  ]}
+                  options={division.map((division) => ({
+                    label: division.name,
+                    value: division.codename
+                  }))}
                 />
               </Space>
             </Form.Item>
 
             <Form.Item label="Đơn vị">
-              <Input />
+              <Space direction="vertical" style={{ width: '100%' }}>
+                <Select
+                  showSearch
+                  onChange={handleChangeWard}
+                  value={defaultWardValue !== '' ? defaultWardValue : '-- Chọn Phường/Xã --'}
+                  disabled={disableWard}
+                  style={{
+                    width: '100%'
+                  }}
+                  optionFilterProp="children"
+                  filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                  options={ward.map((ward) => ({
+                    label: ward.name,
+                    value: ward.codename
+                  }))}
+                />
+              </Space>
             </Form.Item>
 
             <Form.Item label="Tình trạng hôn nhân">
@@ -505,30 +526,21 @@ const VewAllStudent = () => {
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
                   showSearch
-                  defaultValue="Quận/Huyện"
+                  value={defaultDistrictValue !== '' ? defaultDistrictValue : '-- Chọn Quận/Huyện --'}
                   style={{
                     width: '100%'
                   }}
+                  disabled={disableDistrict}
                   onChange={handleChangeDistrict}
                   optionFilterProp="children"
                   filterOption={(input, option) => (option?.label.toLowerCase() ?? '').includes(input.toLowerCase())}
                   filterSort={(optionA, optionB) =>
                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                   }
-                  options={[
-                    {
-                      value: 'dis1',
-                      label: 'Quận 1'
-                    },
-                    {
-                      value: 'chaudoc',
-                      label: 'Châu Đốc'
-                    },
-                    {
-                      value: 'dis2',
-                      label: 'Quận 2'
-                    }
-                  ]}
+                  options={district.map((district) => ({
+                    label: district.name,
+                    value: district.codename
+                  }))}
                 />
               </Space>
             </Form.Item>

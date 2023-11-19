@@ -17,6 +17,8 @@
     "@testing-library/user-event": "^14.4.3",
     "antd": "^5.11.1",
     "apexcharts": "^3.35.5",
+    "axios": "^1.6.2",
+    "dvhcvn": "^1.1.20230410-b",
     "formik": "^2.2.9",
     "framer-motion": "^7.3.6",
     "history": "^5.3.0",
