@@ -20,7 +20,7 @@ const VewAllStudent = () => {
   const [defaultWardValue, SetDefaultWardValue] = useState('');
   const handleSelectFile = (e) => SetFile(e.target.files[0]);
 
-  const dateFormat = 'DD/MM/YYYY';
+  const dateFormat = 'YYYY-MM-DD';
 
   const getVietnameseAdministrativeDivision = async () => {
     await axios.get('https://provinces.open-api.vn/api/?depth=3').then((response) => {
@@ -89,6 +89,10 @@ const VewAllStudent = () => {
     console.log(`selected ${value}`);
   };
 
+  const onDateChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
+
   const formItemLayout =
     formLayout === 'horizontal'
       ? {
@@ -144,7 +148,7 @@ const VewAllStudent = () => {
             </Form.Item>
 
             <Form.Item label="Ngày sinh">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} />
+              <DatePicker onChange={onDateChange} format={dateFormat} style={{ width: '100%' }} />
             </Form.Item>
 
             <Form.Item label="Nơi đăng kí thường trú">
@@ -431,12 +435,7 @@ const VewAllStudent = () => {
               <Input />
             </Form.Item>
 
-            <Form.Item label="Hình thức cai nghiện">
-              <Radio.Group defaultValue="tunguyen" buttonStyle="solid" onChange={onDetoxFormChange}>
-                <Radio.Button value="tunguyen">Tự nguyện</Radio.Button>
-                <Radio.Button value="batbuoc">Bắt buộc</Radio.Button>
-              </Radio.Group>
-            </Form.Item>
+
           </Form>
         </Col>
 
@@ -642,6 +641,12 @@ const VewAllStudent = () => {
       <Title level={4} style={{ color: '#00A9FF' }}>
         II. Thông tin hình thức cai nghiện
       </Title>
+      <Form.Item label="Hình thức cai nghiện" style={{marginTop: '20px'}}>
+        <Radio.Group defaultValue="tunguyen" buttonStyle="solid" onChange={onDetoxFormChange}>
+          <Radio.Button value="tunguyen">Tự nguyện</Radio.Button>
+          <Radio.Button value="batbuoc">Bắt buộc</Radio.Button>
+        </Radio.Group>
+      </Form.Item>
 
       {/* Form for "cai nghiện tự nguyện" */}
       {treatmentForm === 'tunguyen' && (
