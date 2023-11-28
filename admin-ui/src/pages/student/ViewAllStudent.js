@@ -1,8 +1,9 @@
 import { Typography, Divider, Row, Col, DatePicker } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Radio } from 'antd';
+import { Form, Input, Radio, Button } from 'antd';
 import { Select, Space } from 'antd';
 import axios from 'axios';
+import HocVienData from 'data/HocVien.json';
 
 const VewAllStudent = () => {
   const { Title } = Typography;
@@ -15,10 +16,34 @@ const VewAllStudent = () => {
   const [district, SetDistrict] = useState([]);
   const [ward, SetWard] = useState([]);
   const [disableDistrict, SetDisableDistrict] = useState(true);
-  const [defaultDistrictValue, SetDefaultDistrictValue] = useState('');
+  const [defaultDistrictValue, SetDefaultDistrictValue] = useState('-- Chọn Quận/Huyện --');
   const [disableWard, SetDisableWard] = useState(true);
-  const [defaultWardValue, SetDefaultWardValue] = useState('');
+  const [defaultWardValue, SetDefaultWardValue] = useState('-- Chọn Phường/Xã --');
+
+  const [inputNameValidationStatus, SetInputNameValidationStatus] = useState({});
+
+  const [hocVienInputData, SetHocVienInputData] = useState(HocVienData);
   const handleSelectFile = (e) => SetFile(e.target.files[0]);
+
+  const handleSubmit = async (event) => {
+    console.log('calling api');
+    event.preventDefault();
+
+    try {
+      const values = await form.validateFields().then();
+      if (inputNameValidationStatus.validateStatus !== 'error') {
+        console.log('ok');
+      } else {
+        console.log('ten phai la tieng viet co dau');
+      }
+      console.log(hocVienInputData);
+      // const res = await axios.post('http://localhost:3001/ttn2/v1/hocvien', hocVienInputData).then((result) => {
+      //   console.log(result);
+      // });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const dateFormat = 'YYYY-MM-DD';
 
@@ -32,9 +57,32 @@ const VewAllStudent = () => {
     getVietnameseAdministrativeDivision();
   }, []);
 
+  const onNameChange = (e) => {
+    // console.log('name: ', e.target.value);
+    const vietnameseRegex =
+      /[^a-z0-9A-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u;
+    if (vietnameseRegex.test(e.target.value) === true) {
+      SetHocVienInputData({ ...hocVienInputData, Ho: e.target.value.split(' ')[0], Ten: e.target.value.split(' ').slice(1).join(' ') });
+      SetInputNameValidationStatus({
+        validateStatus: 'success',
+        help: ''
+      });
+    } else if (vietnameseRegex.test(e.target.value) === false) {
+      SetHocVienInputData({ ...hocVienInputData, Ho: '', Ten: '' });
+      SetInputNameValidationStatus({
+        validateStatus: 'error',
+        help: <span style={{ color: 'red' }}>Họ tên phải là tiếng Việt có dấu</span>
+      });
+    } else {
+      SetInputNameValidationStatus({});
+    }
+  };
+
   const onGenderChange = (e) => {
     console.log('radio checked', e.target.value);
     SetGender(e.target.value);
+    SetHocVienInputData({ ...hocVienInputData, GioiTinh: e.target.value });
+    console.log(hocVienInputData);
   };
 
   const onDetoxFormChange = (e) => {
@@ -44,6 +92,7 @@ const VewAllStudent = () => {
 
   const handleChangeRace = (value) => {
     console.log(`selected ${value}`);
+    SetHocVienInputData({ ...hocVienInputData, DanToc: value });
   };
 
   const handleChangeProvinceCity = (value) => {
@@ -52,37 +101,52 @@ const VewAllStudent = () => {
     SetDistrict(filteredProvinceCityResult[0].districts);
     SetDisableDistrict(false);
     SetDefaultDistrictValue(filteredProvinceCityResult[0].districts[0].name);
+    SetHocVienInputData({
+      ...hocVienInputData,
+      Tinh: filteredProvinceCityResult[0].name,
+      Huyen: filteredProvinceCityResult[0].districts[0].name,
+      DonVi: filteredProvinceCityResult[0].districts[0].wards[0].name
+    });
+    if (filteredProvinceCityResult[0].districts[0].wards.length > 0) {
+      SetDisableWard(false);
+      SetWard(filteredProvinceCityResult[0].districts[0].wards);
+      SetDefaultWardValue(filteredProvinceCityResult[0].districts[0].wards[0].name);
+    }
   };
-
-  const handleChangeDistrict = (value) => {
-    console.log(`Selected: ${value}`);
+  const onChangeDistrict = (value) => {
     const filteredDistrictResult = district.filter((district) => district.codename === value);
     SetDefaultDistrictValue(value);
     SetWard(filteredDistrictResult[0].wards);
     if (filteredDistrictResult[0].wards.length > 0) {
       SetDefaultWardValue(filteredDistrictResult[0].wards[0].name);
+      SetHocVienInputData({ ...hocVienInputData, DonVi: filteredDistrictResult[0].wards[0].name });
       SetDisableWard(false);
     } else {
       SetDefaultWardValue('');
       SetDisableWard(true);
     }
+    SetHocVienInputData({ ...hocVienInputData, Huyen: filteredDistrictResult[0].name });
   };
 
   const handleChangeWard = (value) => {
     console.log(`Selected: ${value}`);
     SetDefaultWardValue(value);
+    SetHocVienInputData({ ...hocVienInputData, DonVi: value.label });
   };
 
   const handleChangeMarriageStatus = (value) => {
-    console.log(`selected ${value}`);
+    console.log(`selected ${value.label}`);
+    SetHocVienInputData({ ...hocVienInputData, TinhTrangHN: value.label });
   };
 
   const handleChangeAcademicLevel = (value) => {
-    console.log(`selected ${value}`);
+    console.log(`selected ${value.label}`);
+    SetHocVienInputData({ ...hocVienInputData, TrinhDo: value.label });
   };
 
   const handleChangeReligion = (value) => {
-    console.log(`selected ${value}`);
+    console.log(`selected ${value.label}`);
+    SetHocVienInputData({ ...hocVienInputData, TonGiao: value.label });
   };
 
   const handleChangeActivityArea = (value) => {
@@ -91,6 +155,28 @@ const VewAllStudent = () => {
 
   const onDateChange = (date, dateString) => {
     console.log(date, dateString);
+    SetHocVienInputData({ ...hocVienInputData, NgaySinh: dateString });
+    console.log(hocVienInputData);
+  };
+
+  const onNgayCapCCCDChange = (date, dateString) => {
+    SetHocVienInputData({ ...hocVienInputData, NgayCapCCCD: dateString });
+  };
+
+  const onChangeCoQuanBanGiao = (value) => {
+    SetHocVienInputData({ ...hocVienInputData, CoQuanBanGiao: value.label });
+  };
+
+  const onThanhPhanGiaDinhChange = (value) => {
+    SetHocVienInputData({ ...hocVienInputData, ThanhPhanGiaDinh: value.label });
+  };
+
+  const onMaTuyChange = (value) => {
+    SetHocVienInputData({ ...hocVienInputData, LoaiMaTuySD: value.label });
+  };
+
+  const onThanhPhanBanThanChange = (value) => {
+    SetHocVienInputData({ ...hocVienInputData, ThanhPhanBanThan: value.label });
   };
 
   const formItemLayout =
@@ -136,14 +222,25 @@ const VewAllStudent = () => {
               layout: formLayout
             }}
           >
-            <Form.Item label="Họ tên">
-              <Input />
+            <Form.Item
+              label="Họ tên"
+              name="hoten"
+              validateStatus={inputNameValidationStatus.validateStatus}
+              help={inputNameValidationStatus.help}
+              rules={[
+                {
+                  required: true,
+                  message: 'Nhập họ tên'
+                }
+              ]}
+            >
+              <Input onChange={onNameChange} />
             </Form.Item>
 
             <Form.Item label="Giới tính">
               <Radio.Group onChange={onGenderChange} value={gender}>
-                <Radio value={0}>Nam</Radio>
-                <Radio value={1}>Nữ</Radio>
+                <Radio value={'Nam'}>Nam</Radio>
+                <Radio value={'Nữ'}>Nữ</Radio>
               </Radio.Group>
             </Form.Item>
 
@@ -152,18 +249,18 @@ const VewAllStudent = () => {
             </Form.Item>
 
             <Form.Item label="Nơi đăng kí thường trú">
-              <Input />
+              <Input onChange={(e) => SetHocVienInputData({ ...hocVienInputData, DCThuongTru: e.target.value })} />
             </Form.Item>
 
             <Form.Item label="Ngày cấp CMND">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} />
+              <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={onNgayCapCCCDChange} />
             </Form.Item>
 
             <Form.Item label="Dân tộc">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
                   showSearch
-                  defaultValue="Chọn dân tộc"
+                  defaultValue="-- Chọn dân tộc -- "
                   style={{
                     width: '100%'
                   }}
@@ -172,23 +269,23 @@ const VewAllStudent = () => {
                   filterOption={(input, option) => (option?.label ?? '').includes(input)}
                   options={[
                     {
-                      value: 'kinh',
+                      value: 'Kinh',
                       label: 'Kinh'
                     },
                     {
-                      value: 'tay',
+                      value: 'Tày',
                       label: 'Tày'
                     },
                     {
-                      value: 'thai',
+                      value: 'Thái',
                       label: 'Thái'
                     },
                     {
-                      value: 'hoa',
+                      value: 'Hoa',
                       label: 'Hoa'
                     },
                     {
-                      value: 'khac',
+                      value: 'Khác',
                       label: 'Khác'
                     }
                   ]}
@@ -218,9 +315,10 @@ const VewAllStudent = () => {
             <Form.Item label="Đơn vị">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
+                  labelInValue={true}
                   showSearch
                   onChange={handleChangeWard}
-                  value={defaultWardValue !== '' ? defaultWardValue : '-- Chọn Phường/Xã --'}
+                  value={defaultWardValue}
                   disabled={disableWard}
                   style={{
                     width: '100%'
@@ -238,7 +336,8 @@ const VewAllStudent = () => {
             <Form.Item label="Tình trạng hôn nhân">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
-                  defaultValue="Chưa đăng kí kết hôn"
+                  labelInValue={true}
+                  defaultValue="-- Chọn tình trạng hôn nhân --"
                   style={{
                     width: '100%'
                   }}
@@ -258,18 +357,27 @@ const VewAllStudent = () => {
             </Form.Item>
 
             <Form.Item label="Năm sử dụng">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, NamSudung: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Tiền sự">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, TienSu: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Khu sinh hoạt">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
+                  labelInValue={true}
                   showSearch
-                  defaultValue="Chọn khu sinh hoạt"
+                  defaultValue="-- Chọn khu sinh hoạt --"
                   style={{
                     width: '100%'
                   }}
@@ -313,11 +421,12 @@ const VewAllStudent = () => {
             <Form.Item label="Cơ quan bàn giao">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
-                  defaultValue="Cấp xã"
+                  labelInValue={true}
+                  defaultValue="-- Chọn cấp cơ quan bàn giao --"
                   style={{
                     width: '100%'
                   }}
-                  onChange={handleChangeMarriageStatus}
+                  onChange={onChangeCoQuanBanGiao}
                   options={[
                     {
                       value: 'xa',
@@ -335,11 +444,12 @@ const VewAllStudent = () => {
             <Form.Item label="Thành phần gia đình">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
-                  defaultValue="Công nhân"
+                  labelInValue={true}
+                  defaultValue="-- Chọn thành phần gia đình -- "
                   style={{
                     width: '100%'
                   }}
-                  onChange={handleChangeMarriageStatus}
+                  onChange={onThanhPhanGiaDinhChange}
                   options={[
                     {
                       value: 'congnhan',
@@ -373,11 +483,12 @@ const VewAllStudent = () => {
             <Form.Item label="Loại ma túy sử dụng">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
-                  defaultValue="Thuốc phiện"
+                  labelInValue={true}
+                  defaultValue="-- Loại ma túy đã sử dụng --"
                   style={{
                     width: '100%'
                   }}
-                  onChange={handleChangeMarriageStatus}
+                  onChange={onMaTuyChange}
                   options={[
                     {
                       value: 'thuocphien',
@@ -420,22 +531,36 @@ const VewAllStudent = () => {
               </Space>
             </Form.Item>
             <Form.Item label="Cơ quan xác định tình trạng nghiện">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, CoQuanXacDinhTinhTrangNghien: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Tuổi lần đầu sử dụng">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, TuoiLanDauSuDung: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Tuổi lần đầu tiêm chích">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, TuoiLanDauTiemChich: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Tổng thời gian sử dụng">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, TongThoiGianSuDung: e.target.value });
+                }}
+              />
             </Form.Item>
-
-
           </Form>
         </Col>
 
@@ -454,13 +579,18 @@ const VewAllStudent = () => {
             }}
           >
             <Form.Item label="Tên khác">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, TenKhac: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Trình độ">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
-                  defaultValue="Trình độ học vấn"
+                  labelInValue={true}
+                  defaultValue="-- Trình độ học vấn --"
                   style={{
                     width: '100%'
                   }}
@@ -484,21 +614,34 @@ const VewAllStudent = () => {
             </Form.Item>
 
             <Form.Item label="Việc làm">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, ViecLam: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Số CMND">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, cccd: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Nơi cấp CMND">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, NoiCapCCCD: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Tôn giáo">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
-                  defaultValue="Không"
+                  labelInValue={true}
+                  defaultValue="-- Chọn tôn giáo --"
                   style={{
                     width: '100%'
                   }}
@@ -525,12 +668,12 @@ const VewAllStudent = () => {
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
                   showSearch
-                  value={defaultDistrictValue !== '' ? defaultDistrictValue : '-- Chọn Quận/Huyện --'}
+                  value={defaultDistrictValue}
                   style={{
                     width: '100%'
                   }}
                   disabled={disableDistrict}
-                  onChange={handleChangeDistrict}
+                  onChange={onChangeDistrict}
                   optionFilterProp="children"
                   filterOption={(input, option) => (option?.label.toLowerCase() ?? '').includes(input.toLowerCase())}
                   filterSort={(optionA, optionB) =>
@@ -549,37 +692,54 @@ const VewAllStudent = () => {
             </Form.Item>
 
             <Form.Item label="Hình thức sử dụng">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, HinhThucSuDung: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Tiền án">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, TienAn: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Trong tháng trở lại đây">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, SoNgayLanSuDung: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Nguyên nhân tái nghiện">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, NguyenNhanTaiNghien: e.target.value });
+                }}
+              />
             </Form.Item>
 
-            <Form.Item label="Lý do giảm">
-              <Input />
-            </Form.Item>
-
-            <Form.Item label="Nghề nghiệp">
-              <Input />
+            <Form.Item label="Lý do giam">
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, LyDoGiam: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Thành phần bản thân">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
-                  defaultValue="Học sinh"
+                  labelInValue={true}
+                  defaultValue="-- Chọn thành phần bản thân --"
                   style={{
                     width: '100%'
                   }}
-                  onChange={handleChangeMarriageStatus}
+                  onChange={onThanhPhanBanThanChange}
                   options={[
                     {
                       value: 'hocsinh',
@@ -619,19 +779,43 @@ const VewAllStudent = () => {
             </Form.Item>
 
             <Form.Item label="Tình trạng việc làm">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, TinhTrangViecLam: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Nhập mới">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, NhapMoi: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Trốn nhập lại">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, TronNhapLai: e.target.value });
+                }}
+              />
             </Form.Item>
 
-            <Form.Item label="Trình độ phổ thông">
-              <Input />
+            <Form.Item label="Điện Thoại">
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, DienThoai: e.target.value });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item label="Ghi chú">
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, GhiChu: e.target.value });
+                }}
+              />
             </Form.Item>
           </Form>
         </Col>
@@ -641,7 +825,7 @@ const VewAllStudent = () => {
       <Title level={4} style={{ color: '#00A9FF' }}>
         II. Thông tin hình thức cai nghiện
       </Title>
-      <Form.Item label="Hình thức cai nghiện" style={{marginTop: '20px'}}>
+      <Form.Item label="Hình thức cai nghiện" style={{ marginTop: '20px' }}>
         <Radio.Group defaultValue="tunguyen" buttonStyle="solid" onChange={onDetoxFormChange}>
           <Radio.Button value="tunguyen">Tự nguyện</Radio.Button>
           <Radio.Button value="batbuoc">Bắt buộc</Radio.Button>
@@ -1190,6 +1374,11 @@ const VewAllStudent = () => {
           </Form>
         </Col>
       </Row>
+      <Form.Item label="" style={{ marginTop: '10px' }}>
+        <Button block type="primary" htmlType="submit" style={{ width: '20%' }} onClick={handleSubmit}>
+          Đăng ký học viên
+        </Button>
+      </Form.Item>
     </div>
   );
 };
