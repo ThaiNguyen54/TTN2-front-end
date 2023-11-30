@@ -4,6 +4,7 @@ import { Form, Input, Radio, Button } from 'antd';
 import { Select, Space } from 'antd';
 import axios from 'axios';
 import HocVienData from 'data/HocVien.json';
+import HV_CNTN from 'data/HV_CNTuNguyen.json';
 
 const VewAllStudent = () => {
   const { Title } = Typography;
@@ -23,6 +24,7 @@ const VewAllStudent = () => {
   const [inputNameValidationStatus, SetInputNameValidationStatus] = useState({});
 
   const [hocVienInputData, SetHocVienInputData] = useState(HocVienData);
+  const [hocVienCNTNData, SetHocVienCNTNData] = useState(HV_CNTN);
   const handleSelectFile = (e) => SetFile(e.target.files[0]);
 
   const handleSubmit = async (event) => {
@@ -32,14 +34,16 @@ const VewAllStudent = () => {
     try {
       const values = await form.validateFields().then();
       if (inputNameValidationStatus.validateStatus !== 'error') {
-        console.log('ok');
+        const res = await axios.post('http://localhost:3001/ttn2/v1/hocvien', hocVienInputData).then((result) => {
+          console.log(result);
+        });
+
+        const result_HocVienCNTN = await axios.post('http://localhost:3001/ttn2/v1/cntn', hocVienCNTNData).then((resulte) => {
+          console.log(resulte);
+        });
       } else {
         console.log('ten phai la tieng viet co dau');
       }
-      console.log(hocVienInputData);
-      // const res = await axios.post('http://localhost:3001/ttn2/v1/hocvien', hocVienInputData).then((result) => {
-      //   console.log(result);
-      // });
     } catch (error) {
       console.log(error);
     }
@@ -177,6 +181,14 @@ const VewAllStudent = () => {
 
   const onThanhPhanBanThanChange = (value) => {
     SetHocVienInputData({ ...hocVienInputData, ThanhPhanBanThan: value.label });
+  };
+
+  const onNgayThanhLyHopDongChange = (date, dateString) => {
+    SetHocVienCNTNData({ ...hocVienCNTNData, NgayThanhLyHopDong: dateString });
+  };
+
+  const onNgayCapGiayHoanThanhChange = (date, dateString) => {
+    SetHocVienCNTNData({ ...hocVienCNTNData, NgayCapGiayHoanThanh: dateString });
   };
 
   const formItemLayout =
@@ -625,6 +637,7 @@ const VewAllStudent = () => {
               <Input
                 onChange={(e) => {
                   SetHocVienInputData({ ...hocVienInputData, cccd: e.target.value });
+                  SetHocVienCNTNData({ ...hocVienCNTNData, cccd: e.target.value });
                 }}
               />
             </Form.Item>
@@ -856,23 +869,43 @@ const VewAllStudent = () => {
               }}
             >
               <Form.Item label="Tự nguyện đóng phí">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNTNData({ ...hocVienCNTNData, TuNguyenDongPhi: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Tự nguyện tại cộng đồng">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNTNData({ ...hocVienCNTNData, TuNguyenTaiCongDong: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Số hợp đồng">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNTNData({ ...hocVienCNTNData, SoHopDong: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Người giám hộ (đối với người cai nghiện từ đủ 12 tuổi đến dưới 18 tuổi)">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNTNData({ ...hocVienCNTNData, NguoiGiamHo: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Thời hạn hợp đồng">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNTNData({ ...hocVienCNTNData, ThoiHanHopDong: e.target.value });
+                  }}
+                />
               </Form.Item>
             </Form>
           </Col>
@@ -892,19 +925,27 @@ const VewAllStudent = () => {
               }}
             >
               <Form.Item label="Ngày thanh lý hợp đồng">
-                <Input />
+                <DatePicker onChange={onNgayThanhLyHopDongChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Ngày cấp giấy hoàn thành">
-                <Input />
+                <DatePicker onChange={onNgayCapGiayHoanThanhChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Số giấy hoàn thành">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNTNData({ ...hocVienCNTNData, SoGiayHoanThanh: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Các giai đoạn cai nghiện">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNTNData({ ...hocVienCNTNData, CacGiaiDoanCaiNghien: e.target.value });
+                  }}
+                />
               </Form.Item>
             </Form>
           </Col>
