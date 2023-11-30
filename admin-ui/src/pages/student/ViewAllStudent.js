@@ -5,6 +5,7 @@ import { Select, Space } from 'antd';
 import axios from 'axios';
 import HocVienData from 'data/HocVien.json';
 import HV_CNTN from 'data/HV_CNTuNguyen.json';
+import HV_CNBB from 'data/HV_CNBatBuoc.json';
 
 const VewAllStudent = () => {
   const { Title } = Typography;
@@ -25,6 +26,7 @@ const VewAllStudent = () => {
 
   const [hocVienInputData, SetHocVienInputData] = useState(HocVienData);
   const [hocVienCNTNData, SetHocVienCNTNData] = useState(HV_CNTN);
+  const [hocVienCNBBData, SetHocVienCNBBData] = useState(HV_CNBB);
   const handleSelectFile = (e) => SetFile(e.target.files[0]);
 
   const handleSubmit = async (event) => {
@@ -38,9 +40,15 @@ const VewAllStudent = () => {
           console.log(result);
         });
 
-        const result_HocVienCNTN = await axios.post('http://localhost:3001/ttn2/v1/cntn', hocVienCNTNData).then((resulte) => {
-          console.log(resulte);
-        });
+        if (treatmentForm === 'tunguyen') {
+          const result_HocVienCNTN = await axios.post('http://localhost:3001/ttn2/v1/cntn', hocVienCNTNData).then((resulte) => {
+            console.log(resulte);
+          });
+        } else if (treatmentForm === 'batbuoc') {
+          const result_HocVienCNBB = await axios.post('http://localhost:3001/ttn2/v1/cnbb', hocVienCNBBData).then((resulte) => {
+            console.log(resulte);
+          });
+        }
       } else {
         console.log('ten phai la tieng viet co dau');
       }
@@ -189,6 +197,38 @@ const VewAllStudent = () => {
 
   const onNgayCapGiayHoanThanhChange = (date, dateString) => {
     SetHocVienCNTNData({ ...hocVienCNTNData, NgayCapGiayHoanThanh: dateString });
+  };
+
+  const onNgayKyQuyetDinhTamGiuChange = (date, dateString) => {
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayKyQuyetDinhTamGiu: dateString });
+  };
+
+  const onNgayCoKetQuaNghienChange = (date, dateString) => {
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayCoKetQuaNghien: dateString });
+  };
+
+  const onNgayKyQuyetDinhChange = (date, dateString) => {
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayKyQuyetDinh: dateString });
+  };
+
+  const onNgayGiaoTaiSanChange = (date, dateString) => {
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayGiaoTaiSan: dateString });
+  };
+
+  const onNgayDiLyChange = (date, dateString) => {
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayDiLy: dateString });
+  };
+
+  const onNgayHoanThanhXacDinhNghienChange = (date, dateString) => {
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayHoanThanhXacDinhTinhTrangNghien: dateString });
+  };
+
+  const onNgayHopChange = (date, dateString) => {
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayHop: dateString });
+  };
+
+  const onNgayNhapLaiCatGiamChange = (date, dateString) => {
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayNhapLaiCatGiam: dateString });
   };
 
   const formItemLayout =
@@ -638,6 +678,7 @@ const VewAllStudent = () => {
                 onChange={(e) => {
                   SetHocVienInputData({ ...hocVienInputData, cccd: e.target.value });
                   SetHocVienCNTNData({ ...hocVienCNTNData, cccd: e.target.value });
+                  SetHocVienCNBBData({ ...hocVienCNBBData, cccd: e.target.value });
                 }}
               />
             </Form.Item>
@@ -980,23 +1021,31 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Số quyết định tạm giữ">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, SoQuyetDinhTamGiu: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày ký quyết định tạm giữ">
-                <Input />
+                <DatePicker onChange={onNgayKyQuyetDinhTamGiuChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Ngày có kết quả nghiện">
-                <Input />
+                <DatePicker onChange={onNgayCoKetQuaNghienChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Kết quả">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, KetQua: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày hoàn thành xác định tình trạng nghiện">
-                <Input />
+                <DatePicker onChange={onNgayHoanThanhXacDinhNghienChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
@@ -1004,11 +1053,15 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Số quyết định quản lý">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, SoQuyetDinhQuanLy: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày ký quyết định">
-                <Input />
+                <DatePicker onChange={onNgayKyQuyetDinhChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
@@ -1016,15 +1069,27 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Tiền án ma túy hoặc tiền án khác">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, TienAn: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Tội danh">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, ToiDanh: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Thời hạn tù">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, ThoiHanTu: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
@@ -1032,11 +1097,19 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Số lần cai">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, SoLanCai: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Nơi cai nghiện">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, NoiCaiNghien: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Khác">
@@ -1048,19 +1121,31 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Loại tài sản">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, LoaiTaiSan: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Tình trạng tài sản">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, TinhTrangTaiSan: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Bàn giao (nơi nhận hoặc người thân)">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, BanGiao: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày giao">
-                <Input />
+                <DatePicker onChange={onNgayGiaoTaiSanChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
@@ -1184,47 +1269,87 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Ngày họp - Ngày quyết định">
-                <Input />
+                <DatePicker onChange={onNgayHopChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Giờ họp">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, GioHop: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Hình thức họp">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, HinhThucHop: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Thẩm phán phiên họp">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, ThamPhanPhienHop: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Thư ký phiên họp">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, ThuKyPhienHop: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Hoãn phiên họp">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, Hoan: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Khiếu nại">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, KhieuNai: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Tình trạng xử lý đơn vắng mặt">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, TinhTrangXuLyDonVangMat: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Số quyết định tòa án">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, SoQuyetDinhToaAn: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Thời hạn quyết định">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, ThoiHanQuyetDinh: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Nơi chấp hành quyết định">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, NoiChapHanhQuyetDinh: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ghi chú">
@@ -1236,31 +1361,51 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Công văn di lý">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, CongVanDiLy: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày di lý">
-                <Input />
+                <DatePicker onChange={onNgayDiLyChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Cơ quan nhận">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, CoQuanNhan: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Thời gian di lý">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, ThoiGianDiLy: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Thời gian gia hạn di lý">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, ThoiGianGiaHanDiLy: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Số quyết định đưa ra khỏi cơ sở">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, SoQuyetDinhDuaRaKhoiCoSo: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày nhập lại hoặc cắt giảm">
-                <Input />
+                <DatePicker onChange={onNgayNhapLaiCatGiamChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
