@@ -3,12 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Radio, Button } from 'antd';
 import { Select, Space } from 'antd';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import HocVienData from 'data/HocVien.json';
 import HV_CNTN from 'data/HV_CNTuNguyen.json';
 import HV_CNBB from 'data/HV_CNBatBuoc.json';
 import KyLuat from 'data/KyLuat.json';
+import KhenThuong from 'data/KhenThuong.json';
+import BanGiao from 'data/BanGiao.json';
+import TronVienPhep from 'data/TronVienPhep.json';
 
 const VewAllStudent = () => {
+  const idCaiNghienTNPrefix = 'TN';
+  const idCaiNghienBBPrefix = 'BB';
+
   const { Title } = Typography;
   const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState('horizontal');
@@ -25,10 +32,15 @@ const VewAllStudent = () => {
 
   const [inputNameValidationStatus, SetInputNameValidationStatus] = useState({});
 
+  const [idCaiNghien, SetIdCaiNghien] = useState('');
+
   const [hocVienInputData, SetHocVienInputData] = useState(HocVienData);
   const [hocVienCNTNData, SetHocVienCNTNData] = useState(HV_CNTN);
   const [hocVienCNBBData, SetHocVienCNBBData] = useState(HV_CNBB);
   const [KyLuatData, SetKyLuatData] = useState(KyLuat);
+  const [KhenThuongData, SetKhenThuongData] = useState(KhenThuong);
+  const [BanGiaoData, SetBanGiaoData] = useState(BanGiao);
+  const [TronVienPhepData, SetTronVienPhepData] = useState(TronVienPhep);
   const handleSelectFile = (e) => SetFile(e.target.files[0]);
 
   const CheckEmptyInput = (input) => {
@@ -38,6 +50,7 @@ const VewAllStudent = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const UniqueUniversalid = uuidv4();
 
     try {
       const values = await form.validateFields().then();
@@ -47,13 +60,29 @@ const VewAllStudent = () => {
         });
 
         if (treatmentForm === 'tunguyen') {
+          const id = `${idCaiNghienTNPrefix}-${UniqueUniversalid}`;
+          hocVienCNTNData.id = id;
           const result_HocVienCNTN = await axios.post('http://localhost:3001/ttn2/v1/cntn', hocVienCNTNData).then((result) => {
             console.log(result);
           });
+
+          // Set id for other entities
+          KhenThuongData.id_dot_cntn = id;
+          KyLuatData.id_dot_cntn = id;
+          BanGiaoData.id_dot_cntn = id;
+          TronVienPhepData.id_dot_cntn = id;
         } else if (treatmentForm === 'batbuoc') {
+          const id = `${idCaiNghienBBPrefix}-${UniqueUniversalid}`;
+          hocVienCNBBData.id = id;
           const result_HocVienCNBB = await axios.post('http://localhost:3001/ttn2/v1/cnbb', hocVienCNBBData).then((result) => {
             console.log(result);
           });
+
+          // Set id for other entities
+          KhenThuongData.id_dot_cnbb = id;
+          KyLuatData.id_dot_cnbb = id;
+          BanGiaoData.id_dot_cnbb = id;
+          TronVienPhepData.id_dot_cnbb = id;
         }
 
         if (
@@ -66,6 +95,43 @@ const VewAllStudent = () => {
           CheckEmptyInput(KyLuatData.HanhViViPham) === false
         ) {
           const result_KyLuat = await axios.post('http://localhost:3001/ttn2/v1/kyluat', KyLuatData).then((result) => {
+            console.log(result);
+          });
+        }
+
+        if (
+          CheckEmptyInput(KhenThuongData.SoQuyetDinhKhenThuong) === false &&
+          CheckEmptyInput(KhenThuongData.NgayRaQuyetDinh) === false &&
+          CheckEmptyInput(KhenThuongData.HinhThucKhenThuong) === false
+        ) {
+          const result_KhenThuong = await axios.post('http://localhost:3001/ttn2/v1/khenthuong', KhenThuongData).then((result) => {
+            console.log(result);
+          });
+        }
+
+        if (
+          CheckEmptyInput(BanGiaoData.SoVanBanBanGiao) === false &&
+          CheckEmptyInput(BanGiaoData.NgayRaVanBan) === false &&
+          CheckEmptyInput(BanGiaoData.NgayBanGiao) === false &&
+          CheckEmptyInput(BanGiaoData.LyDoBanGiao) === false &&
+          CheckEmptyInput(BanGiaoData.CanBoBenNhan) === false &&
+          CheckEmptyInput(BanGiaoData.CoQuanNhan) === false &&
+          CheckEmptyInput(BanGiaoData.ThongTinLienLacBenNhan) === false &&
+          CheckEmptyInput(BanGiaoData.CanBoGiaiQuyet) === false &&
+          CheckEmptyInput(BanGiaoData.LanhDaoChucVu) === false
+        ) {
+          const result_BanGiao = await axios.post('http://localhost:3001/ttn2/v1/bangiao', BanGiaoData).then((result) => {
+            console.log(result);
+          });
+        }
+
+        if (
+          CheckEmptyInput(TronVienPhepData.NgayTron) === false &&
+          CheckEmptyInput(TronVienPhepData.SoThongBao) === false &&
+          CheckEmptyInput(TronVienPhepData.NgayRaThongBao) === false &&
+          CheckEmptyInput(TronVienPhepData.NgayCatGiam) === false
+        ) {
+          const result_TronVienPhep = await axios.post('http://localhost:3001/ttn2/v1/tronvienphep', TronVienPhepData).then((result) => {
             console.log(result);
           });
         }
@@ -117,7 +183,7 @@ const VewAllStudent = () => {
     console.log(hocVienInputData);
   };
 
-  const onDetoxFormChange = (e) => {
+  const onTreatmentFormChange = (e) => {
     console.log('radio checked', e.target.value);
     SetTreatmentForm(e.target.value);
   };
@@ -261,6 +327,30 @@ const VewAllStudent = () => {
 
   const onNgayHetHanKLChange = (date, dateString) => {
     SetKyLuatData({ ...KyLuatData, NgayHetHanKyLuat: dateString });
+  };
+
+  const onNgayQDKhenThongChange = (date, dateString) => {
+    SetKhenThuongData({ ...KhenThuongData, NgayRaQuyetDinh: dateString });
+  };
+
+  const onNgayRaVanBanChange = (date, dateString) => {
+    SetBanGiaoData({ ...BanGiaoData, NgayRaVanBan: dateString });
+  };
+
+  const onNgayGiaoChange = (date, dateString) => {
+    SetBanGiaoData({ ...BanGiaoData, NgayBanGiao: dateString });
+  };
+
+  const onNgayTronVienPhepChange = (date, dateString) => {
+    SetTronVienPhepData({ ...TronVienPhepData, NgayTron: dateString });
+  };
+
+  const onNgayRaThongBaoChange = (date, dateString) => {
+    SetTronVienPhepData({ ...TronVienPhepData, NgayRaThongBao: dateString });
+  };
+
+  const onNgayCatGiamChange = (date, dateString) => {
+    SetTronVienPhepData({ ...TronVienPhepData, NgayCatGiam: dateString });
   };
 
   const formItemLayout =
@@ -739,6 +829,9 @@ const VewAllStudent = () => {
                   SetHocVienCNTNData({ ...hocVienCNTNData, cccd: e.target.value });
                   SetHocVienCNBBData({ ...hocVienCNBBData, cccd: e.target.value });
                   SetKyLuatData({ ...KyLuat, cccd: e.target.value });
+                  SetKhenThuongData({ ...KhenThuongData, cccd: e.target.value });
+                  SetBanGiaoData({ ...BanGiaoData, cccd: e.target.value });
+                  SetTronVienPhepData({ ...TronVienPhepData, cccd: e.target.value });
                 }}
               />
             </Form.Item>
@@ -940,7 +1033,7 @@ const VewAllStudent = () => {
         II. Thông tin hình thức cai nghiện
       </Title>
       <Form.Item label="Hình thức cai nghiện" style={{ marginTop: '20px' }}>
-        <Radio.Group defaultValue="tunguyen" buttonStyle="solid" onChange={onDetoxFormChange}>
+        <Radio.Group defaultValue="tunguyen" buttonStyle="solid" onChange={onTreatmentFormChange}>
           <Radio.Button value="tunguyen">Tự nguyện</Radio.Button>
           <Radio.Button value="batbuoc">Bắt buộc</Radio.Button>
         </Radio.Group>
@@ -1265,15 +1358,23 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Số quyết định khen thưởng">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetKhenThuongData({ ...KhenThuongData, SoQuyetDinhKhenThuong: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày ra quyết định">
-                <Input />
+                <DatePicker onChange={onNgayQDKhenThongChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Hình thức khen thưởng">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetKhenThuongData({ ...KhenThuongData, HinhThucKhenThuong: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Khác">
@@ -1489,19 +1590,23 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Ngày trốn viện/trốn phép">
-                <Input />
+                <DatePicker onChange={onNgayTronVienPhepChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Số thông báo">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetTronVienPhepData({ ...TronVienPhepData, SoThongBao: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày ra thông báo">
-                <Input />
+                <DatePicker onChange={onNgayRaThongBaoChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Ngày cắt giảm">
-                <Input />
+                <DatePicker onChange={onNgayCatGiamChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
@@ -1521,39 +1626,67 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Số văn bản bàn giao">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetBanGiaoData({ ...BanGiaoData, SoVanBanBanGiao: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày ra văn bản">
-                <Input />
+                <DatePicker onChange={onNgayRaVanBanChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Ngày giao">
-                <Input />
+                <DatePicker onChange={onNgayGiaoChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Lý do bàn giao">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetBanGiaoData({ ...BanGiaoData, LyDoBanGiao: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Cán bộ bên nhận">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetBanGiaoData({ ...BanGiaoData, CanBoBenNhan: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Cơ quan nhận">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetBanGiaoData({ ...BanGiaoData, CoQuanNhan: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Thông tin liên lạc bên nhận (Số điện thoại)">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetBanGiaoData({ ...BanGiaoData, ThongTinLienLacBenNhan: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Cán bộ giải quyết">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetBanGiaoData({ ...BanGiaoData, CanBoGiaiQuyet: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Lãnh đạo giao - chức vụ">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetBanGiaoData({ ...BanGiaoData, LanhDaoChucVu: e.target.value });
+                  }}
+                />
               </Form.Item>
             </Form>
           </Col>

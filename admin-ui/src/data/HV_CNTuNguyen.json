@@ -1,4 +1,5 @@
 {
+  "id": null,
   "cccd": null,
   "TuNguyenDongPhi": null,
   "TuNguyenTaiCongDong": null,
@@ -9,9 +10,5 @@
   "NgayCapGiayHoanThanh": null,
   "SoGiayHoanThanh": null,
   "CacGiaiDoanCaiNghien": null,
-  "NgayBatDauCaiNghien": null,
-  "createdAt": null,
-  "createdBy": null,
-  "updatedAt": null,
-  "updatedBy": null
+  "NgayBatDauCaiNghien": null
 }
