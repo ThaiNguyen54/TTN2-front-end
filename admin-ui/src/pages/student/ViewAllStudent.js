@@ -46,15 +46,15 @@ const VewAllStudent = () => {
           console.log(result);
         });
 
-        // if (treatmentForm === 'tunguyen') {
-        //   const result_HocVienCNTN = await axios.post('http://localhost:3001/ttn2/v1/cntn', hocVienCNTNData).then((result) => {
-        //     console.log(result);
-        //   });
-        // } else if (treatmentForm === 'batbuoc') {
-        //   const result_HocVienCNBB = await axios.post('http://localhost:3001/ttn2/v1/cnbb', hocVienCNBBData).then((result) => {
-        //     console.log(result);
-        //   });
-        // }
+        if (treatmentForm === 'tunguyen') {
+          const result_HocVienCNTN = await axios.post('http://localhost:3001/ttn2/v1/cntn', hocVienCNTNData).then((result) => {
+            console.log(result);
+          });
+        } else if (treatmentForm === 'batbuoc') {
+          const result_HocVienCNBB = await axios.post('http://localhost:3001/ttn2/v1/cnbb', hocVienCNBBData).then((result) => {
+            console.log(result);
+          });
+        }
 
         if (
           CheckEmptyInput(KyLuatData.SoQuyetDinhKyLuat) === false &&
