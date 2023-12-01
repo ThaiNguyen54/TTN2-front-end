@@ -6,6 +6,7 @@ import axios from 'axios';
 import HocVienData from 'data/HocVien.json';
 import HV_CNTN from 'data/HV_CNTuNguyen.json';
 import HV_CNBB from 'data/HV_CNBatBuoc.json';
+import KyLuat from 'data/KyLuat.json';
 
 const VewAllStudent = () => {
   const { Title } = Typography;
@@ -27,10 +28,15 @@ const VewAllStudent = () => {
   const [hocVienInputData, SetHocVienInputData] = useState(HocVienData);
   const [hocVienCNTNData, SetHocVienCNTNData] = useState(HV_CNTN);
   const [hocVienCNBBData, SetHocVienCNBBData] = useState(HV_CNBB);
+  const [KyLuatData, SetKyLuatData] = useState(KyLuat);
   const handleSelectFile = (e) => SetFile(e.target.files[0]);
 
+  const CheckEmptyInput = (input) => {
+    console.log(input);
+    return input === null || input === '';
+  };
+
   const handleSubmit = async (event) => {
-    console.log('calling api');
     event.preventDefault();
 
     try {
@@ -40,13 +46,27 @@ const VewAllStudent = () => {
           console.log(result);
         });
 
-        if (treatmentForm === 'tunguyen') {
-          const result_HocVienCNTN = await axios.post('http://localhost:3001/ttn2/v1/cntn', hocVienCNTNData).then((resulte) => {
-            console.log(resulte);
-          });
-        } else if (treatmentForm === 'batbuoc') {
-          const result_HocVienCNBB = await axios.post('http://localhost:3001/ttn2/v1/cnbb', hocVienCNBBData).then((resulte) => {
-            console.log(resulte);
+        // if (treatmentForm === 'tunguyen') {
+        //   const result_HocVienCNTN = await axios.post('http://localhost:3001/ttn2/v1/cntn', hocVienCNTNData).then((result) => {
+        //     console.log(result);
+        //   });
+        // } else if (treatmentForm === 'batbuoc') {
+        //   const result_HocVienCNBB = await axios.post('http://localhost:3001/ttn2/v1/cnbb', hocVienCNBBData).then((result) => {
+        //     console.log(result);
+        //   });
+        // }
+
+        if (
+          CheckEmptyInput(KyLuatData.SoQuyetDinhKyLuat) === false &&
+          CheckEmptyInput(KyLuatData.NgayHetHanKyLuat) === false &&
+          CheckEmptyInput(KyLuatData.ThoiHanKyLuat) === false &&
+          CheckEmptyInput(KyLuatData.NgayViPham) === false &&
+          CheckEmptyInput(KyLuatData.NgayHetHanKyLuat) === false &&
+          CheckEmptyInput(KyLuatData.HinhThucKyLuat) === false &&
+          CheckEmptyInput(KyLuatData.HanhViViPham) === false
+        ) {
+          const result_KyLuat = await axios.post('http://localhost:3001/ttn2/v1/kyluat', KyLuatData).then((result) => {
+            console.log(result);
           });
         }
       } else {
@@ -231,6 +251,18 @@ const VewAllStudent = () => {
     SetHocVienCNBBData({ ...hocVienCNBBData, NgayNhapLaiCatGiam: dateString });
   };
 
+  const onNgayRaQDKLChange = (date, dateString) => {
+    SetKyLuatData({ ...KyLuatData, NgayRaQuyetDinh: dateString });
+  };
+
+  const onNgayViPhamChange = (date, dateString) => {
+    SetKyLuatData({ ...KyLuatData, NgayViPham: dateString });
+  };
+
+  const onNgayHetHanKLChange = (date, dateString) => {
+    SetKyLuatData({ ...KyLuatData, NgayHetHanKyLuat: dateString });
+  };
+
   const formItemLayout =
     formLayout === 'horizontal'
       ? {
@@ -296,7 +328,16 @@ const VewAllStudent = () => {
               </Radio.Group>
             </Form.Item>
 
-            <Form.Item label="Ngày sinh">
+            <Form.Item
+              label="Ngày sinh"
+              name="Ngày sinh"
+              rules={[
+                {
+                  required: true,
+                  message: 'Nhập ngày sinh'
+                }
+              ]}
+            >
               <DatePicker onChange={onDateChange} format={dateFormat} style={{ width: '100%' }} />
             </Form.Item>
 
@@ -304,7 +345,16 @@ const VewAllStudent = () => {
               <Input onChange={(e) => SetHocVienInputData({ ...hocVienInputData, DCThuongTru: e.target.value })} />
             </Form.Item>
 
-            <Form.Item label="Ngày cấp CMND">
+            <Form.Item
+              label="Ngày cấp CMND"
+              name="Ngày cấp CMND"
+              rules={[
+                {
+                  required: true,
+                  message: 'Nhập ngày cấp CMND'
+                }
+              ]}
+            >
               <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={onNgayCapCCCDChange} />
             </Form.Item>
 
@@ -673,12 +723,22 @@ const VewAllStudent = () => {
               />
             </Form.Item>
 
-            <Form.Item label="Số CMND">
+            <Form.Item
+              label="Số CMND"
+              name="Số CMND"
+              rules={[
+                {
+                  required: true,
+                  message: 'Nhập số CMND'
+                }
+              ]}
+            >
               <Input
                 onChange={(e) => {
                   SetHocVienInputData({ ...hocVienInputData, cccd: e.target.value });
                   SetHocVienCNTNData({ ...hocVienCNTNData, cccd: e.target.value });
                   SetHocVienCNBBData({ ...hocVienCNBBData, cccd: e.target.value });
+                  SetKyLuatData({ ...KyLuat, cccd: e.target.value });
                 }}
               />
             </Form.Item>
@@ -1153,31 +1213,47 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Số quyết định kỷ luật">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetKyLuatData({ ...KyLuatData, SoQuyetDinhKyLuat: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày ra quyết định">
-                <Input />
+                <DatePicker onChange={onNgayRaQDKLChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Thời hạn kỷ luật">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetKyLuatData({ ...KyLuatData, ThoiHanKyLuat: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày vi phạm">
-                <Input />
+                <DatePicker onChange={onNgayViPhamChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Ngày hết hạn kỷ luật">
-                <Input />
+                <DatePicker onChange={onNgayHetHanKLChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Hình thức kỷ luật">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetKyLuatData({ ...KyLuatData, HinhThucKyLuat: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Hành vi vi phạm khác">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetKyLuatData({ ...KyLuatData, HanhViViPham: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Khác">
