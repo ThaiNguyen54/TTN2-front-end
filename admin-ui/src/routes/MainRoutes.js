@@ -19,6 +19,11 @@ const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons'
 // render - view all student page
 const ViewAllStudent = Loadable(lazy(() => import('pages/student/ViewAllStudent')));
 
+// render - add khu sinh hoat page
+const ViewAllKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/ViewAllKhuSinhHoat')));
+const AddKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/AddKhuSinhHoat')));
+
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -45,6 +50,14 @@ const MainRoutes = {
     {
       path: 'hocvien',
       element: <ViewAllStudent />
+    },
+    {
+      path: 'khusinhhoat',
+      element: <ViewAllKhuSinhHoat />
+    },
+    {
+      path: 'addkhusinhhoat',
+      element: <AddKhuSinhHoat />
     },
     {
       path: 'sample-page',

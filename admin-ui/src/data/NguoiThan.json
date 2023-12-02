@@ -1,0 +1,24 @@
+{
+  "NguoiThan": {
+    "cha": {
+      "cccdHocVien": null,
+      "HoTenNguoiThan": null,
+      "NgaySinh": null,
+      "NoiO": null,
+      "MoiQuanHe": "Cha"
+    },
+    "me": {
+      "cccdHocVien": null,
+      "HoTenNguoiThan": null,
+      "NgaySinh": null,
+      "NoiO": null,
+      "MoiQuanHe": "Mẹ"
+    },
+    "vochong": {
+      "cccdHocVien": null,
+      "HoTenNguoiThan": null,
+      "NgaySinh": null,
+      "MoiQuanHe": "Vợ/Chồng"
+    }
+  }
+}

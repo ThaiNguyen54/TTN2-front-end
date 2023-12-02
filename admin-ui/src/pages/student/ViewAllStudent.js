@@ -11,6 +11,7 @@ import KyLuat from 'data/KyLuat.json';
 import KhenThuong from 'data/KhenThuong.json';
 import BanGiao from 'data/BanGiao.json';
 import TronVienPhep from 'data/TronVienPhep.json';
+import NguoiThan from 'data/NguoiThan.json';
 
 const VewAllStudent = () => {
   const idCaiNghienTNPrefix = 'TN';
@@ -32,8 +33,6 @@ const VewAllStudent = () => {
 
   const [inputNameValidationStatus, SetInputNameValidationStatus] = useState({});
 
-  const [idCaiNghien, SetIdCaiNghien] = useState('');
-
   const [hocVienInputData, SetHocVienInputData] = useState(HocVienData);
   const [hocVienCNTNData, SetHocVienCNTNData] = useState(HV_CNTN);
   const [hocVienCNBBData, SetHocVienCNBBData] = useState(HV_CNBB);
@@ -41,6 +40,10 @@ const VewAllStudent = () => {
   const [KhenThuongData, SetKhenThuongData] = useState(KhenThuong);
   const [BanGiaoData, SetBanGiaoData] = useState(BanGiao);
   const [TronVienPhepData, SetTronVienPhepData] = useState(TronVienPhep);
+  const [ChaData, SetChaData] = useState(NguoiThan.NguoiThan.cha);
+  const [MeData, SetMeData] = useState(NguoiThan.NguoiThan.me);
+  const [VoChongData, SetVoChongData] = useState(NguoiThan.NguoiThan.vochong);
+
   const handleSelectFile = (e) => SetFile(e.target.files[0]);
 
   const CheckEmptyInput = (input) => {
@@ -132,6 +135,32 @@ const VewAllStudent = () => {
           CheckEmptyInput(TronVienPhepData.NgayCatGiam) === false
         ) {
           const result_TronVienPhep = await axios.post('http://localhost:3001/ttn2/v1/tronvienphep', TronVienPhepData).then((result) => {
+            console.log(result);
+          });
+        }
+
+        if (
+          CheckEmptyInput(ChaData.HoTenNguoiThan) === false &&
+          CheckEmptyInput(ChaData.NgaySinh) === false &&
+          CheckEmptyInput(ChaData.NoiO) === false
+        ) {
+          const result_Cha = await axios.post('http://localhost:3001/ttn2/v1/nguoithan', ChaData).then((result) => {
+            console.log(result);
+          });
+        }
+
+        if (
+          CheckEmptyInput(MeData.HoTenNguoiThan) === false &&
+          CheckEmptyInput(MeData.NgaySinh) === false &&
+          CheckEmptyInput(MeData.NoiO) === false
+        ) {
+          const result_Me = await axios.post('http://localhost:3001/ttn2/v1/nguoithan', MeData).then((result) => {
+            console.log(result);
+          });
+        }
+
+        if (CheckEmptyInput(VoChongData.HoTenNguoiThan) === false && CheckEmptyInput(VoChongData.NgaySinh) === false) {
+          const result_VoChong = await axios.post('http://localhost:3001/ttn2/v1/nguoithan', VoChongData).then((result) => {
             console.log(result);
           });
         }
@@ -351,6 +380,30 @@ const VewAllStudent = () => {
 
   const onNgayCatGiamChange = (date, dateString) => {
     SetTronVienPhepData({ ...TronVienPhepData, NgayCatGiam: dateString });
+  };
+
+  const onNgayChuyenCoSoChange = (date, dateString) => {
+    SetTronVienPhepData({ ...TronVienPhepData, NgayChuyenCoSo: dateString });
+  };
+
+  const onNgayChuyenVienChange = (date, dateString) => {
+    SetTronVienPhepData({ ...TronVienPhepData, NgayChuyenVien: dateString });
+  };
+
+  const onNgayNhapLaiChange = (date, dateString) => {
+    SetTronVienPhepData({ ...TronVienPhepData, NgayNhapLai: dateString });
+  };
+
+  const onNgaySinhChaChange = (date, dateString) => {
+    SetChaData({ ...ChaData, NgaySinh: dateString });
+  };
+
+  const onNgaySinhMeChange = (date, dateString) => {
+    SetMeData({ ...MeData, NgaySinh: dateString });
+  };
+
+  const onNgaySinhVoChongChange = (date, dateString) => {
+    SetVoChongData({ ...VoChongData, NgaySinh: dateString });
   };
 
   const formItemLayout =
@@ -832,6 +885,9 @@ const VewAllStudent = () => {
                   SetKhenThuongData({ ...KhenThuongData, cccd: e.target.value });
                   SetBanGiaoData({ ...BanGiaoData, cccd: e.target.value });
                   SetTronVienPhepData({ ...TronVienPhepData, cccd: e.target.value });
+                  SetChaData({ ...ChaData, cccdHocVien: e.target.value });
+                  SetMeData({ ...MeData, cccdHocVien: e.target.value });
+                  SetVoChongData({ ...VoChongData, cccdHocVien: e.target.value });
                 }}
               />
             </Form.Item>
@@ -1406,23 +1462,35 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Nơi chuyển viện">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, NoiChuyeVien: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ngày chuyển viện">
-                <Input />
+                <DatePicker onChange={onNgayChuyenVienChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Ngày nhập lại">
-                <Input />
+                <DatePicker onChange={onNgayNhapLaiChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Thông tin liên hệ gia đình">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, ThongTinLienHeGiaDinh: e.target.value });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item label="Ghi chú">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, GhiChu: e.target.value });
+                  }}
+                />
               </Form.Item>
             </Form>
           </Col>
@@ -1614,11 +1682,15 @@ const VewAllStudent = () => {
               </Title>
 
               <Form.Item label="Ngày chuyển cơ sở">
-                <Input />
+                <DatePicker onChange={onNgayChuyenCoSoChange} format={dateFormat} style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item label="Cán bộ bàn giao">
-                <Input />
+                <Input
+                  onChange={(e) => {
+                    SetHocVienCNBBData({ ...hocVienCNBBData, CanBoBanGiao: e.targt.value });
+                  }}
+                />
               </Form.Item>
 
               <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
@@ -1720,19 +1792,31 @@ const VewAllStudent = () => {
             }}
           >
             <Form.Item label="Họ tên cha">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetChaData({ ...ChaData, HoTenNguoiThan: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Họ tên mẹ">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetMeData({ ...MeData, HoTenNguoiThan: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Nơi ở cha">
-              <Input />
+              <Input onChange={(e) => SetChaData({ ...ChaData, NoiO: e.target.value })} />
             </Form.Item>
 
             <Form.Item label="Họ tên vợ/chồng">
-              <Input />
+              <Input
+                onChange={(e) => {
+                  SetVoChongData({ ...VoChongData, HoTenNguoiThan: e.target.value });
+                }}
+              />
             </Form.Item>
           </Form>
         </Col>
@@ -1752,19 +1836,19 @@ const VewAllStudent = () => {
             }}
           >
             <Form.Item label="Ngày sinh cha">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} />
+              <DatePicker onChange={onNgaySinhChaChange} format={dateFormat} style={{ width: '100%' }} />
             </Form.Item>
 
             <Form.Item label="Ngày sinh mẹ">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} />
+              <DatePicker onChange={onNgaySinhMeChange} format={dateFormat} style={{ width: '100%' }} />
             </Form.Item>
 
             <Form.Item label="Nơi ở mẹ">
-              <Input />
+              <Input onChange={(e) => {SetMeData({ ...MeData, NoiO: e.target.value })}}/>
             </Form.Item>
 
             <Form.Item label="Ngày sinh vợ/chồng">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} />
+              <DatePicker onChange={onNgaySinhVoChongChange} format={dateFormat} style={{ width: '100%' }} />
             </Form.Item>
           </Form>
         </Col>
