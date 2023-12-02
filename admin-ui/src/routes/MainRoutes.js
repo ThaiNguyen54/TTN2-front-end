@@ -18,7 +18,7 @@ const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons'
 
 // render - view all student page
 const ViewAllStudent = Loadable(lazy(() => import('pages/student/ViewAllStudent')));
-
+const AddStudent = Loadable(lazy(() => import ('pages/student/AddStudent')));
 // render - add khu sinh hoat page
 const ViewAllKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/ViewAllKhuSinhHoat')));
 const AddKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/AddKhuSinhHoat')));
@@ -33,6 +33,10 @@ const MainRoutes = {
     {
       path: '/',
       element: <ViewAllStudent />
+    },
+    {
+      path: '/addStudent',
+      element: <AddStudent />
     },
     {
       path: 'color',
