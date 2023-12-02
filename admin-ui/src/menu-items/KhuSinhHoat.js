@@ -6,7 +6,7 @@ const icons = {
   HomeOutlined
 };
 
-// ==============================|| MENU ITEMS - DASHBOARD ||============================== //
+// ==============================|| Khu Sinh Hoat ||============================== //
 
 const KhuSinhHoat = {
   id: 'khusinhhoat',
