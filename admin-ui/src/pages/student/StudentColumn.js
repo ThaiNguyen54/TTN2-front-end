@@ -10,12 +10,14 @@ const StudentColumn = [
     key: 'Ho',
     title: 'Họ',
     dataIndex: 'Ho',
+    fixed: 'left',
     editable: true
   },
   {
     key: 'Ten',
     title: 'Tên',
     dataIndex: 'Ten',
+    fixed: 'left',
     editable: true
   },
   {
@@ -252,6 +254,12 @@ const StudentColumn = [
     title: 'Ghi chú',
     dataIndex: 'GhiChu',
     editable: true
+  },
+  {
+    key: 'createdAt',
+    title: 'Created At',
+    dataIndex: 'createdAt',
+    editable: false
   }
 ];
 

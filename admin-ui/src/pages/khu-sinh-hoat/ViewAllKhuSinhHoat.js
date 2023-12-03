@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Divider, Table, Typography, Popconfirm, Input, InputNumber, Form } from 'antd';
 import axios from 'axios';
-import host from "../../axios/host";
+import host from '../../axios/host';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -154,7 +154,7 @@ const ViewAllKhuSinhHoat = () => {
 
   const handleOnClick = async (event) => {
     event.preventDefault();
-    navigate('/AddS');
+    navigate('/addkhusinhhoat');
   };
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {

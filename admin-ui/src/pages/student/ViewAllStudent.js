@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Divider, Table, Typography, Popconfirm, Input, InputNumber, Form } from 'antd';
+import { Button, Divider, Table, Typography, Popconfirm, Input, InputNumber, Form, Space } from 'antd';
 import axios from 'axios';
 import host from '../../axios/host';
 import StudentColumn from './StudentColumn';
+import { SearchOutlined } from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -31,16 +33,164 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
   );
 };
 const ViewAllStudent = () => {
-  console.log(StudentColumn);
+  const [searchText, SetSearchText] = useState('');
+  const [searchedColumn, SetSearchedColumn] = useState('');
+  const searchInput = useRef(null);
+
   const [form] = Form.useForm();
   const [KhuSinhHoat, SetKhuSinhHoat] = useState([]);
   const [editingKey, setEditingKey] = useState('');
+
+  const handleSearch = (selectedKey, confirm, dataIndex) => {
+    confirm();
+    SetSearchText(selectedKey[0]);
+    SetSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    SetSearchText('');
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+      <div
+        style={{
+          padding: 8
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block'
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false
+              });
+              SetSearchText(selectedKeys[0]);
+              SetSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1677ff' : undefined
+        }}
+      />
+    ),
+    onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      )
+  });
 
   const isEditing = (record) => record.cccd === editingKey;
   const edit = (record) => {
     form.setFieldsValue({
       cccd: '',
-      TenKhu: '',
+      NoiCapCCCD: '',
+      SoDu: '',
+      Ho: '',
+      Ten: '',
+      TenDayDu: '',
+      Tuoi: '',
+      GioiTinh: '',
+      NgaySinh: '',
+      DCThuongTru: '',
+      DanToc: '',
+      Tinh: '',
+      Huyen: '',
+      DonVi: '',
+      TinhTrangHN: '',
+      TienAn: '',
+      TienSu: '',
+      TenKhac: '',
+      TrinhDo: '',
+      ViecLam: '',
+      TonGiao: '',
+      HinhAnh: '',
+      NamSudung: '',
+      HinhThucSuDung: '',
+      TinhTrangNghien: '',
+      LoaiMaTuySD: '',
+      DienThoai: '',
+      DieuTriARV: '',
+      LyDoGiam: '',
+      CoQuanBanGiao: '',
+      ThanhPhanGiaDinh: '',
+      CoQuanXacDinhTinhTrangNghien: '',
+      TuoiLanDauSuDung: '',
+      TuoiLanDauTiemChich: '',
+      TongThoiGianSuDung: '',
+      SoNgayLanSuDung: '',
+      NguyenNhanTaiNghien: '',
+      ThanhPhanBanThan: '',
+      TinhTrangViecLam: '',
+      TronNhapLai: '',
+      NhapMoi: '',
+      GhiChu: '',
       ...record
     });
     setEditingKey(record.cccd);
@@ -53,7 +203,7 @@ const ViewAllStudent = () => {
       return pre.filter((khusinhhoat) => khusinhhoat.cccd !== record.cccd);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/khusinhhoat/${record.cccd}`).then((result) => {
+    const req = await axios.delete(`${host.local}/ttn2/v1/hocvien/${record.cccd}`).then((result) => {
       console.log(result);
     });
   };
@@ -64,11 +214,13 @@ const ViewAllStudent = () => {
 
   const save = async (key) => {
     try {
-      const row = await form.validateFields();
+      const row = await form.getFieldValue();
       const newData = [...KhuSinhHoat];
       const index = newData.findIndex((item) => key === item.cccd);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/khusinhhoat/${key}`, row).then((result) => {
+      console.log('this is row: ', row);
+
+      const req = await axios.put(`${host.local}/ttn2/v1/hocvien/${key}`, row).then((result) => {
         console.log(result);
       });
 
@@ -90,8 +242,15 @@ const ViewAllStudent = () => {
     }
   };
 
+  const StudentColumnWithSearchProp = StudentColumn.map((column) => ({
+    ...column,
+    ...getColumnSearchProps(column.key)
+  }));
+
+  console.log('this is stdcol: ', StudentColumnWithSearchProp);
+
   const columns = [
-    ...StudentColumn,
+    ...StudentColumnWithSearchProp,
     {
       key: 'operation',
       title: 'operation',
@@ -119,21 +278,20 @@ const ViewAllStudent = () => {
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
               Edit
             </Typography.Link>
-            <Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>
-              <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>
-                Delete
-              </a>
-            </Popconfirm>
+            {/*<Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>*/}
+            {/*  <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>*/}
+            {/*    Delete*/}
+            {/*  </a>*/}
+            {/*</Popconfirm>*/}
           </span>
         );
       }
     }
   ];
 
-
   const GetAllKhuSinhHoat = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/hocvien`).then((res) => {
+      const res = await axios.get(`${host.local}/ttn2/v1/count-cn/hocvien`).then((res) => {
         SetKhuSinhHoat(res.data.data.data);
       });
     } catch (error) {
@@ -191,6 +349,15 @@ const ViewAllStudent = () => {
           bordered
           tableLayout="auto"
           scroll={{ x: 'max-content' }}
+          expandable={{
+            expandedRowRender: (record) => (
+              <>
+                <p style={{ margin: 0 }}>Tổng số lần cai nghiện: {record.Count_CNTuNguyen + record.Count_CNBatBuoc}</p>
+                <p style={{ margin: 0 }}>Số lần cai nghiện tự nguyện: {record.Count_CNTuNguyen},</p>
+                <p style={{ margin: 0 }}>Số lần cai nghiện bắt buộc: {record.Count_CNBatBuoc}</p>
+              </>
+            )
+          }}
         />
       </Form>
     </div>
