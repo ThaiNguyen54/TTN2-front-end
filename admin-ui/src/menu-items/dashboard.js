@@ -29,6 +29,22 @@ const dashboard = {
       url: '/hocvien',
       icon: icons.UserOutlined,
       breadcrumbs: false
+    },
+    {
+      id: 'hocvien-cnbb',
+      title: 'Học Viên - Cai nghiện bắt buộc',
+      type: 'item',
+      url: '/hocvien-cnbb',
+      icon: icons.UserOutlined,
+      breadcrumbs: false
+    },
+    {
+      id: 'hocvien-cntn',
+      title: 'Học Viên - Cai nghiện tự nguyện',
+      type: 'item',
+      url: '/hocvien-cntn',
+      icon: icons.UserOutlined,
+      breadcrumbs: false
     }
   ]
 };

@@ -18,11 +18,16 @@ const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons'
 
 // render - view all student page
 const ViewAllStudent = Loadable(lazy(() => import('pages/student/ViewAllStudent')));
-const AddStudent = Loadable(lazy(() => import ('pages/student/AddStudent')));
+const AddStudent = Loadable(lazy(() => import('pages/student/AddStudent')));
+const Student_CNBB = Loadable(lazy(() => import('pages/student-cainghienbatbuoc/ViewAllCNBB')));
+const Student_CNTN = Loadable(lazy(() => import('pages/student-cainghientunguyen/ViewAllCNTN')));
+
 // render - add khu sinh hoat page
 const ViewAllKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/ViewAllKhuSinhHoat')));
 const AddKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/AddKhuSinhHoat')));
 
+// render - nguoi than
+const ViewAllNguoiThan = Loadable(lazy(() => import('pages/nguoi-than/ViewAllNguoiThan')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -62,6 +67,18 @@ const MainRoutes = {
     {
       path: 'addkhusinhhoat',
       element: <AddKhuSinhHoat />
+    },
+    {
+      path: 'hocvien-cnbb',
+      element: <Student_CNBB />
+    },
+    {
+      path: 'hocvien-cntn',
+      element: <Student_CNTN />
+    },
+    {
+      path: 'nguoithan',
+      element: <ViewAllNguoiThan />
     },
     {
       path: 'sample-page',

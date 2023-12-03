@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button, Divider, Table, Typography, Popconfirm, Input, InputNumber, Form, Space } from 'antd';
 import axios from 'axios';
 import host from '../../axios/host';
-import StudentColumn from './StudentColumn';
+import NguoiThanColumns from './NguoiThanColumns';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 
@@ -32,13 +31,13 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     </td>
   );
 };
-const ViewAllStudent = () => {
+const ViewAllNguoiThan = () => {
   const [searchText, SetSearchText] = useState('');
   const [searchedColumn, SetSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
   const [form] = Form.useForm();
-  const [HocVien, SetHocVien] = useState([]);
+  const [NguoiThan, SetNguoiThan] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
@@ -146,64 +145,26 @@ const ViewAllStudent = () => {
       )
   });
 
-  const isEditing = (record) => record.cccd === editingKey;
+  const isEditing = (record) => record.id === editingKey;
   const edit = (record) => {
     form.setFieldsValue({
-      cccd: '',
-      NoiCapCCCD: '',
-      SoDu: '',
-      Ho: '',
-      Ten: '',
-      TenDayDu: '',
-      Tuoi: '',
-      GioiTinh: '',
+      id: '',
+      cccdHocVien: '',
+      HoTenNguoiThan: '',
       NgaySinh: '',
-      DCThuongTru: '',
-      DanToc: '',
-      Tinh: '',
-      Huyen: '',
-      DonVi: '',
-      TinhTrangHN: '',
-      TienAn: '',
-      TienSu: '',
-      TenKhac: '',
-      TrinhDo: '',
-      ViecLam: '',
-      TonGiao: '',
-      HinhAnh: '',
-      NamSudung: '',
-      HinhThucSuDung: '',
-      TinhTrangNghien: '',
-      LoaiMaTuySD: '',
-      DienThoai: '',
-      DieuTriARV: '',
-      LyDoGiam: '',
-      CoQuanBanGiao: '',
-      ThanhPhanGiaDinh: '',
-      CoQuanXacDinhTinhTrangNghien: '',
-      TuoiLanDauSuDung: '',
-      TuoiLanDauTiemChich: '',
-      TongThoiGianSuDung: '',
-      SoNgayLanSuDung: '',
-      NguyenNhanTaiNghien: '',
-      ThanhPhanBanThan: '',
-      TinhTrangViecLam: '',
-      TronNhapLai: '',
-      NhapMoi: '',
-      GhiChu: '',
+      NoiO: '',
+      MoiQuanHe: '',
       ...record
     });
-    setEditingKey(record.cccd);
+    setEditingKey(record.id);
   };
 
   const deleteRecord = async (record) => {
-    console.log('deleted: ', record);
-    console.log(record.cccd);
-    SetHocVien((pre) => {
-      return pre.filter((khusinhhoat) => khusinhhoat.cccd !== record.cccd);
+    SetNguoiThan((pre) => {
+      return pre.filter((nguoithan) => nguoithan.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/hocvien/${record.cccd}`).then((result) => {
+    const req = await axios.delete(`${host.local}/ttn2/v1/nguoithan/${record.id}`).then((result) => {
       console.log(result);
     });
   };
@@ -215,12 +176,12 @@ const ViewAllStudent = () => {
   const save = async (key) => {
     try {
       const row = await form.getFieldValue();
-      const newData = [...KhuSinhHoat];
-      const index = newData.findIndex((item) => key === item.cccd);
+      const newData = [...NguoiThan];
+      const index = newData.findIndex((item) => key === item.id);
 
       console.log('this is row: ', row);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/hocvien/${key}`, row).then((result) => {
+      const req = await axios.put(`${host.local}/ttn2/v1/nguoithan/${key}`, row).then((result) => {
         console.log(result);
       });
 
@@ -230,11 +191,11 @@ const ViewAllStudent = () => {
           ...item,
           ...row
         });
-        SetHocVien(newData);
+        SetNguoiThan(newData);
         setEditingKey('');
       } else {
         newData.push(row);
-        SetHocVien(newData);
+        SetNguoiThan(newData);
         setEditingKey('');
       }
     } catch (errInfo) {
@@ -242,12 +203,10 @@ const ViewAllStudent = () => {
     }
   };
 
-  const StudentColumnWithSearchProp = StudentColumn.map((column) => ({
+  const StudentColumnWithSearchProp = NguoiThanColumns.map((column) => ({
     ...column,
     ...getColumnSearchProps(column.key)
   }));
-
-  console.log('this is stdcol: ', StudentColumnWithSearchProp);
 
   const columns = [
     ...StudentColumnWithSearchProp,
@@ -262,7 +221,7 @@ const ViewAllStudent = () => {
         return editable ? (
           <span>
             <Typography.Link
-              onClick={() => save(record.cccd)}
+              onClick={() => save(record.id)}
               style={{
                 marginRight: 8
               }}
@@ -289,10 +248,10 @@ const ViewAllStudent = () => {
     }
   ];
 
-  const GetAllHocVien = async () => {
+  const GetAllNguoiThan = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/count-cn/hocvien`).then((res) => {
-        SetHocVien(res.data.data.data);
+      const res = await axios.get(`${host.local}/ttn2/v1/nguoithan`).then((res) => {
+        SetNguoiThan(res.data.data.data);
       });
     } catch (error) {
       console.log(error);
@@ -300,15 +259,10 @@ const ViewAllStudent = () => {
   };
 
   useEffect(() => {
-    GetAllHocVien();
+    GetAllNguoiThan();
   }, []);
   const { Title } = Typography;
-  const navigate = useNavigate();
 
-  const handleOnClick = async (event) => {
-    event.preventDefault();
-    navigate('/addStudent');
-  };
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;
@@ -325,23 +279,21 @@ const ViewAllStudent = () => {
   });
   return (
     <div>
-      <Title style={{ color: '#00A9FF' }}>Học Viên</Title>
+      <Title style={{ color: '#00A9FF' }}>Người Thân</Title>
       <Divider style={{ marginBottom: '50px' }}></Divider>
-
-      <Button onClick={handleOnClick}>Thêm Học Viên</Button>
 
       <Divider />
 
       <Form form={form} component={false}>
         <Table
-          rowKey="cccd"
+          rowKey="id"
           components={{
             body: {
               cell: EditableCell
             }
           }}
           columns={mergedColumns}
-          dataSource={HocVien}
+          dataSource={NguoiThan}
           rowClassName="editable-row"
           pagination={{
             onChange: cancel
@@ -349,18 +301,9 @@ const ViewAllStudent = () => {
           bordered
           tableLayout="auto"
           scroll={{ x: 'max-content' }}
-          expandable={{
-            expandedRowRender: (record) => (
-              <>
-                <p style={{ margin: 0 }}>Tổng số lần cai nghiện: {record.Count_CNTuNguyen + record.Count_CNBatBuoc}</p>
-                <p style={{ margin: 0 }}>Số lần cai nghiện tự nguyện: {record.Count_CNTuNguyen},</p>
-                <p style={{ margin: 0 }}>Số lần cai nghiện bắt buộc: {record.Count_CNBatBuoc}</p>
-              </>
-            )
-          }}
         />
       </Form>
     </div>
   );
 };
-export default ViewAllStudent;
+export default ViewAllNguoiThan;

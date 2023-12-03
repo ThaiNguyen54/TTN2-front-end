@@ -1437,25 +1437,25 @@ const VewAllStudent = () => {
                 <Input />
               </Form.Item>
 
-              <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
-                Thăm gặp
-              </Title>
+              {/*<Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>*/}
+              {/*  Thăm gặp*/}
+              {/*</Title>*/}
 
-              <Form.Item label="Họ tên người thăm">
-                <Input />
-              </Form.Item>
+              {/*<Form.Item label="Họ tên người thăm">*/}
+              {/*  <Input />*/}
+              {/*</Form.Item>*/}
 
-              <Form.Item label="Mối quan hệ">
-                <Input />
-              </Form.Item>
+              {/*<Form.Item label="Mối quan hệ">*/}
+              {/*  <Input />*/}
+              {/*</Form.Item>*/}
 
-              <Form.Item label="Số người thăm">
-                <Input />
-              </Form.Item>
+              {/*<Form.Item label="Số người thăm">*/}
+              {/*  <Input />*/}
+              {/*</Form.Item>*/}
 
-              <Form.Item label="Ngày thăm">
-                <Input />
-              </Form.Item>
+              {/*<Form.Item label="Ngày thăm">*/}
+              {/*  <Input />*/}
+              {/*</Form.Item>*/}
 
               <Title level={5} style={{ color: '#00A9FF', marginBottom: '25px', marginTop: '40px' }}>
                 Chuyển viện
