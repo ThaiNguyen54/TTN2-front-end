@@ -29,6 +29,18 @@ const AddKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/AddKhuSin
 // render - nguoi than
 const ViewAllNguoiThan = Loadable(lazy(() => import('pages/nguoi-than/ViewAllNguoiThan')));
 
+// render - ban giao
+const ViewAllBanGiao = Loadable(lazy(() => import('pages/ban-giao/ViewAllBanGiao')));
+
+// render - khen thuong
+const ViewAllKhenThuong = Loadable(lazy(() => import('pages/khen-thuong/ViewAllKhenThuong')));
+
+// render - ky luat
+const ViewAllKyLuat = Loadable(lazy(() => import('pages/ky-luat/ViewAllKyLuat')))
+
+// render - tron vien phep
+const ViewAllTronVienPhep = Loadable(lazy(() => import('pages/tron-vien-phep/ViewAllTronVienPhep')))
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -79,6 +91,22 @@ const MainRoutes = {
     {
       path: 'nguoithan',
       element: <ViewAllNguoiThan />
+    },
+    {
+      path: 'bangiao',
+      element: <ViewAllBanGiao />
+    },
+    {
+      path: 'khenthuong',
+      element: <ViewAllKhenThuong />
+    },
+    {
+      path: 'kyluat',
+      element: <ViewAllKyLuat />
+    },
+    {
+      path: 'tronvienphep',
+      element: <ViewAllTronVienPhep />
     },
     {
       path: 'sample-page',

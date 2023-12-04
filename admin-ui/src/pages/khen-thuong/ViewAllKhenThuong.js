@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Divider, Table, Typography, Popconfirm, Input, InputNumber, Form, Space } from 'antd';
 import axios from 'axios';
 import host from '../../axios/host';
-import NguoiThanColumns from './NguoiThanColumns';
+import KhenThuongColumns from './KhenThuongColumns';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 
@@ -31,13 +31,13 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     </td>
   );
 };
-const ViewAllNguoiThan = () => {
+const ViewAllKhenThuong = () => {
   const [searchText, SetSearchText] = useState('');
   const [searchedColumn, SetSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
   const [form] = Form.useForm();
-  const [NguoiThan, SetNguoiThan] = useState([]);
+  const [KhenThuong, SetKhenThuong] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
@@ -149,22 +149,23 @@ const ViewAllNguoiThan = () => {
   const edit = (record) => {
     form.setFieldsValue({
       id: '',
-      cccdHocVien: '',
-      HoTenNguoiThan: '',
-      NgaySinh: '',
-      NoiO: '',
-      MoiQuanHe: '',
+      cccd: '',
+      SoQuyetDinhKhenThuong: '',
+      NgayRaQuyetDinh: '',
+      HinhThucKhenThuong: '',
+      id_dot_cntn: '',
+      id_dot_cnbb: '',
       ...record
     });
     setEditingKey(record.id);
   };
 
   const deleteRecord = async (record) => {
-    SetNguoiThan((pre) => {
-      return pre.filter((nguoithan) => nguoithan.id !== record.id);
+    SetKhenThuong((pre) => {
+      return pre.filter((khenthuong) => khenthuong.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/nguoithan/${record.id}`).then((result) => {
+    const req = await axios.delete(`${host.local}/ttn2/v1/khenthuong/${record.id}`).then((result) => {
       console.log(result);
     });
   };
@@ -176,12 +177,12 @@ const ViewAllNguoiThan = () => {
   const save = async (key) => {
     try {
       const row = await form.getFieldValue();
-      const newData = [...NguoiThan];
+      const newData = [...KhenThuong];
       const index = newData.findIndex((item) => key === item.id);
 
       console.log('this is row: ', row);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/nguoithan/${key}`, row).then((result) => {
+      const req = await axios.put(`${host.local}/ttn2/v1/khenthuong/${key}`, row).then((result) => {
         console.log(result);
       });
 
@@ -191,11 +192,11 @@ const ViewAllNguoiThan = () => {
           ...item,
           ...row
         });
-        SetNguoiThan(newData);
+        SetKhenThuong(newData);
         setEditingKey('');
       } else {
         newData.push(row);
-        SetNguoiThan(newData);
+        SetKhenThuong(newData);
         setEditingKey('');
       }
     } catch (errInfo) {
@@ -203,13 +204,13 @@ const ViewAllNguoiThan = () => {
     }
   };
 
-  const NguoiThanColumnWithSearchProp = NguoiThanColumns.map((column) => ({
+  const KhenThuongColumnWithSearchProp = KhenThuongColumns.map((column) => ({
     ...column,
     ...getColumnSearchProps(column.key)
   }));
 
   const columns = [
-    ...NguoiThanColumnWithSearchProp,
+    ...KhenThuongColumnWithSearchProp,
     {
       key: 'operation',
       title: 'operation',
@@ -237,21 +238,21 @@ const ViewAllNguoiThan = () => {
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
               Edit
             </Typography.Link>
-            {/*<Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>*/}
-            {/*  <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>*/}
-            {/*    Delete*/}
-            {/*  </a>*/}
-            {/*</Popconfirm>*/}
+            <Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>
+              <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>
+                Delete
+              </a>
+            </Popconfirm>
           </span>
         );
       }
     }
   ];
 
-  const GetAllNguoiThan = async () => {
+  const GetAllKhenThuong = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/nguoithan`).then((res) => {
-        SetNguoiThan(res.data.data.data);
+      const res = await axios.get(`${host.local}/ttn2/v1/khenthuong`).then((res) => {
+        SetKhenThuong(res.data.data.data);
       });
     } catch (error) {
       console.log(error);
@@ -259,7 +260,7 @@ const ViewAllNguoiThan = () => {
   };
 
   useEffect(() => {
-    GetAllNguoiThan();
+    GetAllKhenThuong();
   }, []);
   const { Title } = Typography;
 
@@ -279,7 +280,7 @@ const ViewAllNguoiThan = () => {
   });
   return (
     <div>
-      <Title style={{ color: '#00A9FF' }}>Người Thân</Title>
+      <Title style={{ color: '#00A9FF' }}>Khen thưởng học viên</Title>
       <Divider style={{ marginBottom: '50px' }}></Divider>
 
       <Divider />
@@ -293,7 +294,7 @@ const ViewAllNguoiThan = () => {
             }
           }}
           columns={mergedColumns}
-          dataSource={NguoiThan}
+          dataSource={KhenThuong}
           rowClassName="editable-row"
           pagination={{
             onChange: cancel
@@ -306,4 +307,4 @@ const ViewAllNguoiThan = () => {
     </div>
   );
 };
-export default ViewAllNguoiThan;
+export default ViewAllKhenThuong;

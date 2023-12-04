@@ -617,51 +617,51 @@ const VewAllStudent = () => {
               />
             </Form.Item>
 
-            <Form.Item label="Khu sinh hoạt">
-              <Space direction="vertical" style={{ width: '100%' }}>
-                <Select
-                  labelInValue={true}
-                  showSearch
-                  defaultValue="-- Chọn khu sinh hoạt --"
-                  style={{
-                    width: '100%'
-                  }}
-                  onChange={handleChangeActivityArea}
-                  optionFilterProp="children"
-                  filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                  options={[
-                    {
-                      value: 'nam1',
-                      label: 'Khu quản lý học viên nam 1'
-                    },
-                    {
-                      value: 'nam2',
-                      label: 'Khu quản lý học viên nam 2'
-                    },
-                    {
-                      value: 'nam3',
-                      label: 'Khu quản lý học viên nam 3'
-                    },
-                    {
-                      value: 'catcon',
-                      label: 'Khu quản lý học viên cắt cơn'
-                    },
-                    {
-                      value: 'nu',
-                      label: 'Khu quản lý học viên nữ'
-                    },
-                    {
-                      value: 'nam-baove',
-                      label: 'Phòng bảo vệ - Khu quản lý học viên nam'
-                    },
-                    {
-                      value: 'tunguyen',
-                      label: 'Khu quản lý học viên cai nghiện tự nguyện'
-                    }
-                  ]}
-                />
-              </Space>
-            </Form.Item>
+            {/*<Form.Item label="Khu sinh hoạt">*/}
+            {/*  <Space direction="vertical" style={{ width: '100%' }}>*/}
+            {/*    <Select*/}
+            {/*      labelInValue={true}*/}
+            {/*      showSearch*/}
+            {/*      defaultValue="-- Chọn khu sinh hoạt --"*/}
+            {/*      style={{*/}
+            {/*        width: '100%'*/}
+            {/*      }}*/}
+            {/*      onChange={handleChangeActivityArea}*/}
+            {/*      optionFilterProp="children"*/}
+            {/*      filterOption={(input, option) => (option?.label ?? '').includes(input)}*/}
+            {/*      options={[*/}
+            {/*        {*/}
+            {/*          value: 'nam1',*/}
+            {/*          label: 'Khu quản lý học viên nam 1'*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*          value: 'nam2',*/}
+            {/*          label: 'Khu quản lý học viên nam 2'*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*          value: 'nam3',*/}
+            {/*          label: 'Khu quản lý học viên nam 3'*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*          value: 'catcon',*/}
+            {/*          label: 'Khu quản lý học viên cắt cơn'*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*          value: 'nu',*/}
+            {/*          label: 'Khu quản lý học viên nữ'*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*          value: 'nam-baove',*/}
+            {/*          label: 'Phòng bảo vệ - Khu quản lý học viên nam'*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*          value: 'tunguyen',*/}
+            {/*          label: 'Khu quản lý học viên cai nghiện tự nguyện'*/}
+            {/*        }*/}
+            {/*      ]}*/}
+            {/*    />*/}
+            {/*  </Space>*/}
+            {/*</Form.Item>*/}
 
             <Form.Item label="Cơ quan bàn giao">
               <Space direction="vertical" style={{ width: '100%' }}>

@@ -1,9 +1,8 @@
 // assets
-import { HomeOutlined } from '@ant-design/icons';
-
+import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 // icons
 const icons = {
-  HomeOutlined
+  SupervisorAccountOutlinedIcon
 };
 
 // ==============================|| Khu Sinh Hoat ||============================== //
@@ -18,7 +17,7 @@ const NguoiThan = {
       title: 'Người thân học viên',
       type: 'item',
       url: '/nguoithan',
-      icon: icons.HomeOutlined,
+      icon: icons.SupervisorAccountOutlinedIcon,
       breadcrumbs: false
     }
   ]
