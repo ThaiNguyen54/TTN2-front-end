@@ -138,7 +138,7 @@ const ViewAllKhuSinhHoat = () => {
 
   const GetAllKhuSinhHoat = async () => {
     try {
-      const res = await axios.get('http://localhost:3001/ttn2/v1/khusinhhoat').then((res) => {
+      const res = await axios.get(`${host.local}/ttn2/v1/khusinhhoat`).then((res) => {
         SetKhuSinhHoat(res.data.data.data);
       });
     } catch (error) {

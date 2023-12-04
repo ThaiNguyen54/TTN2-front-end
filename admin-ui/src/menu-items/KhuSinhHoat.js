@@ -20,6 +20,22 @@ const KhuSinhHoat = {
       url: '/khusinhhoat',
       icon: icons.HomeOutlined,
       breadcrumbs: false
+    },
+    {
+      id: 'dangkykhusinhhoat',
+      title: 'Đăng ký khu sinh hoạt cho học viên',
+      type: 'item',
+      url: '/dkkhusinhhoat',
+      icon: icons.HomeOutlined,
+      breadcrumbs: false
+    },
+    {
+      id: 'hocvien-khusinhhoat',
+      title: 'Học viên - Khu sinh hoạt',
+      type: 'item',
+      url: '/hocvien-khusinhhoat',
+      icon: icons.HomeOutlined,
+      breadcrumbs: false
     }
   ]
 };

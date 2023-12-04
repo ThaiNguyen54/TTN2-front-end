@@ -25,6 +25,8 @@ const Student_CNTN = Loadable(lazy(() => import('pages/student-cainghientunguyen
 // render - add khu sinh hoat page
 const ViewAllKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/ViewAllKhuSinhHoat')));
 const AddKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/AddKhuSinhHoat')));
+const DangKyKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/DangKyKhuSinhHoat')));
+const ViewAllHocVienKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/ViewHocVien-KhuSinhHoat')));
 
 // render - nguoi than
 const ViewAllNguoiThan = Loadable(lazy(() => import('pages/nguoi-than/ViewAllNguoiThan')));
@@ -36,10 +38,10 @@ const ViewAllBanGiao = Loadable(lazy(() => import('pages/ban-giao/ViewAllBanGiao
 const ViewAllKhenThuong = Loadable(lazy(() => import('pages/khen-thuong/ViewAllKhenThuong')));
 
 // render - ky luat
-const ViewAllKyLuat = Loadable(lazy(() => import('pages/ky-luat/ViewAllKyLuat')))
+const ViewAllKyLuat = Loadable(lazy(() => import('pages/ky-luat/ViewAllKyLuat')));
 
 // render - tron vien phep
-const ViewAllTronVienPhep = Loadable(lazy(() => import('pages/tron-vien-phep/ViewAllTronVienPhep')))
+const ViewAllTronVienPhep = Loadable(lazy(() => import('pages/tron-vien-phep/ViewAllTronVienPhep')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -79,6 +81,14 @@ const MainRoutes = {
     {
       path: 'addkhusinhhoat',
       element: <AddKhuSinhHoat />
+    },
+    {
+      path: '/dkkhusinhhoat',
+      element: <DangKyKhuSinhHoat />
+    },
+    {
+      path: '/hocvien-khusinhhoat',
+      element: <ViewAllHocVienKhuSinhHoat />
     },
     {
       path: 'hocvien-cnbb',
