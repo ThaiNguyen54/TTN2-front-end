@@ -5,6 +5,7 @@ import host from '../../axios/host';
 import BanGiaoColumns from './BanGiaoColumns';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+import {CSVLink} from "react-csv";
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -291,6 +292,11 @@ const ViewAllBanGiao = () => {
 
       <Divider />
 
+      <CSVLink data={BanGiao} filename={'TTN2-BanGiao.csv'} className="btn btn-primary" >
+        Export to Excel file
+      </CSVLink>
+
+
       <Form form={form} component={false}>
         <Table
           rowKey="id"
@@ -310,7 +316,7 @@ const ViewAllBanGiao = () => {
           scroll={{ x: 'max-content' }}
         />
       </Form>
-    </div>
+   </div>
   );
 };
 export default ViewAllBanGiao;

@@ -5,6 +5,7 @@ import host from '../../axios/host';
 import StudentCNBBColumn from './student_cnbb_Column';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+import {CSVLink} from "react-csv";
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -323,6 +324,9 @@ const ViewAllStudentCNBB = () => {
       <Divider style={{ marginBottom: '50px' }}></Divider>
 
       <Divider />
+      <CSVLink data={hocVienCNBB} filename={'TTN2-HocVienCaiNghienBatBuoc.csv'} className="btn btn-primary" >
+        Export to Excel file
+      </CSVLink>
 
       <Form form={form} component={false}>
         <Table
@@ -343,6 +347,7 @@ const ViewAllStudentCNBB = () => {
           scroll={{ x: 'max-content' }}
         />
       </Form>
+
     </div>
   );
 };

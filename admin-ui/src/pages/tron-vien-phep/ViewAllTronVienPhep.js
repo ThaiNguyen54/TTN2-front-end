@@ -5,6 +5,7 @@ import host from '../../axios/host';
 import TronVienPhepColumns from './TronVienPhepColumns';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+import {CSVLink} from "react-csv";
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -285,6 +286,9 @@ const ViewAllTronVienPhep = () => {
       <Divider style={{ marginBottom: '50px' }}></Divider>
 
       <Divider />
+      <CSVLink data={TronVienPhep} filename={'TTN2-TronVienPhep.csv'} className="btn btn-primary" >
+        Export to Excel file
+      </CSVLink>
 
       <Form form={form} component={false}>
         <Table
@@ -305,6 +309,7 @@ const ViewAllTronVienPhep = () => {
           scroll={{ x: 'max-content' }}
         />
       </Form>
+
     </div>
   );
 };

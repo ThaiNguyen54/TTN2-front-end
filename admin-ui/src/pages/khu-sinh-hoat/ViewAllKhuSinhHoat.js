@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Divider, Table, Typography, Popconfirm, Input, InputNumber, Form } from 'antd';
 import axios from 'axios';
 import host from '../../axios/host';
+import { CSVLink } from 'react-csv';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -42,6 +43,11 @@ const ViewAllKhuSinhHoat = () => {
     });
     setEditingKey(record.id);
   };
+
+  const headers = [
+    { label: 'id khu sinh hoạt', key: 'id' },
+    { label: 'Tên khu', key: 'TenKhu' }
+  ];
 
   const deleteRecord = async (record) => {
     console.log('deleted: ', record);
@@ -179,6 +185,11 @@ const ViewAllKhuSinhHoat = () => {
 
       <Divider />
 
+      <CSVLink data={KhuSinhHoat} filename={'TTN2-KhuSinhHoat.csv'} className="btn btn-primary" headers={headers}>
+        Export to Excel file
+      </CSVLink>
+
+
       <Form form={form} component={false}>
         <Table
           rowKey="id"
@@ -194,7 +205,8 @@ const ViewAllKhuSinhHoat = () => {
             onChange: cancel
           }}
         />
-      </Form>
+
+     </Form>
     </div>
   );
 };

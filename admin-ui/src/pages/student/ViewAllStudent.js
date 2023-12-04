@@ -6,6 +6,7 @@ import host from '../../axios/host';
 import StudentColumn from './StudentColumn';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+import { CSVLink } from 'react-csv';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -331,6 +332,10 @@ const ViewAllStudent = () => {
       <Button onClick={handleOnClick}>Thêm Học Viên</Button>
 
       <Divider />
+
+      <CSVLink data={HocVien} filename={'TTN2-HocVien.csv'} className="btn btn-primary">
+        Export to Excel file
+      </CSVLink>
 
       <Form form={form} component={false}>
         <Table
