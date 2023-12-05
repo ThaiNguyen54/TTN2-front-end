@@ -1,8 +1,10 @@
 // assets
 import FastfoodIcon from '@mui/icons-material/Fastfood';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 // icons
 const icons = {
-  FastfoodIcon
+  FastfoodIcon,
+  ShoppingCartOutlinedIcon
 };
 
 // ==============================|| Hang Hoa ||============================== //
@@ -18,6 +20,14 @@ const BanGiao = {
       type: 'item',
       url: '/hanghoa',
       icon: icons.FastfoodIcon,
+      breadcrumbs: false
+    },
+    {
+      id: 'muahanghoa',
+      title: 'Mua hàng hóa cho học viên',
+      type: 'item',
+      url: '/muahanghoa',
+      icon: icons.ShoppingCartOutlinedIcon,
       breadcrumbs: false
     }
   ]

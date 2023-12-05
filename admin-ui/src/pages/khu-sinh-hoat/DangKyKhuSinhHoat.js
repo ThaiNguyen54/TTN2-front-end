@@ -4,7 +4,6 @@ import axios from 'axios';
 import HocVienKhuSinhHoat from 'data/HV_KhuSinhHoat.json';
 import host from '../../axios/host';
 
-
 const DangKyKhuSinhHoat = () => {
   const { Title } = Typography;
 

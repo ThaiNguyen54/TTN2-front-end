@@ -47,6 +47,10 @@ const ViewAllTronVienPhep = Loadable(lazy(() => import('pages/tron-vien-phep/Vie
 const ViewAllHangHoa = Loadable(lazy(() => import('pages/hang-hoa/ViewAllHangHoa')));
 const AddHangHoa = Loadable(lazy(() => import('pages/hang-hoa/AddHangHoa')));
 
+// render - chi tiet mua
+const ViewPurchasingHistroy = Loadable(lazy(() => import('pages/ ChiTietMua/ViewPurchasingHistory')));
+const Purchasing = Loadable(lazy(() => import('pages/hang-hoa/MuaHangHoa')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -129,6 +133,14 @@ const MainRoutes = {
     {
       path: 'addhanghoa',
       element: <AddHangHoa />
+    },
+    {
+      path: 'muahanghoa',
+      element: <Purchasing />
+    },
+    {
+      path: 'chitietmua',
+      element: <ViewPurchasingHistroy />
     },
     {
       path: 'sample-page',
