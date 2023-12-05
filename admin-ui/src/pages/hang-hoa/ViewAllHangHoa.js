@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Divider, Table, Typography, Popconfirm, Input, InputNumber, Form, Space } from 'antd';
 import axios from 'axios';
 import host from '../../axios/host';
-import StudentCNTNColumn from './StudentCNTNColumns';
+import HangHoaColumns from './HangHoaColumns';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import {CSVLink} from "react-csv";
+import { CSVLink } from 'react-csv';
+import { useNavigate } from 'react-router-dom';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -32,20 +33,27 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     </td>
   );
 };
-const ViewAllStudentCNTN = () => {
+const ViewAllHangHoa = () => {
   const [searchText, SetSearchText] = useState('');
   const [searchedColumn, SetSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
   const [form] = Form.useForm();
-  const [hocVienCNTN, SetHocVienCNTN] = useState([]);
-  const [FilteredHVCNTN, SetFilteredHVCNTN] = useState([]);
+  const [HangHoa, SetHangHoa] = useState([]);
+  const [FilteredHangHoaData, SetFilteredHangHoaData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
     confirm();
     SetSearchText(selectedKey[0]);
     SetSearchedColumn(dataIndex);
+  };
+
+  const handleOnClick = async (event) => {
+    event.preventDefault();
+    navigate('/addhanghoa');
   };
 
   const handleReset = (clearFilters) => {
@@ -151,62 +159,19 @@ const ViewAllStudentCNTN = () => {
   const edit = (record) => {
     form.setFieldsValue({
       id: '',
-      cccd: '',
-      LyDoGiam: '',
-      ThoiGianChapHanh: '',
-      SoQuyetDinhTamGiu: '',
-      NgayKyQuyetDinhTamGiu: '',
-      NgayCoKetQuaNghien: '',
-      NgayHoanThanhXacDinhTinhTrangNghien: '',
-      KetQua: '',
-      SoQuyetDinhQuanLy: '',
-      NgayKyQuyetDinh: '',
-      TienAn: '',
-      ToiDanh: '',
-      ThoiHanTu: '',
-      SoLanCai: '',
-      TienSu: '',
-      NoiCaiNghien: '',
-      LoaiTaiSan: '',
-      TinhTrangTaiSan: '',
-      BanGiao: '',
-      NgayGiaoTaiSan: '',
-      NgayHop: '',
-      GioHop: '',
-      HinhThucHop: '',
-      ThamPhanPhienHop: '',
-      ThuKyPhienHop: '',
-      Hoan: '',
-      KhieuNai: '',
-      TinhTrangXuLyDonVangMat: '',
-      ThoiHanQuyetDinh: '',
-      NoiChapHanhQuyetDinh: '',
-      CongVanDiLy: '',
-      NgayDiLy: '',
-      CoQuanNhan: '',
-      ThoiGianDiLy: '',
-      ThoiGianGiaHanDiLy: '',
-      SoQuyetDinhDuaRaKhoiCoSo: '',
-      NgayNhapLaiCatGiam: '',
-      SoQuyetDinhToaAn: '',
-      NgayChuyenCoSo: '',
-      CanBoBanGiao: '',
-      NoiChuyeVien: '',
-      NgayChuyenVien: '',
-      NgayNhapLai: '',
-      ThongTinLienHeGiaDinh: '',
-      GhiChu: '',
+      TenHangHoa: '',
+      DonGia: '',
       ...record
     });
     setEditingKey(record.id);
   };
 
   const deleteRecord = async (record) => {
-    SetHocVienCNTN((pre) => {
-      return pre.filter((hc_cntn) => hc_cntn.id !== record.id);
+    SetHangHoa((pre) => {
+      return pre.filter((hanghoa) => hanghoa.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/cntn/${record.id}`).then((result) => {
+    const req = await axios.delete(`${host.local}/ttn2/v1/hanghoa/${record.id}`).then((result) => {
       console.log(result);
     });
   };
@@ -218,12 +183,10 @@ const ViewAllStudentCNTN = () => {
   const save = async (key) => {
     try {
       const row = await form.getFieldValue();
-      const newData = [...hocVienCNTN];
+      const newData = [...HangHoa];
       const index = newData.findIndex((item) => key === item.id);
 
-      console.log('this is row: ', row);
-
-      const req = await axios.put(`${host.local}/ttn2/v1/cntn/${key}`, row).then((result) => {
+      const req = await axios.put(`${host.local}/ttn2/v1/hanghoa/${key}`, row).then((result) => {
         console.log(result);
       });
 
@@ -233,11 +196,11 @@ const ViewAllStudentCNTN = () => {
           ...item,
           ...row
         });
-        SetHocVienCNTN(newData);
+        SetHangHoa(newData);
         setEditingKey('');
       } else {
         newData.push(row);
-        SetHocVienCNTN(newData);
+        SetHangHoa(newData);
         setEditingKey('');
       }
     } catch (errInfo) {
@@ -245,13 +208,13 @@ const ViewAllStudentCNTN = () => {
     }
   };
 
-  const StudentColumnWithSearchProp = StudentCNTNColumn.map((column) => ({
+  const HangHoaColumnWithSearchProp = HangHoaColumns.map((column) => ({
     ...column,
     ...getColumnSearchProps(column.key)
   }));
 
   const columns = [
-    ...StudentColumnWithSearchProp,
+    ...HangHoaColumnWithSearchProp,
     {
       key: 'operation',
       title: 'operation',
@@ -279,22 +242,22 @@ const ViewAllStudentCNTN = () => {
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
               Edit
             </Typography.Link>
-            {/*<Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>*/}
-            {/*  <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>*/}
-            {/*    Delete*/}
-            {/*  </a>*/}
-            {/*</Popconfirm>*/}
+            <Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>
+              <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>
+                Delete
+              </a>
+            </Popconfirm>
           </span>
         );
       }
     }
   ];
 
-  const GetAllCNTN = async () => {
+  const GetAllHangHoa = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/cntn`).then((res) => {
-        SetHocVienCNTN(res.data.data.data);
-        SetFilteredHVCNTN(res.data.data.data);
+      const res = await axios.get(`${host.local}/ttn2/v1/hanghoa`).then((res) => {
+        SetHangHoa(res.data.data.data);
+        SetFilteredHangHoaData(res.data.data.data);
       });
     } catch (error) {
       console.log(error);
@@ -302,7 +265,7 @@ const ViewAllStudentCNTN = () => {
   };
 
   useEffect(() => {
-    GetAllCNTN();
+    GetAllHangHoa();
   }, []);
   const { Title } = Typography;
 
@@ -322,11 +285,14 @@ const ViewAllStudentCNTN = () => {
   });
   return (
     <div>
-      <Title style={{ color: '#00A9FF' }}>Học Viên - Cai nghiện tự nguyện</Title>
+      <Title style={{ color: '#00A9FF' }}>Hàng hóa</Title>
       <Divider style={{ marginBottom: '50px' }}></Divider>
 
+      <Button onClick={handleOnClick}>Thêm hàng hóa</Button>
+
       <Divider />
-      <CSVLink data={FilteredHVCNTN} filename={'TTN2-HocVien_CaiNghienTuNguyen.csv'} className="btn btn-primary" >
+
+      <CSVLink data={FilteredHangHoaData} filename={'TTN2-HangHoa.csv'} className="btn btn-primary">
         Export to Excel file
       </CSVLink>
 
@@ -339,21 +305,20 @@ const ViewAllStudentCNTN = () => {
             }
           }}
           columns={mergedColumns}
-          dataSource={hocVienCNTN}
+          dataSource={HangHoa}
+          onChange={(pagination, filters, sorter, extra) => {
+            SetFilteredBanGiaoData(extra.currentDataSource);
+          }}
           rowClassName="editable-row"
           pagination={{
             onChange: cancel
-          }}
-          onChange={(pagination, filters, sorter, extra) => {
-            SetFilteredHVCNTN(extra.currentDataSource);
           }}
           bordered
           tableLayout="auto"
           scroll={{ x: 'max-content' }}
         />
       </Form>
-
     </div>
   );
 };
-export default ViewAllStudentCNTN;
+export default ViewAllHangHoa;

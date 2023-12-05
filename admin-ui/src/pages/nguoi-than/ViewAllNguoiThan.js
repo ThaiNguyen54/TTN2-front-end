@@ -39,6 +39,7 @@ const ViewAllNguoiThan = () => {
 
   const [form] = Form.useForm();
   const [NguoiThan, SetNguoiThan] = useState([]);
+  const [FilteredNguoiThan, SetFilteredNguoiThan] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
@@ -253,6 +254,7 @@ const ViewAllNguoiThan = () => {
     try {
       const res = await axios.get(`${host.local}/ttn2/v1/nguoithan`).then((res) => {
         SetNguoiThan(res.data.data.data);
+        SetFilteredNguoiThan(res.data.data.data);
       });
     } catch (error) {
       console.log(error);
@@ -285,7 +287,7 @@ const ViewAllNguoiThan = () => {
 
       <Divider />
 
-      <CSVLink data={NguoiThan} filename={'TTN2-NguoiThanHocVien.csv'} className="btn btn-primary" >
+      <CSVLink data={FilteredNguoiThan} filename={'TTN2-NguoiThanHocVien.csv'} className="btn btn-primary" >
         Export to Excel file
       </CSVLink>
 
@@ -303,6 +305,9 @@ const ViewAllNguoiThan = () => {
           rowClassName="editable-row"
           pagination={{
             onChange: cancel
+          }}
+          onChange={(pagination, filters, sorter, extra) => {
+            SetFilteredNguoiThan(extra.currentDataSource);
           }}
           bordered
           tableLayout="auto"

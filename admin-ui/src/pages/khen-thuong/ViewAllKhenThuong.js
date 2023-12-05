@@ -39,6 +39,7 @@ const ViewAllKhenThuong = () => {
 
   const [form] = Form.useForm();
   const [KhenThuong, SetKhenThuong] = useState([]);
+  const [FilteredKhenThuong, SetFilteredKhenThuong] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
@@ -254,6 +255,7 @@ const ViewAllKhenThuong = () => {
     try {
       const res = await axios.get(`${host.local}/ttn2/v1/khenthuong`).then((res) => {
         SetKhenThuong(res.data.data.data);
+        SetFilteredKhenThuong(res.data.data.data);
       });
     } catch (error) {
       console.log(error);
@@ -286,7 +288,7 @@ const ViewAllKhenThuong = () => {
 
       <Divider />
 
-      <CSVLink data={KhenThuong} filename={'TTN2-KhenThuong.csv'} className="btn btn-primary" >
+      <CSVLink data={FilteredKhenThuong} filename={'TTN2-KhenThuong.csv'} className="btn btn-primary" >
         Export to Excel file
       </CSVLink>
 
@@ -304,6 +306,9 @@ const ViewAllKhenThuong = () => {
           rowClassName="editable-row"
           pagination={{
             onChange: cancel
+          }}
+          onChange={(pagination, filters, sorter, extra) => {
+            SetFilteredKhenThuong(extra.currentDataSource);
           }}
           bordered
           tableLayout="auto"

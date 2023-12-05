@@ -7,6 +7,7 @@ import BanGiao from './BanGiao';
 import KhenThuong from "./KhenThuong";
 import KyLuat from "./KyLuat";
 import TronVienPhep from "./TronVienPhep";
+import HangHoa from './HangHoa';
 import utilities from './utilities';
 import support from './support';
 
@@ -14,7 +15,7 @@ import support from './support';
 
 const menuItems = {
   // items: [dashboard, pages, utilities, support]
-  items: [dashboard, KhuSinhHoat, NguoiThan, BanGiao, KhenThuong, KyLuat, TronVienPhep]
+  items: [dashboard, KhuSinhHoat, NguoiThan, BanGiao, KhenThuong, KyLuat, TronVienPhep, HangHoa]
 };
 
 export default menuItems;

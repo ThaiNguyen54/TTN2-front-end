@@ -39,6 +39,7 @@ const ViewAllStudentCNBB = () => {
 
   const [form] = Form.useForm();
   const [hocVienCNBB, SetHocVienCNBB] = useState([]);
+  const [FilteredHVCNBB, SetFilteredHVCNBB] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
@@ -293,6 +294,7 @@ const ViewAllStudentCNBB = () => {
     try {
       const res = await axios.get(`${host.local}/ttn2/v1/cnbb`).then((res) => {
         SetHocVienCNBB(res.data.data.data);
+        SetFilteredHVCNBB(res.data.data.data);
       });
     } catch (error) {
       console.log(error);
@@ -324,7 +326,7 @@ const ViewAllStudentCNBB = () => {
       <Divider style={{ marginBottom: '50px' }}></Divider>
 
       <Divider />
-      <CSVLink data={hocVienCNBB} filename={'TTN2-HocVienCaiNghienBatBuoc.csv'} className="btn btn-primary" >
+      <CSVLink data={FilteredHVCNBB} filename={'TTN2-HocVienCaiNghienBatBuoc.csv'} className="btn btn-primary" >
         Export to Excel file
       </CSVLink>
 
@@ -341,6 +343,9 @@ const ViewAllStudentCNBB = () => {
           rowClassName="editable-row"
           pagination={{
             onChange: cancel
+          }}
+          onChange={(pagination, filters, sorter, extra) => {
+            SetFilteredHVCNBB(extra.currentDataSource);
           }}
           bordered
           tableLayout="auto"

@@ -39,6 +39,7 @@ const ViewHocVienKhuSinhHoat = () => {
 
   const [form] = Form.useForm();
   const [HocVien_KhuSinhHoat, SetHocVien_KhuSinhHoat] = useState([]);
+  const [FilteredHV_KSH, SetFilteredHV_KSH] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
@@ -253,6 +254,7 @@ const ViewHocVienKhuSinhHoat = () => {
     try {
       const res = await axios.get(`${host.local}/ttn2/v1/hocvien_khusinhhoat`).then((res) => {
         SetHocVien_KhuSinhHoat(res.data.data.data);
+        SetFilteredHV_KSH(res.data.data.data);
       });
     } catch (error) {
       console.log(error);
@@ -285,7 +287,7 @@ const ViewHocVienKhuSinhHoat = () => {
 
       <Divider />
 
-      <CSVLink data={HocVien_KhuSinhHoat} filename={'TTN2-HocVien_KhuSinhHoat.csv'} className="btn btn-primary" >
+      <CSVLink data={FilteredHV_KSH} filename={'TTN2-HocVien_KhuSinhHoat.csv'} className="btn btn-primary" >
         Export to Excel file
       </CSVLink>
 
@@ -302,6 +304,9 @@ const ViewHocVienKhuSinhHoat = () => {
           rowClassName="editable-row"
           pagination={{
             onChange: cancel
+          }}
+          onChange={(pagination, filters, sorter, extra) => {
+            SetFilteredHV_KSH(extra.currentDataSource);
           }}
           bordered
           tableLayout="auto"

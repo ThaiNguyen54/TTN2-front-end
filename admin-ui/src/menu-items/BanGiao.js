@@ -3,7 +3,7 @@ import { BankOutlined } from '@ant-design/icons';
 
 // icons
 const icons = {
- BankOutlined
+  BankOutlined
 };
 
 // ==============================|| Ban Giao ||============================== //

@@ -39,6 +39,7 @@ const ViewAllKyLuat = () => {
 
   const [form] = Form.useForm();
   const [KyLuat, SetKyLuat] = useState([]);
+  const [FilteredKyLuat, SetFilteredKyLuat] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
@@ -258,6 +259,7 @@ const ViewAllKyLuat = () => {
     try {
       const res = await axios.get(`${host.local}/ttn2/v1/kyluat`).then((res) => {
         SetKyLuat(res.data.data.data);
+        SetFilteredKyLuat(res.data.data.data);
       });
     } catch (error) {
       console.log(error);
@@ -290,7 +292,7 @@ const ViewAllKyLuat = () => {
 
       <Divider />
 
-      <CSVLink data={KyLuat} filename={'TTN2-KyLuat.csv'} className="btn btn-primary" >
+      <CSVLink data={FilteredKyLuat} filename={'TTN2-KyLuat.csv'} className="btn btn-primary" >
         Export to Excel file
       </CSVLink>
 
@@ -308,6 +310,9 @@ const ViewAllKyLuat = () => {
           rowClassName="editable-row"
           pagination={{
             onChange: cancel
+          }}
+          onChange={(pagination, filters, sorter, extra) => {
+            SetFilteredKyLuat(extra.currentDataSource);
           }}
           bordered
           tableLayout="auto"

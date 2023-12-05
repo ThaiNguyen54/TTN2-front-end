@@ -43,6 +43,10 @@ const ViewAllKyLuat = Loadable(lazy(() => import('pages/ky-luat/ViewAllKyLuat'))
 // render - tron vien phep
 const ViewAllTronVienPhep = Loadable(lazy(() => import('pages/tron-vien-phep/ViewAllTronVienPhep')));
 
+// render - hang hoa
+const ViewAllHangHoa = Loadable(lazy(() => import('pages/hang-hoa/ViewAllHangHoa')));
+const AddHangHoa = Loadable(lazy(() => import('pages/hang-hoa/AddHangHoa')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -117,6 +121,14 @@ const MainRoutes = {
     {
       path: 'tronvienphep',
       element: <ViewAllTronVienPhep />
+    },
+    {
+      path: 'hanghoa',
+      element: <ViewAllHangHoa />
+    },
+    {
+      path: 'addhanghoa',
+      element: <AddHangHoa />
     },
     {
       path: 'sample-page',

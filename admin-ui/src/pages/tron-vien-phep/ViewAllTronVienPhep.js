@@ -5,7 +5,7 @@ import host from '../../axios/host';
 import TronVienPhepColumns from './TronVienPhepColumns';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import {CSVLink} from "react-csv";
+import { CSVLink } from 'react-csv';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -39,6 +39,7 @@ const ViewAllTronVienPhep = () => {
 
   const [form] = Form.useForm();
   const [TronVienPhep, SetTronVienPhep] = useState([]);
+  const [FilteredTronVienPhep, SetFilteredTronVienPhep] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
@@ -255,6 +256,7 @@ const ViewAllTronVienPhep = () => {
     try {
       const res = await axios.get(`${host.local}/ttn2/v1/tronvienphep`).then((res) => {
         SetTronVienPhep(res.data.data.data);
+        SetFilteredTronVienPhep(res.data.data.data);
       });
     } catch (error) {
       console.log(error);
@@ -286,7 +288,7 @@ const ViewAllTronVienPhep = () => {
       <Divider style={{ marginBottom: '50px' }}></Divider>
 
       <Divider />
-      <CSVLink data={TronVienPhep} filename={'TTN2-TronVienPhep.csv'} className="btn btn-primary" >
+      <CSVLink data={FilteredTronVienPhep} filename={'TTN2-TronVienPhep.csv'} className="btn btn-primary">
         Export to Excel file
       </CSVLink>
 
@@ -304,12 +306,14 @@ const ViewAllTronVienPhep = () => {
           pagination={{
             onChange: cancel
           }}
+          onChange={(pagination, filters, sorter, extra) => {
+            SetFilteredTronVienPhep(extra.currentDataSource);
+          }}
           bordered
           tableLayout="auto"
           scroll={{ x: 'max-content' }}
         />
       </Form>
-
     </div>
   );
 };

@@ -40,6 +40,7 @@ const ViewAllStudent = () => {
 
   const [form] = Form.useForm();
   const [HocVien, SetHocVien] = useState([]);
+  const [FilteredHocVienData, SetFilterdHocVienData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
@@ -216,10 +217,8 @@ const ViewAllStudent = () => {
   const save = async (key) => {
     try {
       const row = await form.getFieldValue();
-      const newData = [...KhuSinhHoat];
+      const newData = [...HocVien];
       const index = newData.findIndex((item) => key === item.cccd);
-
-      console.log('this is row: ', row);
 
       const req = await axios.put(`${host.local}/ttn2/v1/hocvien/${key}`, row).then((result) => {
         console.log(result);
@@ -247,8 +246,6 @@ const ViewAllStudent = () => {
     ...column,
     ...getColumnSearchProps(column.key)
   }));
-
-  console.log('this is stdcol: ', StudentColumnWithSearchProp);
 
   const columns = [
     ...StudentColumnWithSearchProp,
@@ -294,6 +291,7 @@ const ViewAllStudent = () => {
     try {
       const res = await axios.get(`${host.local}/ttn2/v1/count-cn/hocvien`).then((res) => {
         SetHocVien(res.data.data.data);
+        SetFilterdHocVienData(res.data.data.data);
       });
     } catch (error) {
       console.log(error);
@@ -333,7 +331,7 @@ const ViewAllStudent = () => {
 
       <Divider />
 
-      <CSVLink data={HocVien} filename={'TTN2-HocVien.csv'} className="btn btn-primary">
+      <CSVLink data={FilteredHocVienData} filename={'TTN2-HocVien.csv'} className="btn btn-primary">
         Export to Excel file
       </CSVLink>
 
@@ -350,6 +348,9 @@ const ViewAllStudent = () => {
           rowClassName="editable-row"
           pagination={{
             onChange: cancel
+          }}
+          onChange={(pagination, filters, sorter, extra) => {
+            SetFilterdHocVienData(extra.currentDataSource);
           }}
           bordered
           tableLayout="auto"
