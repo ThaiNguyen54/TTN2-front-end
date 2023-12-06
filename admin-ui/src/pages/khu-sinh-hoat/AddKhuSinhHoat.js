@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Divider, Form, Input, Typography, Modal } from 'antd';
 import axios from 'axios';
+import host from '../../axios/host';
 const AddKhuSinhHoat = () => {
   const { Title } = Typography;
 
@@ -22,7 +23,7 @@ const AddKhuSinhHoat = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3001/ttn2/v1/khusinhhoat', khuSinhHoatData).then((result) => {
+      const res = await axios.post(`${host.local}/ttn2/v1/khusinhhoat`, khuSinhHoatData).then((result) => {
         console.log(result);
         success();
       });

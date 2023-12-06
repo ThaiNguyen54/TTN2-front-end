@@ -1,4 +1,4 @@
 const host = {
-  local: 'http://localhost:3001'
+  local: 'thainguyenhome.ddns.net:3001'
 };
 export default host;
