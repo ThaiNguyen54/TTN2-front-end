@@ -1,4 +1,4 @@
-import { Typography, Divider, Row, Col, DatePicker } from 'antd';
+import { Typography, Divider, Row, Col, DatePicker, Modal, Spin } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Radio, Button } from 'antd';
 import { Select, Space } from 'antd';
@@ -21,7 +21,7 @@ const VewAllStudent = () => {
   const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState('horizontal');
   const [gender, SetGender] = useState(0);
-  const [file, SetFile] = useState('');
+  const [file, SetFile] = useState(null);
   const [treatmentForm, SetTreatmentForm] = useState('tunguyen');
   const [division, SetDivision] = useState([]);
   const [district, SetDistrict] = useState([]);
@@ -43,12 +43,43 @@ const VewAllStudent = () => {
   const [ChaData, SetChaData] = useState(NguoiThan.NguoiThan.cha);
   const [MeData, SetMeData] = useState(NguoiThan.NguoiThan.me);
   const [VoChongData, SetVoChongData] = useState(NguoiThan.NguoiThan.vochong);
+  const [isLoading, SetIsLoading] = useState(false);
 
-  const handleSelectFile = (e) => SetFile(e.target.files[0]);
+  const handleSelectFile = (e) => {
+    SetFile(e.target.files[0]);
+    const imageFile = e.target.files[0];
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        console.log(reader.result);
+        SetHocVienInputData({ ...hocVienInputData, HinhAnh: reader.result });
+      };
+      reader.readAsDataURL(imageFile);
+    }
+  };
 
   const CheckEmptyInput = (input) => {
     console.log(input);
     return input === null || input === '';
+  };
+
+  const successModal = () => {
+    Modal.success({
+      content: 'Đăng ký học viên thành công',
+      onOk: () => {
+        window.location.reload();
+      }
+    });
+  };
+
+  const errorModal = () => {
+    Modal.error({
+      title: 'Lỗi',
+      content: 'Có lỗi xảy ra, vui lòng thử lại',
+      onOk: () => {
+        window.location.reload();
+      }
+    });
   };
 
   const handleSubmit = async (event) => {
@@ -56,6 +87,7 @@ const VewAllStudent = () => {
     const UniqueUniversalid = uuidv4();
 
     try {
+      SetIsLoading(true);
       const values = await form.validateFields().then();
       if (inputNameValidationStatus.validateStatus !== 'error') {
         const res = await axios.post('http://localhost:3001/ttn2/v1/hocvien', hocVienInputData).then((result) => {
@@ -164,11 +196,15 @@ const VewAllStudent = () => {
             console.log(result);
           });
         }
+        SetIsLoading(false);
+        // form.resetFields()
+        successModal();
       } else {
         console.log('ten phai la tieng viet co dau');
       }
     } catch (error) {
       console.log(error);
+      errorModal();
     }
   };
 
@@ -1844,7 +1880,11 @@ const VewAllStudent = () => {
             </Form.Item>
 
             <Form.Item label="Nơi ở mẹ">
-              <Input onChange={(e) => {SetMeData({ ...MeData, NoiO: e.target.value })}}/>
+              <Input
+                onChange={(e) => {
+                  SetMeData({ ...MeData, NoiO: e.target.value });
+                }}
+              />
             </Form.Item>
 
             <Form.Item label="Ngày sinh vợ/chồng">
@@ -1858,6 +1898,16 @@ const VewAllStudent = () => {
           Đăng ký học viên
         </Button>
       </Form.Item>
+      <Modal
+        style={{ textAlign: 'center' }}
+        title="Đang trong quá trình đăng ký học viên, vui lòng đợi trong giây lát"
+        open={isLoading}
+        footer={null}
+        closable={false}
+        keyboard={false}
+      >
+        <Spin size="large" />
+      </Modal>
     </div>
   );
 };

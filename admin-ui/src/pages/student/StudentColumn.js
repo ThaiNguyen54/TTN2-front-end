@@ -1,3 +1,5 @@
+import { Image } from 'antd';
+
 const StudentColumn = [
   {
     key: 'cccd',
@@ -5,6 +7,16 @@ const StudentColumn = [
     dataIndex: 'cccd',
     fixed: 'left',
     editable: false
+  },
+  {
+    key: 'HinhAnh',
+    title: 'Hình ảnh',
+    dataIndex: 'HinhAnh',
+    width: 100,
+    height: 100,
+    render: (t, r) => <Image src={`${r.HinhAnh}`} alt="No image"></Image>,
+    editable: false,
+    fixed: 'left'
   },
   {
     key: 'Ho',
@@ -129,12 +141,7 @@ const StudentColumn = [
     dataIndex: 'TonGiao',
     editable: true
   },
-  {
-    key: 'HinhAnh',
-    title: 'Hình ảnh',
-    dataIndex: 'HinhAnh',
-    editable: true
-  },
+
   {
     key: 'NamSudung',
     title: 'Năm sử dụng',

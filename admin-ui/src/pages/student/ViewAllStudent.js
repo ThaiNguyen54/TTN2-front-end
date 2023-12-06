@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Divider, Table, Typography, Popconfirm, Input, InputNumber, Form, Space } from 'antd';
+import { Flex, Spin, Button, Divider, Table, Typography, Popconfirm, Input, InputNumber, Form, Space, Modal } from 'antd';
 import axios from 'axios';
 import host from '../../axios/host';
 import StudentColumn from './StudentColumn';
@@ -10,28 +10,32 @@ import { CSVLink } from 'react-csv';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0
-          }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`
-            }
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
+  try {
+    return (
+      <td {...restProps}>
+        {editing ? (
+          <Form.Item
+            name={dataIndex}
+            style={{
+              margin: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: `Please Input ${title}!`
+              }
+            ]}
+          >
+            {inputNode}
+          </Form.Item>
+        ) : (
+          children
+        )}
+      </td>
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };
 const ViewAllStudent = () => {
   const [searchText, SetSearchText] = useState('');
@@ -42,6 +46,11 @@ const ViewAllStudent = () => {
   const [HocVien, SetHocVien] = useState([]);
   const [FilteredHocVienData, SetFilterdHocVienData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
+  const [isUpdateImage, setIsUpdateImage] = useState(false);
+  const [file, SetFile] = useState(null);
+  const [UpdatingImageCCCD, SetUpdatingImageCCCD] = useState(null);
+  const [UpdateImageFile, SetUpdateImageFile] = useState({ HinhAnh: null });
+  const [isLoading, SetIsLoading] = useState(false);
 
   const handleSearch = (selectedKey, confirm, dataIndex) => {
     confirm();
@@ -54,99 +63,107 @@ const ViewAllStudent = () => {
     SetSearchText('');
   };
 
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-      <div
-        style={{
-          padding: 8
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+  const getColumnSearchProps = (dataIndex) => {
+    const excludedColumns = ['HinhAnh'];
+
+    if (excludedColumns.includes(dataIndex)) {
+      return {};
+    }
+
+    return {
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+        <div
           style={{
-            marginBottom: 8,
-            display: 'block'
+            padding: 8
+          }}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
+          <Input
+            ref={searchInput}
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            style={{
+              marginBottom: 8,
+              display: 'block'
+            }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+              icon={<SearchOutlined />}
+              size="small"
+              style={{
+                width: 90
+              }}
+            >
+              Search
+            </Button>
+            <Button
+              onClick={() => clearFilters && handleReset(clearFilters)}
+              size="small"
+              style={{
+                width: 90
+              }}
+            >
+              Reset
+            </Button>
+            <Button
+              type="link"
+              size="small"
+              onClick={() => {
+                confirm({
+                  closeDropdown: false
+                });
+                SetSearchText(selectedKeys[0]);
+                SetSearchedColumn(dataIndex);
+              }}
+            >
+              Filter
+            </Button>
+            <Button
+              type="link"
+              size="small"
+              onClick={() => {
+                close();
+              }}
+            >
+              close
+            </Button>
+          </Space>
+        </div>
+      ),
+      filterIcon: (filtered) => (
+        <SearchOutlined
+          style={{
+            color: filtered ? '#1677ff' : undefined
           }}
         />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90
+      ),
+      onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible) => {
+        if (visible) {
+          setTimeout(() => searchInput.current?.select(), 100);
+        }
+      },
+      render: (text) =>
+        searchedColumn === dataIndex ? (
+          <Highlighter
+            highlightStyle={{
+              backgroundColor: '#ffc069',
+              padding: 0
             }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
-            style={{
-              width: 90
-            }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false
-              });
-              SetSearchText(selectedKeys[0]);
-              SetSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            close
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? '#1677ff' : undefined
-        }}
-      />
-    ),
-    onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-    render: (text) =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{
-            backgroundColor: '#ffc069',
-            padding: 0
-          }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      )
-  });
+            searchWords={[searchText]}
+            autoEscape
+            textToHighlight={text ? text.toString() : ''}
+          />
+        ) : (
+          text
+        )
+    };
+  };
 
   const isEditing = (record) => record.cccd === editingKey;
   const edit = (record) => {
@@ -196,6 +213,61 @@ const ViewAllStudent = () => {
       ...record
     });
     setEditingKey(record.cccd);
+  };
+
+  const updateImage = (record) => {
+    setIsUpdateImage(true);
+    SetUpdatingImageCCCD(record.cccd);
+  };
+
+  const handleOk = async () => {
+    try {
+      setIsUpdateImage(false);
+      SetIsLoading(true);
+      SetFile(null);
+      const req = await axios.put(`${host.local}/ttn2/v1/hocvien/${UpdatingImageCCCD}`, UpdateImageFile).then((result) => {
+        console.log(result);
+      });
+      resetFileInput();
+      successModal();
+      SetIsLoading(false);
+      GetAllHocVien();
+    } catch (error) {
+      SetIsLoading(false);
+      console.log(error);
+      errorModal();
+    }
+  };
+
+  const handleCancel = () => {
+    setIsUpdateImage(false);
+    SetFile(null);
+    resetFileInput();
+  };
+
+  const handleSelectFile = (e) => {
+    SetFile(e.target.files[0]);
+    const imageFile = e.target.files[0];
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        UpdateImageFile.HinhAnh = reader.result;
+        console.log(UpdateImageFile.HinhAnh);
+      };
+      reader.readAsDataURL(imageFile);
+    }
+  };
+  const successModal = () => {
+    Modal.success({
+      content: 'Cập nhật thành công'
+    });
+  };
+
+  const errorModal = () => {
+    Modal.error({
+      title: 'Lỗi',
+      content: 'Có lỗi xảy ra, vui lòng thử lại'
+    });
   };
 
   const deleteRecord = async (record) => {
@@ -276,6 +348,10 @@ const ViewAllStudent = () => {
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
               Edit
             </Typography.Link>
+            <br />
+            <Typography.Link style={{ marginTop: 8 }} disabled={editingKey !== ''} onClick={() => updateImage(record)}>
+              Update Image
+            </Typography.Link>
             {/*<Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>*/}
             {/*  <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>*/}
             {/*    Delete*/}
@@ -301,8 +377,15 @@ const ViewAllStudent = () => {
   useEffect(() => {
     GetAllHocVien();
   }, []);
+
   const { Title } = Typography;
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+  const resetFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const handleOnClick = async (event) => {
     event.preventDefault();
@@ -316,6 +399,7 @@ const ViewAllStudent = () => {
       ...col,
       onCell: (record) => ({
         record,
+        inputType: col.dataIndex === 'HinhAnh' ? 'file' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record)
@@ -366,6 +450,27 @@ const ViewAllStudent = () => {
           }}
         />
       </Form>
+      <Modal title="Cập nhật ảnh học viên" open={isUpdateImage} onOk={handleOk} onCancel={handleCancel}>
+        <input
+          style={{ marginTop: 20 }}
+          type="file"
+          name="file"
+          id="file"
+          onChange={handleSelectFile}
+          multiple={false}
+          ref={fileInputRef}
+        />
+      </Modal>
+      <Modal
+        style={{ textAlign: 'center' }}
+        title="Đang cập nhật ảnh, vui lòng đợi trong giây lát"
+        open={isLoading}
+        footer={null}
+        closable={false}
+        keyboard={false}
+      >
+        <Spin size="large" />
+      </Modal>
     </div>
   );
 };
