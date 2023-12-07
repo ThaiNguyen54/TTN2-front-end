@@ -8,7 +8,7 @@ import menuItem from 'menu-items';
 // ==============================|| DRAWER CONTENT - NAVIGATION ||============================== //
 
 const Navigation = () => {
-  console.log(menuItem)
+  console.log(menuItem);
   const navGroups = menuItem.items.map((item) => {
     switch (item.type) {
       case 'group':

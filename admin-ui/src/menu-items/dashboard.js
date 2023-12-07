@@ -1,10 +1,12 @@
 // assets
 import { DashboardOutlined, UserOutlined } from '@ant-design/icons';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 // icons
 const icons = {
   DashboardOutlined,
-  UserOutlined
+  UserOutlined,
+  AttachMoneyIcon
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -44,6 +46,14 @@ const dashboard = {
       type: 'item',
       url: '/hocvien-cntn',
       icon: icons.UserOutlined,
+      breadcrumbs: false
+    },
+    {
+      id: 'congtien',
+      title: 'Lịch sử cộng tiền',
+      type: 'item',
+      url: '/congtien',
+      icon: icons.AttachMoneyIcon,
       breadcrumbs: false
     }
   ]

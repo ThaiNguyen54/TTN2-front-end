@@ -19,6 +19,14 @@ const NguoiThan = {
       url: '/nguoithan',
       icon: icons.SupervisorAccountOutlinedIcon,
       breadcrumbs: false
+    },
+    {
+      id: 'thamgap',
+      title: 'Xem lịch sử thăm gặp',
+      type: 'item',
+      url: '/thamgap',
+      icon: icons.SupervisorAccountOutlinedIcon,
+      breadcrumbs: false
     }
   ]
 };

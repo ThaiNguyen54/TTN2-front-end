@@ -48,7 +48,7 @@ const StudentColumn = [
     key: 'SoDu',
     title: 'Số dư',
     dataIndex: 'SoDu',
-    editable: true
+    editable: false
   },
 
   {

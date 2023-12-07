@@ -6,6 +6,8 @@ import MainRoutes from './MainRoutes';
 
 // ==============================|| ROUTING RENDER ||============================== //
 
+const isLoggedIn = false;
 export default function ThemeRoutes() {
   return useRoutes([MainRoutes, LoginRoutes]);
+  // return useRoutes(MainRoutes(isLoggedIn));
 }

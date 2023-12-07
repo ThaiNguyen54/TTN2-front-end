@@ -3,6 +3,9 @@ import { lazy } from 'react';
 // project import
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import RequireAuth from '../components/RequireAuth';
+import Login from '../pages/Login/Login';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -21,6 +24,8 @@ const ViewAllStudent = Loadable(lazy(() => import('pages/student/ViewAllStudent'
 const AddStudent = Loadable(lazy(() => import('pages/student/AddStudent')));
 const Student_CNBB = Loadable(lazy(() => import('pages/student-cainghienbatbuoc/ViewAllCNBB')));
 const Student_CNTN = Loadable(lazy(() => import('pages/student-cainghientunguyen/ViewAllCNTN')));
+const ViewAllLichSuCongTien = Loadable(lazy(() => import('pages/congtien/ViewAllLichSuCongTien')));
+const AddCongTienHocVien = Loadable(lazy(() => import('pages/congtien/AddCongTien')));
 
 // render - add khu sinh hoat page
 const ViewAllKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoat/ViewAllKhuSinhHoat')));
@@ -30,6 +35,8 @@ const ViewAllHocVienKhuSinhHoat = Loadable(lazy(() => import('pages/khu-sinh-hoa
 
 // render - nguoi than
 const ViewAllNguoiThan = Loadable(lazy(() => import('pages/nguoi-than/ViewAllNguoiThan')));
+const ViewAllLichSuThamGap = Loadable(lazy(() => import('pages/nguoi-than/ViewAllLichSuThamGap')));
+const AddThamGap = Loadable(lazy(() => import('pages/nguoi-than/AddThamGap')));
 
 // render - ban giao
 const ViewAllBanGiao = Loadable(lazy(() => import('pages/ban-giao/ViewAllBanGiao')));
@@ -65,19 +72,7 @@ const MainRoutes = {
       path: '/addStudent',
       element: <AddStudent />
     },
-    {
-      path: 'color',
-      element: <Color />
-    },
-    {
-      path: 'dashboard',
-      children: [
-        {
-          path: 'default',
-          element: <DashboardDefault />
-        }
-      ]
-    },
+
     {
       path: 'hocvien',
       element: <ViewAllStudent />
@@ -107,8 +102,24 @@ const MainRoutes = {
       element: <Student_CNTN />
     },
     {
+      path: 'congtien',
+      element: <ViewAllLichSuCongTien />
+    },
+    {
+      path: 'congtienhocvien',
+      element: <AddCongTienHocVien />
+    },
+    {
       path: 'nguoithan',
       element: <ViewAllNguoiThan />
+    },
+    {
+      path: 'thamgap',
+      element: <ViewAllLichSuThamGap />
+    },
+    {
+      path: 'addthamgap',
+      element: <AddThamGap />
     },
     {
       path: 'bangiao',
@@ -141,24 +152,139 @@ const MainRoutes = {
     {
       path: 'chitietmua',
       element: <ViewPurchasingHistroy />
-    },
-    {
-      path: 'sample-page',
-      element: <SamplePage />
-    },
-    {
-      path: 'shadow',
-      element: <Shadow />
-    },
-    {
-      path: 'typography',
-      element: <Typography />
-    },
-    {
-      path: 'icons/ant',
-      element: <AntIcons />
     }
+    // {
+    //   path: 'color',
+    //   element: <Color />
+    // },
+    // {
+    //   path: 'dashboard',
+    //   children: [
+    //     {
+    //       path: 'default',
+    //       element: <DashboardDefault />
+    //     }
+    //   ]
+    // }
+    // {
+    //   path: 'sample-page',
+    //   element: <SamplePage />
+    // },
+    // {
+    //   path: 'shadow',
+    //   element: <Shadow />
+    // },
+    // {
+    //   path: 'typography',
+    //   element: <Typography />
+    // },
+    // {
+    //   path: 'icons/ant',
+    //   element: <AntIcons />
+    // }
   ]
 };
+
+// const MainRoutes = (isLoggedIn) => [
+//   {
+//     path: '/',
+//     element: isLoggedIn ? <MainLayout /> : <Navigate to="/login" />,
+//     children: [
+//       {
+//         path: '/login',
+//         element: <Login />
+//       },
+//       {
+//         path: '/',
+//         element: <ViewAllStudent />
+//       },
+//       {
+//         path: '/addStudent',
+//         element: <AddStudent />
+//       },
+//
+//       {
+//         path: 'hocvien',
+//         element: <ViewAllStudent />
+//       },
+//       {
+//         path: 'khusinhhoat',
+//         element: <ViewAllKhuSinhHoat />
+//       },
+//       {
+//         path: 'addkhusinhhoat',
+//         element: <AddKhuSinhHoat />
+//       },
+//       {
+//         path: '/dkkhusinhhoat',
+//         element: <DangKyKhuSinhHoat />
+//       },
+//       {
+//         path: '/hocvien-khusinhhoat',
+//         element: <ViewAllHocVienKhuSinhHoat />
+//       },
+//       {
+//         path: 'hocvien-cnbb',
+//         element: <Student_CNBB />
+//       },
+//       {
+//         path: 'hocvien-cntn',
+//         element: <Student_CNTN />
+//       },
+//       {
+//         path: 'congtien',
+//         element: <ViewAllLichSuCongTien />
+//       },
+//       {
+//         path: 'congtienhocvien',
+//         element: <AddCongTienHocVien />
+//       },
+//       {
+//         path: 'nguoithan',
+//         element: <ViewAllNguoiThan />
+//       },
+//       {
+//         path: 'thamgap',
+//         element: <ViewAllLichSuThamGap />
+//       },
+//       {
+//         path: 'addthamgap',
+//         element: <AddThamGap />
+//       },
+//       {
+//         path: 'bangiao',
+//         element: <ViewAllBanGiao />
+//       },
+//       {
+//         path: 'khenthuong',
+//         element: <ViewAllKhenThuong />
+//       },
+//       {
+//         path: 'kyluat',
+//         element: <ViewAllKyLuat />
+//       },
+//       {
+//         path: 'tronvienphep',
+//         element: <ViewAllTronVienPhep />
+//       },
+//       {
+//         path: 'hanghoa',
+//         element: <ViewAllHangHoa />
+//       },
+//       {
+//         path: 'addhanghoa',
+//         element: <AddHangHoa />
+//       },
+//       {
+//         path: 'muahanghoa',
+//         element: <Purchasing />
+//       },
+//       {
+//         path: 'chitietmua',
+//         element: <ViewPurchasingHistroy />
+//       }
+//     ]
+//   }
+// ];
 
 export default MainRoutes;
