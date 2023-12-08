@@ -16,7 +16,7 @@ import support from './support';
 
 const menuItems = {
   // items: [dashboard, pages, utilities, support]
-  items: [pages, dashboard, KhuSinhHoat, NguoiThan, BanGiao, KhenThuong, KyLuat, TronVienPhep, HangHoa, ChiTietMua]
+  items: [dashboard, KhuSinhHoat, NguoiThan, BanGiao, KhenThuong, KyLuat, TronVienPhep, HangHoa, ChiTietMua]
 };
 
 export default menuItems;
