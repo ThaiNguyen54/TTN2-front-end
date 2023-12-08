@@ -1,11 +1,13 @@
-// project import
+// Rect import
 import Routing from 'routes';
+import { useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import { Routes, Route } from 'react-router-dom';
 
+// project import
 import ThemeCustomization from 'themes';
 import ScrollTop from 'components/ScrollTop';
 import RequireAuth from './components/RequireAuth';
-import { Routes, Route } from 'react-router-dom';
-
 import ViewAllStudent from './pages/student/ViewAllStudent';
 import Login from './pages/Login/Login';
 import AddStudent from './pages/student/AddStudent';
@@ -29,46 +31,52 @@ import ViewAllTronVienPhep from 'pages/tron-vien-phep/ViewAllTronVienPhep';
 import Purchasing from 'pages/hang-hoa/MuaHangHoa';
 import ViewPurchasingHistory from 'pages/ ChiTietMua/ViewPurchasingHistory';
 import MainLayout from './layout/MainLayout';
+import PersistLogin from './persist-login/PersistLogin';
+import Global from "./constant/Global";
 
 // ==============================|| APP - THEME, ROUTER, LOCAL  ||============================== //
 
-const App = () => (
-  <ThemeCustomization>
-    <ScrollTop>
-      {/*<Routing />*/}
+const App = () => {
+  return (
+    <ThemeCustomization>
+      <ScrollTop>
+        {/*<Routing />*/}
 
-      <Routes>
-        <Route path="login" element={<Login />} />
+        <Routes>
+          <Route path="login" element={<Login />} />
 
-        <Route element={<RequireAuth />}>
-          <Route path="/" element={<MainLayout />}>
-            <Route path="/" element={<ViewAllStudent />} />
-            <Route path="/hocvien" element={<ViewAllStudent />} />
-            <Route path="/addStudent" element={<AddStudent />} />
-            <Route path="/khusinhhoat" element={<ViewAllKhuSinhHoat />} />
-            <Route path="/addkhusinhhoat" element={<AddKhuSinhHoat />} />
-            <Route path="/dkkhusinhhoat" element={<DangKyKhuSinhHoat />} />
-            <Route path="/hocvien-khusinhhoat" element={<ViewAllHocVienKhuSinhHoat />} />
-            <Route path="/hocvien-cnbb" element={<Student_CNBB />} />
-            <Route path="/hocvien-cntn" element={<Student_CNTN />} />
-            <Route path="/congtien" element={<ViewAllLichSuCongTien />} />
-            <Route path="/congtienhocvien" element={<AddCongTienHocVien />} />
-            <Route path="/nguoithan" element={<ViewAllNguoiThan />} />
-            <Route path="/thamgap" element={<ViewAllLichSuThamGap />} />
-            <Route path="/addthamgap" element={<AddThamGap />} />
-            <Route path="/bangiao" element={<ViewAllBanGiao />} />
-            <Route path="/khenthuong" element={<ViewAllKhenThuong />} />
-            <Route path="/kyluat" element={<ViewAllKyLuat />} />
-            <Route path="/tronvienphep" element={<ViewAllTronVienPhep />} />
-            <Route path="/hanghoa" element={<ViewAllHangHoa />} />
-            <Route path="/addhanghoa" element={<AddHangHoa />} />
-            <Route path="/muahanghoa" element={<Purchasing />} />
-            <Route path="/chitietmua" element={<ViewPurchasingHistory />} />
+          <Route element={<PersistLogin />}>
+            <Route element={<RequireAuth />}>
+              <Route path="/" element={<MainLayout />}>
+                <Route path="/" element={<ViewAllStudent />} />
+                <Route path="/hocvien" element={<ViewAllStudent />} />
+                <Route path="/addStudent" element={<AddStudent />} />
+                <Route path="/khusinhhoat" element={<ViewAllKhuSinhHoat />} />
+                <Route path="/addkhusinhhoat" element={<AddKhuSinhHoat />} />
+                <Route path="/dkkhusinhhoat" element={<DangKyKhuSinhHoat />} />
+                <Route path="/hocvien-khusinhhoat" element={<ViewAllHocVienKhuSinhHoat />} />
+                <Route path="/hocvien-cnbb" element={<Student_CNBB />} />
+                <Route path="/hocvien-cntn" element={<Student_CNTN />} />
+                <Route path="/congtien" element={<ViewAllLichSuCongTien />} />
+                <Route path="/congtienhocvien" element={<AddCongTienHocVien />} />
+                <Route path="/nguoithan" element={<ViewAllNguoiThan />} />
+                <Route path="/thamgap" element={<ViewAllLichSuThamGap />} />
+                <Route path="/addthamgap" element={<AddThamGap />} />
+                <Route path="/bangiao" element={<ViewAllBanGiao />} />
+                <Route path="/khenthuong" element={<ViewAllKhenThuong />} />
+                <Route path="/kyluat" element={<ViewAllKyLuat />} />
+                <Route path="/tronvienphep" element={<ViewAllTronVienPhep />} />
+                <Route path="/hanghoa" element={<ViewAllHangHoa />} />
+                <Route path="/addhanghoa" element={<AddHangHoa />} />
+                <Route path="/muahanghoa" element={<Purchasing />} />
+                <Route path="/chitietmua" element={<ViewPurchasingHistory />} />
+              </Route>
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </ScrollTop>
-  </ThemeCustomization>
-);
+        </Routes>
+      </ScrollTop>
+    </ThemeCustomization>
+  );
+};
 
 export default App;

@@ -4,11 +4,11 @@ import dashboard from './dashboard';
 import KhuSinhHoat from './KhuSinhHoat';
 import NguoiThan from './NguoiThan';
 import BanGiao from './BanGiao';
-import KhenThuong from "./KhenThuong";
-import KyLuat from "./KyLuat";
-import TronVienPhep from "./TronVienPhep";
+import KhenThuong from './KhenThuong';
+import KyLuat from './KyLuat';
+import TronVienPhep from './TronVienPhep';
 import HangHoa from './HangHoa';
-import ChiTietMua from "./ChiTietMua";
+import ChiTietMua from './ChiTietMua';
 import utilities from './utilities';
 import support from './support';
 

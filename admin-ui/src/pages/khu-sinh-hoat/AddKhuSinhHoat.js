@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Divider, Form, Input, Typography, Modal } from 'antd';
 import axios from 'axios';
 import host from '../../axios/host';
+import Global from '../../constant/Global';
 const AddKhuSinhHoat = () => {
   const { Title } = Typography;
 
@@ -23,10 +24,16 @@ const AddKhuSinhHoat = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post(`${host.local}/ttn2/v1/khusinhhoat`, khuSinhHoatData).then((result) => {
-        console.log(result);
-        success();
-      });
+      const res = await axios
+        .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/khusinhhoat`, khuSinhHoatData, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+          success();
+        });
     } catch (error) {
       errorModal();
       console.log(error);

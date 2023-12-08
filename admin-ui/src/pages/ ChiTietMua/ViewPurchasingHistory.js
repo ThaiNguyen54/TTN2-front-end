@@ -7,6 +7,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { CSVLink } from 'react-csv';
 import { useNavigate } from 'react-router-dom';
+import Global from "../../constant/Global";
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -173,7 +174,11 @@ const ViewPurchasingHistory = () => {
       return pre.filter((chitietmua) => chitietmua.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/chitietmua/${record.id}`).then((result) => {
+    const req = await axios.delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/chitietmua/${record.id}`, {
+      headers: {
+        access_token: localStorage.getItem(Global.key.token)
+      }
+    }).then((result) => {
       console.log(result);
     });
   };
@@ -188,7 +193,11 @@ const ViewPurchasingHistory = () => {
       const newData = [...ChiTietMua];
       const index = newData.findIndex((item) => key === item.id);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/chitietmua/${key}`, row).then((result) => {
+      const req = await axios.put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/chitietmua/${key}`, row, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      }).then((result) => {
         console.log(result);
       });
 
@@ -257,7 +266,11 @@ const ViewPurchasingHistory = () => {
 
   const GetAllChiTietMua = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/chitietmua`).then((res) => {
+      const res = await axios.get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/chitietmua`, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      }).then((res) => {
         SetChiTietMua(res.data.data.data);
         SetFilteredChiTietMuaData(res.data.data.data);
       });

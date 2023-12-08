@@ -6,6 +6,7 @@ import BanGiaoColumns from './BanGiaoColumns';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { CSVLink } from 'react-csv';
+import Global from "../../constant/Global";
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -173,7 +174,11 @@ const ViewAllBanGiao = () => {
       return pre.filter((bangiao) => bangiao.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/bangiao/${record.id}`).then((result) => {
+    const req = await axios.delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/bangiao/${record.id}`, {
+      headers: {
+        access_token: localStorage.getItem(Global.key.token)
+      }
+    }).then((result) => {
       console.log(result);
     });
   };
@@ -190,7 +195,11 @@ const ViewAllBanGiao = () => {
 
       console.log('this is row: ', row);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/bangiao/${key}`, row).then((result) => {
+      const req = await axios.put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/bangiao/${key}`, row, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      }).then((result) => {
         console.log(result);
       });
 
@@ -259,7 +268,11 @@ const ViewAllBanGiao = () => {
 
   const GetAllBanGiao = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/bangiao`).then((res) => {
+      const res = await axios.get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/bangiao`, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      }).then((res) => {
         SetBanGiao(res.data.data.data);
         SetFilteredBanGiaoData(res.data.data.data);
       });

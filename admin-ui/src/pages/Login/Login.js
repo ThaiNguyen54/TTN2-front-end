@@ -11,6 +11,7 @@ import useAuth from '../../hooks/useAuth';
 import { useEffect, useRef, useState, useContext } from 'react';
 import axios from 'axios';
 import host from '../../axios/host';
+import Global from "../../constant/Global";
 
 const onFinish = (values) => {
   console.log('Success:', values);
@@ -46,16 +47,19 @@ const Login = () => {
     try {
       if (admin.username !== '' && admin.password !== '') {
         setIsLoading(true);
-        const res = await axios.post(`${host.local}/ttn2/v1/admin/login`, admin);
+        const res = await axios.post(`${host.BASE_URL}/${host.API.NO_AUTH_END_POINT}/admin/login`, admin);
         setIsLoading(false);
+        console.log(res)
 
         const accessToken = res?.data?.token;
         const isLoggedIn = true;
         setAuth({ isLoggedIn, accessToken });
+        localStorage.setItem(Global.key.token, accessToken);
+        localStorage.setItem(Global.key.isLoggedIn, true);
+        localStorage.setItem(Global.key.name, admin.username);
         navigate(from, { replace: true });
       }
     } catch (error) {
-      console.log(error)
       setIsLoading(false);
       let errorMsg = '';
       if (!error?.response) {

@@ -13,6 +13,7 @@ import BanGiao from 'data/BanGiao.json';
 import TronVienPhep from 'data/TronVienPhep.json';
 import NguoiThan from 'data/NguoiThan.json';
 import host from '../../axios/host';
+import Global from '../../constant/Global';
 
 const VewAllStudent = () => {
   const idCaiNghienTNPrefix = 'TN';
@@ -91,16 +92,28 @@ const VewAllStudent = () => {
       SetIsLoading(true);
       const values = await form.validateFields().then();
       if (inputNameValidationStatus.validateStatus !== 'error') {
-        const res = await axios.post(`${host.local}/ttn2/v1/hocvien`, hocVienInputData).then((result) => {
-          console.log(result);
-        });
+        const res = await axios
+          .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hocvien`, hocVienInputData, {
+            headers: {
+              access_token: localStorage.getItem(Global.key.token)
+            }
+          })
+          .then((result) => {
+            console.log(result);
+          });
 
         if (treatmentForm === 'tunguyen') {
           const id = `${idCaiNghienTNPrefix}-${UniqueUniversalid}`;
           hocVienCNTNData.id = id;
-          const result_HocVienCNTN = await axios.post(`${host.local}/ttn2/v1/cntn`, hocVienCNTNData).then((result) => {
-            console.log(result);
-          });
+          const result_HocVienCNTN = await axios
+            .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/cntn`, hocVienCNTNData, {
+              headers: {
+                access_token: localStorage.getItem(Global.key.token)
+              }
+            })
+            .then((result) => {
+              console.log(result);
+            });
 
           // Set id for other entities
           KhenThuongData.id_dot_cntn = id;
@@ -110,9 +123,15 @@ const VewAllStudent = () => {
         } else if (treatmentForm === 'batbuoc') {
           const id = `${idCaiNghienBBPrefix}-${UniqueUniversalid}`;
           hocVienCNBBData.id = id;
-          const result_HocVienCNBB = await axios.post(`${host.local}/ttn2/v1/cnbb`, hocVienCNBBData).then((result) => {
-            console.log(result);
-          });
+          const result_HocVienCNBB = await axios
+            .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/cnbb`, hocVienCNBBData, {
+              headers: {
+                access_token: localStorage.getItem(Global.key.token)
+              }
+            })
+            .then((result) => {
+              console.log(result);
+            });
 
           // Set id for other entities
           KhenThuongData.id_dot_cnbb = id;
@@ -130,9 +149,15 @@ const VewAllStudent = () => {
           CheckEmptyInput(KyLuatData.HinhThucKyLuat) === false &&
           CheckEmptyInput(KyLuatData.HanhViViPham) === false
         ) {
-          const result_KyLuat = await axios.post(`${host.local}/ttn2/v1/kyluat`, KyLuatData).then((result) => {
-            console.log(result);
-          });
+          const result_KyLuat = await axios
+            .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/kyluat`, KyLuatData, {
+              headers: {
+                access_token: localStorage.getItem(Global.key.token)
+              }
+            })
+            .then((result) => {
+              console.log(result);
+            });
         }
 
         if (
@@ -140,9 +165,15 @@ const VewAllStudent = () => {
           CheckEmptyInput(KhenThuongData.NgayRaQuyetDinh) === false &&
           CheckEmptyInput(KhenThuongData.HinhThucKhenThuong) === false
         ) {
-          const result_KhenThuong = await axios.post(`${host.local}/ttn2/v1/khenthuong`, KhenThuongData).then((result) => {
-            console.log(result);
-          });
+          const result_KhenThuong = await axios
+            .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/khenthuong`, KhenThuongData, {
+              headers: {
+                access_token: localStorage.getItem(Global.key.token)
+              }
+            })
+            .then((result) => {
+              console.log(result);
+            });
         }
 
         if (
@@ -156,9 +187,15 @@ const VewAllStudent = () => {
           CheckEmptyInput(BanGiaoData.CanBoGiaiQuyet) === false &&
           CheckEmptyInput(BanGiaoData.LanhDaoChucVu) === false
         ) {
-          const result_BanGiao = await axios.post(`${host.local}/ttn2/v1/bangiao`, BanGiaoData).then((result) => {
-            console.log(result);
-          });
+          const result_BanGiao = await axios
+            .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/bangiao`, BanGiaoData, {
+              headers: {
+                access_token: localStorage.getItem(Global.key.token)
+              }
+            })
+            .then((result) => {
+              console.log(result);
+            });
         }
 
         if (
@@ -167,9 +204,15 @@ const VewAllStudent = () => {
           CheckEmptyInput(TronVienPhepData.NgayRaThongBao) === false &&
           CheckEmptyInput(TronVienPhepData.NgayCatGiam) === false
         ) {
-          const result_TronVienPhep = await axios.post(`${host.local}/ttn2/v1/tronvienphep`, TronVienPhepData).then((result) => {
-            console.log(result);
-          });
+          const result_TronVienPhep = await axios
+            .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/tronvienphep`, TronVienPhepData, {
+              headers: {
+                access_token: localStorage.getItem(Global.key.token)
+              }
+            })
+            .then((result) => {
+              console.log(result);
+            });
         }
 
         if (
@@ -177,9 +220,15 @@ const VewAllStudent = () => {
           CheckEmptyInput(ChaData.NgaySinh) === false &&
           CheckEmptyInput(ChaData.NoiO) === false
         ) {
-          const result_Cha = await axios.post(`${host.local}/ttn2/v1/nguoithan`, ChaData).then((result) => {
-            console.log(result);
-          });
+          const result_Cha = await axios
+            .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/nguoithan`, ChaData, {
+              headers: {
+                access_token: localStorage.getItem(Global.key.token)
+              }
+            })
+            .then((result) => {
+              console.log(result);
+            });
         }
 
         if (
@@ -187,15 +236,27 @@ const VewAllStudent = () => {
           CheckEmptyInput(MeData.NgaySinh) === false &&
           CheckEmptyInput(MeData.NoiO) === false
         ) {
-          const result_Me = await axios.post(`${host.local}/ttn2/v1/nguoithan`, MeData).then((result) => {
-            console.log(result);
-          });
+          const result_Me = await axios
+            .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/nguoithan`, MeData, {
+              headers: {
+                access_token: localStorage.getItem(Global.key.token)
+              }
+            })
+            .then((result) => {
+              console.log(result);
+            });
         }
 
         if (CheckEmptyInput(VoChongData.HoTenNguoiThan) === false && CheckEmptyInput(VoChongData.NgaySinh) === false) {
-          const result_VoChong = await axios.post(`${host.local}/ttn2/v1/nguoithan`, VoChongData).then((result) => {
-            console.log(result);
-          });
+          const result_VoChong = await axios
+            .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/nguoithan`, VoChongData, {
+              headers: {
+                access_token: localStorage.getItem(Global.key.token)
+              }
+            })
+            .then((result) => {
+              console.log(result);
+            });
         }
         SetIsLoading(false);
         // form.resetFields()

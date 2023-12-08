@@ -3,6 +3,7 @@ import { Button, Divider, Form, Input, Typography, Modal, Space, Select, DatePic
 import axios from 'axios';
 import HocVienKhuSinhHoat from 'data/HV_KhuSinhHoat.json';
 import host from '../../axios/host';
+import Global from '../../constant/Global';
 
 const DangKyKhuSinhHoat = () => {
   const { Title } = Typography;
@@ -14,9 +15,15 @@ const DangKyKhuSinhHoat = () => {
 
   const GetAllKhuSinhHoat = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/khusinhhoat`).then((res) => {
-        SetKhuSinhHoatData(res.data.data.data);
-      });
+      const res = await axios
+        .get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/khusinhhoat`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((res) => {
+          SetKhuSinhHoatData(res.data.data.data);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -58,10 +65,16 @@ const DangKyKhuSinhHoat = () => {
     event.preventDefault();
     try {
       console.log(HV_KSH);
-      const res = await axios.post(`${host.local}/ttn2/v1/hocvien_khusinhhoat`, HV_KSH).then((result) => {
-        console.log(result);
-        success();
-      });
+      const res = await axios
+        .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hocvien_khusinhhoat`, HV_KSH, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+          success();
+        });
     } catch (error) {
       errorModal();
       console.log(error);

@@ -4,6 +4,7 @@ import axios from 'axios';
 import HangHoaData from '../../data/HangHoa.json';
 import host from '../../axios/host';
 import { useNavigate } from 'react-router-dom';
+import Global from '../../constant/Global';
 
 const AddHangHoa = () => {
   const { Title } = Typography;
@@ -28,10 +29,16 @@ const AddHangHoa = () => {
     event.preventDefault();
     const row = await form.validateFields();
     try {
-      const res = await axios.post(`${host.local}/ttn2/v1/hanghoa`, HangHoa).then((result) => {
-        console.log(result);
-        success();
-      });
+      const res = await axios
+        .post(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hanghoa`, HangHoa, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+          success();
+        });
     } catch (error) {
       errorModal();
       console.log(error);

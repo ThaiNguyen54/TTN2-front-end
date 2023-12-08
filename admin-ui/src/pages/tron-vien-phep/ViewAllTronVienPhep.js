@@ -6,6 +6,7 @@ import TronVienPhepColumns from './TronVienPhepColumns';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { CSVLink } from 'react-csv';
+import Global from '../../constant/Global';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -168,9 +169,15 @@ const ViewAllTronVienPhep = () => {
       return pre.filter((tronvienphep) => tronvienphep.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/tronvienphep/${record.id}`).then((result) => {
-      console.log(result);
-    });
+    const req = await axios
+      .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/tronvienphep/${record.id}`, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      })
+      .then((result) => {
+        console.log(result);
+      });
   };
 
   const cancel = () => {
@@ -185,9 +192,15 @@ const ViewAllTronVienPhep = () => {
 
       console.log('this is row: ', row);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/tronvienphep/${key}`, row).then((result) => {
-        console.log(result);
-      });
+      const req = await axios
+        .put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/tronvienphep/${key}`, row, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
 
       if (index > -1) {
         const item = newData[index];
@@ -254,10 +267,16 @@ const ViewAllTronVienPhep = () => {
 
   const GetAllTronVienPhep = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/tronvienphep`).then((res) => {
-        SetTronVienPhep(res.data.data.data);
-        SetFilteredTronVienPhep(res.data.data.data);
-      });
+      const res = await axios
+        .get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/tronvienphep`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((res) => {
+          SetTronVienPhep(res.data.data.data);
+          SetFilteredTronVienPhep(res.data.data.data);
+        });
     } catch (error) {
       console.log(error);
     }

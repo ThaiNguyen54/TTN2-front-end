@@ -4,6 +4,7 @@ import { Button, Divider, Table, Typography, Popconfirm, Input, InputNumber, For
 import axios from 'axios';
 import host from '../../axios/host';
 import { CSVLink } from 'react-csv';
+import Global from '../../constant/Global';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -56,9 +57,15 @@ const ViewAllKhuSinhHoat = () => {
       return pre.filter((khusinhhoat) => khusinhhoat.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/khusinhhoat/${record.id}`).then((result) => {
-      console.log(result);
-    });
+    const req = await axios
+      .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}khusinhhoat/${record.id}`, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      })
+      .then((result) => {
+        console.log(result);
+      });
   };
 
   const cancel = () => {
@@ -71,9 +78,15 @@ const ViewAllKhuSinhHoat = () => {
       const newData = [...KhuSinhHoat];
       const index = newData.findIndex((item) => key === item.id);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/khusinhhoat/${key}`, row).then((result) => {
-        console.log(result);
-      });
+      const req = await axios
+        .put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/khusinhhoat/${key}`, row, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
 
       if (index > -1) {
         const item = newData[index];
@@ -144,9 +157,15 @@ const ViewAllKhuSinhHoat = () => {
 
   const GetAllKhuSinhHoat = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/khusinhhoat`).then((res) => {
-        SetKhuSinhHoat(res.data.data.data);
-      });
+      const res = await axios
+        .get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/khusinhhoat`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((res) => {
+          SetKhuSinhHoat(res.data.data.data);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -189,7 +208,6 @@ const ViewAllKhuSinhHoat = () => {
         Export to Excel file
       </CSVLink>
 
-
       <Form form={form} component={false}>
         <Table
           rowKey="id"
@@ -205,8 +223,7 @@ const ViewAllKhuSinhHoat = () => {
             onChange: cancel
           }}
         />
-
-     </Form>
+      </Form>
     </div>
   );
 };

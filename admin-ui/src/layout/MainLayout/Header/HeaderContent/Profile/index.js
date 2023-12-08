@@ -26,8 +26,10 @@ import ProfileTab from './ProfileTab';
 import SettingTab from './SettingTab';
 
 // assets
-import avatar1 from 'assets/images/users/avatar-1.png';
+import avatar1 from 'assets/images/logo/logo-color.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import Global from '../../../../../constant/Global';
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -55,9 +57,12 @@ function a11yProps(index) {
 
 const Profile = () => {
   const theme = useTheme();
+  const naviage = useNavigate();
 
   const handleLogout = async () => {
-    // logout
+    localStorage.removeItem(Global.key.isLoggedIn);
+    localStorage.removeItem(Global.key.token);
+    naviage('/login');
   };
 
   const anchorRef = useRef(null);
@@ -98,7 +103,7 @@ const Profile = () => {
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
           <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
-          <Typography variant="subtitle1">John Doe</Typography>
+          <Typography variant="subtitle1">{localStorage.getItem(Global.key.name)}</Typography>
         </Stack>
       </ButtonBase>
       <Popper
@@ -141,10 +146,10 @@ const Profile = () => {
                           <Stack direction="row" spacing={1.25} alignItems="center">
                             <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                             <Stack>
-                              <Typography variant="h6">John Doe</Typography>
-                              <Typography variant="body2" color="textSecondary">
-                                UI/UX Designer
-                              </Typography>
+                              <Typography variant="h6">{localStorage.getItem(Global.key.name)}</Typography>
+                              {/*<Typography variant="body2" color="textSecondary">*/}
+                              {/*  UI/UX Designer*/}
+                              {/*</Typography>*/}
                             </Stack>
                           </Stack>
                         </Grid>
@@ -171,18 +176,18 @@ const Profile = () => {
                               label="Profile"
                               {...a11yProps(0)}
                             />
-                            <Tab
-                              sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                textTransform: 'capitalize'
-                              }}
-                              icon={<SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
-                              label="Setting"
-                              {...a11yProps(1)}
-                            />
+                            {/*<Tab*/}
+                            {/*  sx={{*/}
+                            {/*    display: 'flex',*/}
+                            {/*    flexDirection: 'row',*/}
+                            {/*    justifyContent: 'center',*/}
+                            {/*    alignItems: 'center',*/}
+                            {/*    textTransform: 'capitalize'*/}
+                            {/*  }}*/}
+                            {/*  icon={<SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}*/}
+                            {/*  label="Setting"*/}
+                            {/*  {...a11yProps(1)}*/}
+                            {/*/>*/}
                           </Tabs>
                         </Box>
                         <TabPanel value={value} index={0} dir={theme.direction}>

@@ -15,7 +15,7 @@ const HeaderContent = () => {
 
   return (
     <>
-      {/*{!matchesXs && <Search />}*/}
+      {!matchesXs && <Search />}
       {/*{matchesXs && <Box sx={{ width: '100%', ml: 1 }} />}*/}
 
       {/*<IconButton*/}
@@ -27,12 +27,12 @@ const HeaderContent = () => {
       {/*  title="Download Free Version"*/}
       {/*  sx={{ color: 'text.primary', bgcolor: 'grey.100' }}*/}
       {/*>*/}
-      {/*  <GithubOutlined />*/}
+      {/*  /!*<GithubOutlined />*!/*/}
       {/*</IconButton>*/}
 
       {/*<Notification />*/}
-      {/*{!matchesXs && <Profile />}*/}
-      {/*{matchesXs && <MobileSection />}*/}
+      {!matchesXs && <Profile />}
+      {matchesXs && <MobileSection />}
     </>
   );
 };

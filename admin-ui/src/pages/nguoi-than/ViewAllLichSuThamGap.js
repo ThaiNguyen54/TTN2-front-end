@@ -7,6 +7,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { CSVLink } from 'react-csv';
 import { useNavigate } from 'react-router-dom';
+import Global from '../../constant/Global';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -172,9 +173,15 @@ const ViewAllLichSuThamGap = () => {
       return pre.filter((thamgap) => thamgap.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/thamgap/${record.id}`).then((result) => {
-      console.log(result);
-    });
+    const req = await axios
+      .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/thamgap/${record.id}`, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      })
+      .then((result) => {
+        console.log(result);
+      });
   };
 
   const cancel = () => {
@@ -189,9 +196,15 @@ const ViewAllLichSuThamGap = () => {
 
       console.log('this is row: ', row);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/thamgap/${key}`, row).then((result) => {
-        console.log(result);
-      });
+      const req = await axios
+        .put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/thamgap/${key}`, row, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
 
       if (index > -1) {
         const item = newData[index];
@@ -258,10 +271,16 @@ const ViewAllLichSuThamGap = () => {
 
   const GetAllThamGap = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/thamgap`).then((res) => {
-        SetThamGap(res.data.data.data);
-        SetFilteredThamGap(res.data.data.data);
-      });
+      const res = await axios
+        .get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/thamgap`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((res) => {
+          SetThamGap(res.data.data.data);
+          SetFilteredThamGap(res.data.data.data);
+        });
     } catch (error) {
       console.log(error);
     }

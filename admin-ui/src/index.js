@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthProvider';
 
 // scroll bar
@@ -26,7 +26,9 @@ root.render(
     <ReduxProvider store={store}>
       <BrowserRouter>
         <AuthProvider>
-          <App />
+          <Routes>
+            <Route path="/*" element={<App />}></Route>
+          </Routes>
         </AuthProvider>
       </BrowserRouter>
     </ReduxProvider>

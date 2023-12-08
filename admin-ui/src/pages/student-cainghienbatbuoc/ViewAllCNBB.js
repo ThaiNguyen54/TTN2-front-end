@@ -5,7 +5,8 @@ import host from '../../axios/host';
 import StudentCNBBColumn from './student_cnbb_Column';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import {CSVLink} from "react-csv";
+import { CSVLink } from 'react-csv';
+import Global from '../../constant/Global';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -206,9 +207,15 @@ const ViewAllStudentCNBB = () => {
       return pre.filter((hc_cnbb) => hc_cnbb.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/cnbb/${record.id}`).then((result) => {
-      console.log(result);
-    });
+    const req = await axios
+      .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/cnbb/${record.id}`, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      })
+      .then((result) => {
+        console.log(result);
+      });
   };
 
   const cancel = () => {
@@ -223,9 +230,15 @@ const ViewAllStudentCNBB = () => {
 
       console.log('this is row: ', row);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/cnbb/${key}`, row).then((result) => {
-        console.log(result);
-      });
+      const req = await axios
+        .put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/cnbb/${key}`, row, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
 
       if (index > -1) {
         const item = newData[index];
@@ -292,10 +305,16 @@ const ViewAllStudentCNBB = () => {
 
   const GetAllCNBB = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/cnbb`).then((res) => {
-        SetHocVienCNBB(res.data.data.data);
-        SetFilteredHVCNBB(res.data.data.data);
-      });
+      const res = await axios
+        .get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/cnbb`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((res) => {
+          SetHocVienCNBB(res.data.data.data);
+          SetFilteredHVCNBB(res.data.data.data);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -326,7 +345,7 @@ const ViewAllStudentCNBB = () => {
       <Divider style={{ marginBottom: '50px' }}></Divider>
 
       <Divider />
-      <CSVLink data={FilteredHVCNBB} filename={'TTN2-HocVienCaiNghienBatBuoc.csv'} className="btn btn-primary" >
+      <CSVLink data={FilteredHVCNBB} filename={'TTN2-HocVienCaiNghienBatBuoc.csv'} className="btn btn-primary">
         Export to Excel file
       </CSVLink>
 
@@ -352,7 +371,6 @@ const ViewAllStudentCNBB = () => {
           scroll={{ x: 'max-content' }}
         />
       </Form>
-
     </div>
   );
 };

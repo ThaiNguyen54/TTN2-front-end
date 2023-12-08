@@ -7,6 +7,7 @@ import StudentColumn from './StudentColumn';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { CSVLink } from 'react-csv';
+import Global from '../../constant/Global';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -225,9 +226,15 @@ const ViewAllStudent = () => {
       setIsUpdateImage(false);
       SetIsLoading(true);
       SetFile(null);
-      const req = await axios.put(`${host.local}/ttn2/v1/hocvien/${UpdatingImageCCCD}`, UpdateImageFile).then((result) => {
-        console.log(result);
-      });
+      const req = await axios
+        .put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hocvien/${UpdatingImageCCCD}`, UpdateImageFile, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
       resetFileInput();
       successModal();
       SetIsLoading(false);
@@ -277,9 +284,15 @@ const ViewAllStudent = () => {
       return pre.filter((khusinhhoat) => khusinhhoat.cccd !== record.cccd);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/hocvien/${record.cccd}`).then((result) => {
-      console.log(result);
-    });
+    const req = await axios
+      .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hocvien/${record.cccd}`, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      })
+      .then((result) => {
+        console.log(result);
+      });
   };
 
   const cancel = () => {
@@ -292,9 +305,15 @@ const ViewAllStudent = () => {
       const newData = [...HocVien];
       const index = newData.findIndex((item) => key === item.cccd);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/hocvien/${key}`, row).then((result) => {
-        console.log(result);
-      });
+      const req = await axios
+        .put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hocvien/${key}`, row, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
 
       if (index > -1) {
         const item = newData[index];
@@ -365,10 +384,16 @@ const ViewAllStudent = () => {
 
   const GetAllHocVien = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/count-cn/hocvien`).then((res) => {
-        SetHocVien(res.data.data.data);
-        SetFilterdHocVienData(res.data.data.data);
-      });
+      const res = await axios
+        .get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/count-cn/hocvien`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((res) => {
+          SetHocVien(res.data.data.data);
+          SetFilterdHocVienData(res.data.data.data);
+        });
     } catch (error) {
       console.log(error);
     }

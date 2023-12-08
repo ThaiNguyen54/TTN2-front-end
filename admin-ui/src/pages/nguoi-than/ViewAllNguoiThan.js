@@ -6,6 +6,7 @@ import NguoiThanColumns from './NguoiThanColumns';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { CSVLink } from 'react-csv';
+import Global from '../../constant/Global';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -166,9 +167,15 @@ const ViewAllNguoiThan = () => {
       return pre.filter((nguoithan) => nguoithan.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/nguoithan/${record.id}`).then((result) => {
-      console.log(result);
-    });
+    const req = await axios
+      .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/nguoithan/${record.id}`, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      })
+      .then((result) => {
+        console.log(result);
+      });
   };
 
   const cancel = () => {
@@ -183,9 +190,15 @@ const ViewAllNguoiThan = () => {
 
       console.log('this is row: ', row);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/nguoithan/${key}`, row).then((result) => {
-        console.log(result);
-      });
+      const req = await axios
+        .put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/nguoithan/${key}`, row, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
 
       if (index > -1) {
         const item = newData[index];
@@ -252,10 +265,16 @@ const ViewAllNguoiThan = () => {
 
   const GetAllNguoiThan = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/nguoithan`).then((res) => {
-        SetNguoiThan(res.data.data.data);
-        SetFilteredNguoiThan(res.data.data.data);
-      });
+      const res = await axios
+        .get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/nguoithan`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((res) => {
+          SetNguoiThan(res.data.data.data);
+          SetFilteredNguoiThan(res.data.data.data);
+        });
     } catch (error) {
       console.log(error);
     }

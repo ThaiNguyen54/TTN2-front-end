@@ -7,6 +7,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { CSVLink } from 'react-csv';
 import { useNavigate } from 'react-router-dom';
+import Global from '../../constant/Global';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -171,9 +172,15 @@ const ViewAllHangHoa = () => {
       return pre.filter((hanghoa) => hanghoa.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/hanghoa/${record.id}`).then((result) => {
-      console.log(result);
-    });
+    const req = await axios
+      .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hanghoa/${record.id}`, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      })
+      .then((result) => {
+        console.log(result);
+      });
   };
 
   const cancel = () => {
@@ -186,9 +193,15 @@ const ViewAllHangHoa = () => {
       const newData = [...HangHoa];
       const index = newData.findIndex((item) => key === item.id);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/hanghoa/${key}`, row).then((result) => {
-        console.log(result);
-      });
+      const req = await axios
+        .put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hanghoa/${key}`, row, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
 
       if (index > -1) {
         const item = newData[index];
@@ -255,10 +268,16 @@ const ViewAllHangHoa = () => {
 
   const GetAllHangHoa = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/hanghoa`).then((res) => {
-        SetHangHoa(res.data.data.data);
-        SetFilteredHangHoaData(res.data.data.data);
-      });
+      const res = await axios
+        .get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hanghoa`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((res) => {
+          SetHangHoa(res.data.data.data);
+          SetFilteredHangHoaData(res.data.data.data);
+        });
     } catch (error) {
       console.log(error);
     }

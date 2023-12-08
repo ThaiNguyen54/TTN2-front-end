@@ -115,7 +115,7 @@ const NavItem = ({ item, level }) => {
       {(drawerOpen || (!drawerOpen && level !== 1)) && (
         <ListItemText
           primary={
-            <Typography variant="h6" sx={{ color: isSelected ? iconSelectedColor : textColor }}>
+            <Typography variant="h6" sx={{ color: isSelected ? iconSelectedColor : textColor }} fontSize={11}>
               {item.title}
             </Typography>
           }

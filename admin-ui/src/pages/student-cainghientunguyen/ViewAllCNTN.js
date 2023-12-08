@@ -5,7 +5,8 @@ import host from '../../axios/host';
 import StudentCNTNColumn from './StudentCNTNColumns';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import {CSVLink} from "react-csv";
+import { CSVLink } from 'react-csv';
+import Global from '../../constant/Global';
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -206,9 +207,15 @@ const ViewAllStudentCNTN = () => {
       return pre.filter((hc_cntn) => hc_cntn.id !== record.id);
     });
 
-    const req = await axios.delete(`${host.local}/ttn2/v1/cntn/${record.id}`).then((result) => {
-      console.log(result);
-    });
+    const req = await axios
+      .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/cntn/${record.id}`, {
+        headers: {
+          access_token: localStorage.getItem(Global.key.token)
+        }
+      })
+      .then((result) => {
+        console.log(result);
+      });
   };
 
   const cancel = () => {
@@ -223,9 +230,15 @@ const ViewAllStudentCNTN = () => {
 
       console.log('this is row: ', row);
 
-      const req = await axios.put(`${host.local}/ttn2/v1/cntn/${key}`, row).then((result) => {
-        console.log(result);
-      });
+      const req = await axios
+        .put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/v1/cntn/${key}`, row, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
 
       if (index > -1) {
         const item = newData[index];
@@ -292,10 +305,16 @@ const ViewAllStudentCNTN = () => {
 
   const GetAllCNTN = async () => {
     try {
-      const res = await axios.get(`${host.local}/ttn2/v1/cntn`).then((res) => {
-        SetHocVienCNTN(res.data.data.data);
-        SetFilteredHVCNTN(res.data.data.data);
-      });
+      const res = await axios
+        .get(`${host.BASE_URL}/${host.API.BASE_END_POINT}/cntn`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((res) => {
+          SetHocVienCNTN(res.data.data.data);
+          SetFilteredHVCNTN(res.data.data.data);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -326,7 +345,7 @@ const ViewAllStudentCNTN = () => {
       <Divider style={{ marginBottom: '50px' }}></Divider>
 
       <Divider />
-      <CSVLink data={FilteredHVCNTN} filename={'TTN2-HocVien_CaiNghienTuNguyen.csv'} className="btn btn-primary" >
+      <CSVLink data={FilteredHVCNTN} filename={'TTN2-HocVien_CaiNghienTuNguyen.csv'} className="btn btn-primary">
         Export to Excel file
       </CSVLink>
 
@@ -352,7 +371,6 @@ const ViewAllStudentCNTN = () => {
           scroll={{ x: 'max-content' }}
         />
       </Form>
-
     </div>
   );
 };
