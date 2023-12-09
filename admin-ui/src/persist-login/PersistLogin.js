@@ -13,7 +13,6 @@ const PersistLogin = () => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        console.log('ok')
         await verify();
       } catch (error) {
         console.log(error);

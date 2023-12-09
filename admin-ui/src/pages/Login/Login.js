@@ -11,7 +11,8 @@ import useAuth from '../../hooks/useAuth';
 import { useEffect, useRef, useState, useContext } from 'react';
 import axios from 'axios';
 import host from '../../axios/host';
-import Global from "../../constant/Global";
+import Global from '../../constant/Global';
+import { jwtDecode } from 'jwt-decode';
 
 const onFinish = (values) => {
   console.log('Success:', values);
@@ -29,6 +30,8 @@ const Login = () => {
   const [admin, setAdmin] = useState({ username: '', password: '' });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [expirationTime, setExpirationTime] = useState(null);
+  const [timeRemaining, setTimeRemaining] = useState(null);
 
   const successModal = (msg) => {
     Modal.success({
@@ -49,14 +52,16 @@ const Login = () => {
         setIsLoading(true);
         const res = await axios.post(`${host.BASE_URL}/${host.API.NO_AUTH_END_POINT}/admin/login`, admin);
         setIsLoading(false);
-        console.log(res)
 
         const accessToken = res?.data?.token;
+
+        const decodedToken = jwtDecode(accessToken);
+
         const isLoggedIn = true;
         setAuth({ isLoggedIn, accessToken });
         localStorage.setItem(Global.key.token, accessToken);
         localStorage.setItem(Global.key.isLoggedIn, true);
-        localStorage.setItem(Global.key.name, admin.username);
+        localStorage.setItem(Global.key.name, decodedToken.username);
         navigate(from, { replace: true });
       }
     } catch (error) {
@@ -73,6 +78,7 @@ const Login = () => {
       errorModal(errorMsg);
     }
   };
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
