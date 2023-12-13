@@ -266,6 +266,7 @@ const VewAllStudent = () => {
       }
     } catch (error) {
       console.log(error);
+      SetIsLoading(false);
       errorModal();
     }
   };
