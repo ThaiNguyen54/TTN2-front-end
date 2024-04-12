@@ -4,6 +4,7 @@ import { Form, Input, Radio, Button } from 'antd';
 import { Select, Space } from 'antd';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import dvhc from 'data/dvhcvn.json'
 import HocVienData from 'data/HocVien.json';
 import HV_CNTN from 'data/HV_CNTuNguyen.json';
 import HV_CNBB from 'data/HV_CNBatBuoc.json';
@@ -273,15 +274,15 @@ const VewAllStudent = () => {
 
   const dateFormat = 'YYYY-MM-DD';
 
-  const getVietnameseAdministrativeDivision = async () => {
-    await axios.get('https://provinces.open-api.vn/api/?depth=3').then((response) => {
-      SetDivision(response.data);
-    });
-  };
+  // const getVietnameseAdministrativeDivision = async () => {
+  //   await axios.get('https://provinces.open-api.vn/api/?depth=3').then((response) => {
+  //     SetDivision(response.data);
+  //   });
+  // };
 
-  useEffect(() => {
-    getVietnameseAdministrativeDivision();
-  }, []);
+  // useEffect(() => {
+  //   getVietnameseAdministrativeDivision();
+  // }, []);
 
   const onNameChange = (e) => {
     // console.log('name: ', e.target.value);
@@ -321,31 +322,52 @@ const VewAllStudent = () => {
     SetHocVienInputData({ ...hocVienInputData, DanToc: value });
   };
 
+  // const handleChangeProvinceCity = (value) => {
+  //   console.log(`selected ${value}`);
+  //   const filteredProvinceCityResult = division.filter((division) => division.codename === value);
+  //   SetDistrict(filteredProvinceCityResult[0].districts);
+  //   SetDisableDistrict(false);
+  //   SetDefaultDistrictValue(filteredProvinceCityResult[0].districts[0].name);
+  //   SetHocVienInputData({
+  //     ...hocVienInputData,
+  //     Tinh: filteredProvinceCityResult[0].name,
+  //     Huyen: filteredProvinceCityResult[0].districts[0].name,
+  //     DonVi: filteredProvinceCityResult[0].districts[0].wards[0].name
+  //   });
+  //   if (filteredProvinceCityResult[0].districts[0].wards.length > 0) {
+  //     SetDisableWard(false);
+  //     SetWard(filteredProvinceCityResult[0].districts[0].wards);
+  //     SetDefaultWardValue(filteredProvinceCityResult[0].districts[0].wards[0].name);
+  //   }
+  // };
+
   const handleChangeProvinceCity = (value) => {
     console.log(`selected ${value}`);
-    const filteredProvinceCityResult = division.filter((division) => division.codename === value);
-    SetDistrict(filteredProvinceCityResult[0].districts);
+    const filteredProvinceCityResult = dvhc.data.filter((dvhc) => dvhc.name === value);
+    SetDistrict(filteredProvinceCityResult[0].level2s);
+
     SetDisableDistrict(false);
-    SetDefaultDistrictValue(filteredProvinceCityResult[0].districts[0].name);
+    SetDefaultDistrictValue(filteredProvinceCityResult[0].level2s[0].name);
     SetHocVienInputData({
       ...hocVienInputData,
       Tinh: filteredProvinceCityResult[0].name,
-      Huyen: filteredProvinceCityResult[0].districts[0].name,
-      DonVi: filteredProvinceCityResult[0].districts[0].wards[0].name
+      Huyen: filteredProvinceCityResult[0].level2s[0].name,
+      DonVi: filteredProvinceCityResult[0].level2s[0].level3s[0].name
     });
-    if (filteredProvinceCityResult[0].districts[0].wards.length > 0) {
+    if (filteredProvinceCityResult[0].level2s[0].level3s.length > 0) {
       SetDisableWard(false);
-      SetWard(filteredProvinceCityResult[0].districts[0].wards);
-      SetDefaultWardValue(filteredProvinceCityResult[0].districts[0].wards[0].name);
+      SetWard(filteredProvinceCityResult[0].level2s[0].level3s);
+      SetDefaultWardValue(filteredProvinceCityResult[0].level2s[0].level3s[0].name);
     }
   };
+
   const onChangeDistrict = (value) => {
-    const filteredDistrictResult = district.filter((district) => district.codename === value);
+    const filteredDistrictResult = district.filter((district) => district.name === value);
     SetDefaultDistrictValue(value);
-    SetWard(filteredDistrictResult[0].wards);
-    if (filteredDistrictResult[0].wards.length > 0) {
-      SetDefaultWardValue(filteredDistrictResult[0].wards[0].name);
-      SetHocVienInputData({ ...hocVienInputData, DonVi: filteredDistrictResult[0].wards[0].name });
+    SetWard(filteredDistrictResult[0].level3s);
+    if (filteredDistrictResult[0].level3s.length > 0) {
+      SetDefaultWardValue(filteredDistrictResult[0].level3s[0].name);
+      SetHocVienInputData({ ...hocVienInputData, DonVi: filteredDistrictResult[0].level3s[0].name });
       SetDisableWard(false);
     } else {
       SetDefaultWardValue('');
@@ -648,9 +670,9 @@ const VewAllStudent = () => {
                   onChange={handleChangeProvinceCity}
                   optionFilterProp="children"
                   filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                  options={division.map((division) => ({
-                    label: division.name,
-                    value: division.codename
+                  options={dvhc.data.map((dvhc) => ({
+                    label: dvhc.name,
+                    value: dvhc.name
                   }))}
                 />
               </Space>
@@ -671,7 +693,7 @@ const VewAllStudent = () => {
                   filterOption={(input, option) => (option?.label ?? '').includes(input)}
                   options={ward.map((ward) => ({
                     label: ward.name,
-                    value: ward.codename
+                    value: ward.name
                   }))}
                 />
               </Space>
@@ -1043,7 +1065,7 @@ const VewAllStudent = () => {
                   }
                   options={district.map((district) => ({
                     label: district.name,
-                    value: district.codename
+                    value: district.name
                   }))}
                 />
               </Space>
