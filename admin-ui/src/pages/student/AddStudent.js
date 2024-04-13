@@ -4,7 +4,8 @@ import { Form, Input, Radio, Button } from 'antd';
 import { Select, Space } from 'antd';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import dvhc from 'data/dvhcvn.json'
+import dvhc from 'data/dvhcvn.json';
+import VietnameseRaces from 'data/VietnameseRaces.json';
 import HocVienData from 'data/HocVien.json';
 import HV_CNTN from 'data/HV_CNTuNguyen.json';
 import HV_CNBB from 'data/HV_CNBatBuoc.json';
@@ -633,28 +634,32 @@ const VewAllStudent = () => {
                   onChange={handleChangeRace}
                   optionFilterProp="children"
                   filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                  options={[
-                    {
-                      value: 'Kinh',
-                      label: 'Kinh'
-                    },
-                    {
-                      value: 'Tày',
-                      label: 'Tày'
-                    },
-                    {
-                      value: 'Thái',
-                      label: 'Thái'
-                    },
-                    {
-                      value: 'Hoa',
-                      label: 'Hoa'
-                    },
-                    {
-                      value: 'Khác',
-                      label: 'Khác'
-                    }
-                  ]}
+                  options={VietnameseRaces.races.map((race) => ({
+                    label: race.name,
+                    value: race.name
+                  }))}
+                  // options={[
+                  //   {
+                  //     value: 'Kinh',
+                  //     label: 'Kinh'
+                  //   },
+                  //   {
+                  //     value: 'Tày',
+                  //     label: 'Tày'
+                  //   },
+                  //   {
+                  //     value: 'Thái',
+                  //     label: 'Thái'
+                  //   },
+                  //   {
+                  //     value: 'Hoa',
+                  //     label: 'Hoa'
+                  //   },
+                  //   {
+                  //     value: 'Khác',
+                  //     label: 'Khác'
+                  //   }
+                  // ]}
                 />
               </Space>
             </Form.Item>
