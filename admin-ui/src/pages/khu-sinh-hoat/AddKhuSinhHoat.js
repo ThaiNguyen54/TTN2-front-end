@@ -6,7 +6,7 @@ import Global from '../../constant/Global';
 const AddKhuSinhHoat = () => {
   const { Title } = Typography;
 
-  const [khuSinhHoatData, SetKhuSinhHoatData] = useState({ TenKhu: '' });
+  const [khuSinhHoatData, SetKhuSinhHoatData] = useState({ TenKhu: '', deleted: 0 });
 
   const success = () => {
     Modal.success({

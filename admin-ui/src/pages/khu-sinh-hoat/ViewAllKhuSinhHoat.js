@@ -57,15 +57,19 @@ const ViewAllKhuSinhHoat = () => {
       return pre.filter((khusinhhoat) => khusinhhoat.id !== record.id);
     });
 
-    const req = await axios
-      .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}khusinhhoat/${record.id}`, {
-        headers: {
-          access_token: localStorage.getItem(Global.key.token)
-        }
-      })
-      .then((result) => {
-        console.log(result);
-      });
+    try {
+      const req = await axios
+        .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/khusinhhoat/${record.id}`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const cancel = () => {
