@@ -371,11 +371,11 @@ const ViewAllStudent = () => {
             <Typography.Link style={{ marginTop: 8 }} disabled={editingKey !== ''} onClick={() => updateImage(record)}>
               Update Image
             </Typography.Link>
-            {/*<Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>*/}
-            {/*  <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>*/}
-            {/*    Delete*/}
-            {/*  </a>*/}
-            {/*</Popconfirm>*/}
+            <Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>
+              <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>
+                Delete
+              </a>
+            </Popconfirm>
           </span>
         );
       }
