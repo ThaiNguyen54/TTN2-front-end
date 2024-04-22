@@ -49,6 +49,12 @@ const VewAllStudent = () => {
   const [VoChongData, SetVoChongData] = useState(NguoiThan.NguoiThan.vochong);
   const [isLoading, SetIsLoading] = useState(false);
 
+  function parseDate(date) {
+    const [day, month, year] = date.split('-');
+    let formatedDate = year + '-' + month + '-' + day;
+    return formatedDate;
+  }
+
   const handleSelectFile = (e) => {
     SetFile(e.target.files[0]);
     const imageFile = e.target.files[0];
@@ -273,7 +279,8 @@ const VewAllStudent = () => {
     }
   };
 
-  const dateFormat = 'YYYY-MM-DD';
+  // const dateFormat = 'YYYY-MM-DD';
+  const dateFormat = 'DD-MM-YYYY';
 
   // const getVietnameseAdministrativeDivision = async () => {
   //   await axios.get('https://provinces.open-api.vn/api/?depth=3').then((response) => {
@@ -404,12 +411,13 @@ const VewAllStudent = () => {
 
   const onDateChange = (date, dateString) => {
     console.log(date, dateString);
-    SetHocVienInputData({ ...hocVienInputData, NgaySinh: dateString });
+    SetHocVienInputData({ ...hocVienInputData, NgaySinh: parseDate(dateString) });
     console.log(hocVienInputData);
+    console.log('this is ngay sinh: ', parseDate(dateString));
   };
 
   const onNgayCapCCCDChange = (date, dateString) => {
-    SetHocVienInputData({ ...hocVienInputData, NgayCapCCCD: dateString });
+    SetHocVienInputData({ ...hocVienInputData, NgayCapCCCD: parseDate(dateString) });
   };
 
   const onChangeCoQuanBanGiao = (value) => {
@@ -429,103 +437,103 @@ const VewAllStudent = () => {
   };
 
   const onNgayThanhLyHopDongChange = (date, dateString) => {
-    SetHocVienCNTNData({ ...hocVienCNTNData, NgayThanhLyHopDong: dateString });
+    SetHocVienCNTNData({ ...hocVienCNTNData, NgayThanhLyHopDong: parseDate(dateString) });
   };
 
   const onNgayCapGiayHoanThanhChange = (date, dateString) => {
-    SetHocVienCNTNData({ ...hocVienCNTNData, NgayCapGiayHoanThanh: dateString });
+    SetHocVienCNTNData({ ...hocVienCNTNData, NgayCapGiayHoanThanh: parseDate(dateString) });
   };
 
   const onNgayKyQuyetDinhTamGiuChange = (date, dateString) => {
-    SetHocVienCNBBData({ ...hocVienCNBBData, NgayKyQuyetDinhTamGiu: dateString });
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayKyQuyetDinhTamGiu: parseDate(dateString) });
   };
 
   const onNgayCoKetQuaNghienChange = (date, dateString) => {
-    SetHocVienCNBBData({ ...hocVienCNBBData, NgayCoKetQuaNghien: dateString });
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayCoKetQuaNghien: parseDate(dateString) });
   };
 
   const onNgayKyQuyetDinhChange = (date, dateString) => {
-    SetHocVienCNBBData({ ...hocVienCNBBData, NgayKyQuyetDinh: dateString });
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayKyQuyetDinh: parseDate(dateString) });
   };
 
   const onNgayGiaoTaiSanChange = (date, dateString) => {
-    SetHocVienCNBBData({ ...hocVienCNBBData, NgayGiaoTaiSan: dateString });
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayGiaoTaiSan: parseDate(dateString) });
   };
 
   const onNgayDiLyChange = (date, dateString) => {
-    SetHocVienCNBBData({ ...hocVienCNBBData, NgayDiLy: dateString });
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayDiLy: parseDate(dateString) });
   };
 
   const onNgayHoanThanhXacDinhNghienChange = (date, dateString) => {
-    SetHocVienCNBBData({ ...hocVienCNBBData, NgayHoanThanhXacDinhTinhTrangNghien: dateString });
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayHoanThanhXacDinhTinhTrangNghien: parseDate(dateString) });
   };
 
   const onNgayHopChange = (date, dateString) => {
-    SetHocVienCNBBData({ ...hocVienCNBBData, NgayHop: dateString });
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayHop: parseDate(dateString) });
   };
 
   const onNgayNhapLaiCatGiamChange = (date, dateString) => {
-    SetHocVienCNBBData({ ...hocVienCNBBData, NgayNhapLaiCatGiam: dateString });
+    SetHocVienCNBBData({ ...hocVienCNBBData, NgayNhapLaiCatGiam: parseDate(dateString) });
   };
 
   const onNgayRaQDKLChange = (date, dateString) => {
-    SetKyLuatData({ ...KyLuatData, NgayRaQuyetDinh: dateString });
+    SetKyLuatData({ ...KyLuatData, NgayRaQuyetDinh: parseDate(dateString) });
   };
 
   const onNgayViPhamChange = (date, dateString) => {
-    SetKyLuatData({ ...KyLuatData, NgayViPham: dateString });
+    SetKyLuatData({ ...KyLuatData, NgayViPham: parseDate(dateString) });
   };
 
   const onNgayHetHanKLChange = (date, dateString) => {
-    SetKyLuatData({ ...KyLuatData, NgayHetHanKyLuat: dateString });
+    SetKyLuatData({ ...KyLuatData, NgayHetHanKyLuat: parseDate(dateString) });
   };
 
   const onNgayQDKhenThongChange = (date, dateString) => {
-    SetKhenThuongData({ ...KhenThuongData, NgayRaQuyetDinh: dateString });
+    SetKhenThuongData({ ...KhenThuongData, NgayRaQuyetDinh: parseDate(dateString) });
   };
 
   const onNgayRaVanBanChange = (date, dateString) => {
-    SetBanGiaoData({ ...BanGiaoData, NgayRaVanBan: dateString });
+    SetBanGiaoData({ ...BanGiaoData, NgayRaVanBan: parseDate(dateString) });
   };
 
   const onNgayGiaoChange = (date, dateString) => {
-    SetBanGiaoData({ ...BanGiaoData, NgayBanGiao: dateString });
+    SetBanGiaoData({ ...BanGiaoData, NgayBanGiao: parseDate(dateString) });
   };
 
   const onNgayTronVienPhepChange = (date, dateString) => {
-    SetTronVienPhepData({ ...TronVienPhepData, NgayTron: dateString });
+    SetTronVienPhepData({ ...TronVienPhepData, NgayTron: parseDate(dateString) });
   };
 
   const onNgayRaThongBaoChange = (date, dateString) => {
-    SetTronVienPhepData({ ...TronVienPhepData, NgayRaThongBao: dateString });
+    SetTronVienPhepData({ ...TronVienPhepData, NgayRaThongBao: parseDate(dateString) });
   };
 
   const onNgayCatGiamChange = (date, dateString) => {
-    SetTronVienPhepData({ ...TronVienPhepData, NgayCatGiam: dateString });
+    SetTronVienPhepData({ ...TronVienPhepData, NgayCatGiam: parseDate(dateString) });
   };
 
   const onNgayChuyenCoSoChange = (date, dateString) => {
-    SetTronVienPhepData({ ...TronVienPhepData, NgayChuyenCoSo: dateString });
+    SetTronVienPhepData({ ...TronVienPhepData, NgayChuyenCoSo: parseDate(dateString) });
   };
 
   const onNgayChuyenVienChange = (date, dateString) => {
-    SetTronVienPhepData({ ...TronVienPhepData, NgayChuyenVien: dateString });
+    SetTronVienPhepData({ ...TronVienPhepData, NgayChuyenVien: parseDate(dateString) });
   };
 
   const onNgayNhapLaiChange = (date, dateString) => {
-    SetTronVienPhepData({ ...TronVienPhepData, NgayNhapLai: dateString });
+    SetTronVienPhepData({ ...TronVienPhepData, NgayNhapLai: parseDate(dateString) });
   };
 
   const onNgaySinhChaChange = (date, dateString) => {
-    SetChaData({ ...ChaData, NgaySinh: dateString });
+    SetChaData({ ...ChaData, NgaySinh: parseDate(dateString) });
   };
 
   const onNgaySinhMeChange = (date, dateString) => {
-    SetMeData({ ...MeData, NgaySinh: dateString });
+    SetMeData({ ...MeData, NgaySinh: parseDate(dateString) });
   };
 
   const onNgaySinhVoChongChange = (date, dateString) => {
-    SetVoChongData({ ...VoChongData, NgaySinh: dateString });
+    SetVoChongData({ ...VoChongData, NgaySinh: parseDate(dateString) });
   };
 
   const formItemLayout =
