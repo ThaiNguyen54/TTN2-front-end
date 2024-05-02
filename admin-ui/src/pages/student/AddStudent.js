@@ -282,22 +282,12 @@ const VewAllStudent = () => {
   // const dateFormat = 'YYYY-MM-DD';
   const dateFormat = 'DD-MM-YYYY';
 
-  // const getVietnameseAdministrativeDivision = async () => {
-  //   await axios.get('https://provinces.open-api.vn/api/?depth=3').then((response) => {
-  //     SetDivision(response.data);
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   getVietnameseAdministrativeDivision();
-  // }, []);
-
   const onNameChange = (e) => {
     // console.log('name: ', e.target.value);
     const vietnameseRegex =
       /[^a-z0-9A-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u;
     if (vietnameseRegex.test(e.target.value) === true) {
-      SetHocVienInputData({ ...hocVienInputData, Ho: e.target.value.split(' ')[0], Ten: e.target.value.split(' ').slice(1).join(' ') });
+      SetHocVienInputData({ ...hocVienInputData, Ho: e.target.value.split(' ').slice(0, -1).join(' '), Ten: e.target.value.split(' ').slice(-1)[0] });
       SetInputNameValidationStatus({
         validateStatus: 'success',
         help: ''
@@ -975,6 +965,10 @@ const VewAllStudent = () => {
                   }}
                   onChange={handleChangeAcademicLevel}
                   options={[
+                    {
+                      value: 'mc',
+                      label: 'Mù chữ'
+                    },
                     {
                       value: 'dh',
                       label: 'Đại học'
