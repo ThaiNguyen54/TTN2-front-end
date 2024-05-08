@@ -188,7 +188,7 @@ const ViewAllStudent = () => {
       TinhTrangHN: '',
       TienAn: '',
       TienSu: '',
-      TenKhac: '',
+      MaHocVien: '',
       TrinhDo: '',
       ViecLam: '',
       TonGiao: '',
@@ -280,21 +280,23 @@ const ViewAllStudent = () => {
   };
 
   const deleteRecord = async (record) => {
-    console.log('deleted: ', record);
-    console.log(record.cccd);
-    SetHocVien((pre) => {
-      return pre.filter((khusinhhoat) => khusinhhoat.cccd !== record.cccd);
-    });
-
-    const req = await axios
-      .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hocvien/${record.cccd}`, {
-        headers: {
-          access_token: localStorage.getItem(Global.key.token)
-        }
-      })
-      .then((result) => {
-        console.log(result);
+    try {
+      const req = await axios
+        .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hocvien/${record.cccd}`, {
+          headers: {
+            access_token: localStorage.getItem(Global.key.token)
+          }
+        })
+        .then((result) => {
+          console.log(result);
+        });
+      SetHocVien((pre) => {
+        return pre.filter((khusinhhoat) => khusinhhoat.cccd !== record.cccd);
       });
+    } catch (error) {
+      console.log('error: ', error);
+      errorModal()
+    }
   };
 
   const cancel = () => {

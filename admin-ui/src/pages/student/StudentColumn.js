@@ -118,9 +118,9 @@ const StudentColumn = [
     editable: true
   },
   {
-    key: 'TenKhac',
-    title: 'Tên khác',
-    dataIndex: 'TenKhac',
+    key: 'MaHocVien',
+    title: 'Mã học viên',
+    dataIndex: 'MaHocVien',
     editable: true
   },
   {

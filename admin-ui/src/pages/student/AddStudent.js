@@ -947,10 +947,10 @@ const VewAllStudent = () => {
               layout: formLayout
             }}
           >
-            <Form.Item label="Tên khác">
+            <Form.Item label="Mã học viên">
               <Input
                 onChange={(e) => {
-                  SetHocVienInputData({ ...hocVienInputData, TenKhac: e.target.value });
+                  SetHocVienInputData({ ...hocVienInputData, MaHocVien: e.target.value });
                 }}
               />
             </Form.Item>

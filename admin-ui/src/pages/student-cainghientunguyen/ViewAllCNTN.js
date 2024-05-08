@@ -203,10 +203,6 @@ const ViewAllStudentCNTN = () => {
   };
 
   const deleteRecord = async (record) => {
-    SetHocVienCNTN((pre) => {
-      return pre.filter((hc_cntn) => hc_cntn.id !== record.id);
-    });
-
     const req = await axios
       .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/cntn/${record.id}`, {
         headers: {
@@ -216,6 +212,10 @@ const ViewAllStudentCNTN = () => {
       .then((result) => {
         console.log(result);
       });
+
+    SetHocVienCNTN((pre) => {
+      return pre.filter((hc_cntn) => hc_cntn.id !== record.id);
+    });
   };
 
   const cancel = () => {
@@ -292,11 +292,11 @@ const ViewAllStudentCNTN = () => {
             <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
               Edit
             </Typography.Link>
-            {/*<Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>*/}
-            {/*  <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>*/}
-            {/*    Delete*/}
-            {/*  </a>*/}
-            {/*</Popconfirm>*/}
+            <Popconfirm title="Sure to delete?" onConfirm={() => deleteRecord(record)}>
+              <a style={{ marginLeft: 8 }} disabled={editingKey !== ''}>
+                Delete
+              </a>
+            </Popconfirm>
           </span>
         );
       }
