@@ -12,6 +12,7 @@ const StudentColumn = [
     key: 'MaHocVien',
     title: 'Mã học viên',
     dataIndex: 'MaHocVien',
+    fixed: 'left',
     editable: true
   },
   {
