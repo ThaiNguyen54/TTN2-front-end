@@ -155,7 +155,7 @@ const ViewLichSuCongTien = () => {
   const edit = (record) => {
     form.setFieldsValue({
       id: '',
-      cccd: '',
+      MaHocVien: '',
       SoTienNap: '',
       ...record
     });

@@ -71,18 +71,18 @@ const AddThamGap = () => {
       <Title style={{ color: '#00A9FF' }}>Đăng ký thăm gặp</Title>
       <Divider style={{ marginBottom: '50px' }}></Divider>
       <Form.Item
-        name="cccd"
+        name="MaHocVien"
         rules={[
           {
             required: true,
-            message: 'Nhập căn cước công dân học viên'
+            message: 'Nhập mã học viên'
           }
         ]}
-        label="cccd"
+        label="Mã học viên"
       >
         <Input
           onChange={(e) => {
-            SetThamGap({ ...ThamGap, cccdHocVien: e.target.value });
+            SetThamGap({ ...ThamGap, MaHocVien: e.target.value });
           }}
         />
       </Form.Item>

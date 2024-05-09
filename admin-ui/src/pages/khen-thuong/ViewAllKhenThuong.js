@@ -152,7 +152,7 @@ const ViewAllKhenThuong = () => {
   const edit = (record) => {
     form.setFieldsValue({
       id: '',
-      cccd: '',
+      MaHocVien: '',
       SoQuyetDinhKhenThuong: '',
       NgayRaQuyetDinh: '',
       HinhThucKhenThuong: '',

@@ -152,7 +152,7 @@ const ViewAllNguoiThan = () => {
   const edit = (record) => {
     form.setFieldsValue({
       id: '',
-      cccdHocVien: '',
+      MaHocVien: '',
       HoTenNguoiThan: '',
       NgaySinh: '',
       NoiO: '',

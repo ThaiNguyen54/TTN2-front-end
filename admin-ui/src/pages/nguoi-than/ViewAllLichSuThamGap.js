@@ -160,7 +160,7 @@ const ViewAllLichSuThamGap = () => {
   const edit = (record) => {
     form.setFieldsValue({
       id: '',
-      cccdHocVien: '',
+      MaHocVien: '',
       idNguoiThan: '',
       NgayThamGap: '',
       ...record

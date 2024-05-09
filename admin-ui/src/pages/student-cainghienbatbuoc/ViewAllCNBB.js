@@ -152,7 +152,7 @@ const ViewAllStudentCNBB = () => {
   const edit = (record) => {
     form.setFieldsValue({
       id: '',
-      cccd: '',
+      MaHocVien: '',
       LyDoGiam: '',
       ThoiGianChapHanh: '',
       SoQuyetDinhTamGiu: '',

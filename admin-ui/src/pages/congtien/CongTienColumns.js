@@ -7,9 +7,9 @@ const CongTienColumns = [
     editable: false
   },
   {
-    key: 'cccd',
-    title: 'Căn cước công dân',
-    dataIndex: 'cccd',
+    key: 'MaHocVien',
+    title: 'Mã học viên',
+    dataIndex: 'MaHocVien',
     fixed: 'left',
     editable: false
   },

@@ -2,18 +2,11 @@ import { Image } from 'antd';
 
 const StudentColumn = [
   {
-    key: 'cccd',
-    title: 'Căn cước công dân',
-    dataIndex: 'cccd',
-    fixed: 'left',
-    editable: false
-  },
-  {
     key: 'MaHocVien',
     title: 'Mã học viên',
     dataIndex: 'MaHocVien',
     fixed: 'left',
-    editable: true
+    editable: false
   },
   {
     key: 'HinhAnh',

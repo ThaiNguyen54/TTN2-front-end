@@ -168,10 +168,10 @@ const ViewAllStudent = () => {
     };
   };
 
-  const isEditing = (record) => record.cccd === editingKey;
+  const isEditing = (record) => record.MaHocVien === editingKey;
   const edit = (record) => {
     form.setFieldsValue({
-      cccd: '',
+      MaHocVien: '',
       NoiCapCCCD: '',
       SoDu: '',
       Ho: '',
@@ -188,7 +188,6 @@ const ViewAllStudent = () => {
       TinhTrangHN: '',
       TienAn: '',
       TienSu: '',
-      MaHocVien: '',
       TrinhDo: '',
       ViecLam: '',
       TonGiao: '',
@@ -215,12 +214,12 @@ const ViewAllStudent = () => {
       GhiChu: '',
       ...record
     });
-    setEditingKey(record.cccd);
+    setEditingKey(record.MaHocVien);
   };
 
   const updateImage = (record) => {
     setIsUpdateImage(true);
-    SetUpdatingImageCCCD(record.cccd);
+    SetUpdatingImageCCCD(record.MaHocVien);
   };
 
   const handleOk = async () => {
@@ -282,7 +281,7 @@ const ViewAllStudent = () => {
   const deleteRecord = async (record) => {
     try {
       const req = await axios
-        .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hocvien/${record.cccd}`, {
+        .delete(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hocvien/${record.MaHocVien}`, {
           headers: {
             access_token: localStorage.getItem(Global.key.token)
           }
@@ -291,7 +290,7 @@ const ViewAllStudent = () => {
           console.log(result);
         });
       SetHocVien((pre) => {
-        return pre.filter((khusinhhoat) => khusinhhoat.cccd !== record.cccd);
+        return pre.filter((khusinhhoat) => khusinhhoat.MaHocVien !== record.MaHocVien);
       });
     } catch (error) {
       console.log('error: ', error);
@@ -307,7 +306,7 @@ const ViewAllStudent = () => {
     try {
       const row = await form.getFieldValue();
       const newData = [...HocVien];
-      const index = newData.findIndex((item) => key === item.cccd);
+      const index = newData.findIndex((item) => key === item.MaHocVien);
 
       const req = await axios
         .put(`${host.BASE_URL}/${host.API.BASE_END_POINT}/hocvien/${key}`, row, {
@@ -355,7 +354,7 @@ const ViewAllStudent = () => {
         return editable ? (
           <span>
             <Typography.Link
-              onClick={() => save(record.cccd)}
+              onClick={() => save(record.MaHocVien)}
               style={{
                 marginRight: 8
               }}
@@ -450,7 +449,7 @@ const ViewAllStudent = () => {
 
       <Form form={form} component={false}>
         <Table
-          rowKey="cccd"
+          rowKey="MaHocVien"
           components={{
             body: {
               cell: EditableCell

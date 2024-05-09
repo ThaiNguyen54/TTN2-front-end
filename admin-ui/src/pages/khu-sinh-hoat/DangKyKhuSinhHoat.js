@@ -130,18 +130,18 @@ const DangKyKhuSinhHoat = () => {
       </Form.Item>
 
       <Form.Item
-        name="cccd"
+        name="MaHocVien"
         rules={[
           {
             required: true,
-            message: 'Xin hãy nhập số căn cước của học viên'
+            message: 'Xin hãy mã học viên'
           }
         ]}
-        label="Căn cước công dân học viên"
+        label="Mã học viên"
       >
         <Input
           onChange={(e) => {
-            SetHVKSH({ ...HV_KSH, cccd: e.target.value });
+            SetHVKSH({ ...HV_KSH, MaHocVien: e.target.value });
           }}
         />
       </Form.Item>

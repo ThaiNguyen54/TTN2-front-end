@@ -153,7 +153,7 @@ const ViewHocVienKhuSinhHoat = () => {
     form.setFieldsValue({
       id: '',
       id_khu_sh: '',
-      cccd: '',
+      MaHocVien: '',
       NgayBatDauO: '',
       NgayChuyenKhu: '',
       TrangThai: '',

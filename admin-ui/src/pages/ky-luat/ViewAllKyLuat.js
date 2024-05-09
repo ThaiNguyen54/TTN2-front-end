@@ -152,7 +152,7 @@ const ViewAllKyLuat = () => {
   const edit = (record) => {
     form.setFieldsValue({
       id: '',
-      cccd: '',
+      MaHocVien: '',
       SoQuyetDinhKyLuat: '',
       NgayRaQuyetDinh: '',
       ThoiHanKyLuat: '',

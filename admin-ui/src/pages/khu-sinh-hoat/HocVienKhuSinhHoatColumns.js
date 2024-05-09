@@ -13,9 +13,9 @@ const HocVienKhuSinhHoat= [
     editable: false
   },
   {
-    key: 'cccd',
-    title: 'Căn cước công dân học viên',
-    dataIndex: 'cccd',
+    key: 'MaHocVien',
+    title: 'Mã học viên',
+    dataIndex: 'MaHocVien',
     editable: false
   },
   {

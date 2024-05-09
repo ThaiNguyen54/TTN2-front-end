@@ -608,18 +608,18 @@ const VewAllStudent = () => {
               <Input onChange={(e) => SetHocVienInputData({ ...hocVienInputData, DCThuongTru: e.target.value })} />
             </Form.Item>
 
-            <Form.Item
-              label="Ngày cấp CMND"
-              name="Ngày cấp CMND"
-              rules={[
-                {
-                  required: true,
-                  message: 'Nhập ngày cấp CMND'
-                }
-              ]}
-            >
-              <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={onNgayCapCCCDChange} />
-            </Form.Item>
+            {/*<Form.Item*/}
+            {/*  label="Ngày cấp CMND"*/}
+            {/*  name="Ngày cấp CMND"*/}
+            {/*  rules={[*/}
+            {/*    {*/}
+            {/*      required: true,*/}
+            {/*      message: 'Nhập ngày cấp CMND'*/}
+            {/*    }*/}
+            {/*  ]}*/}
+            {/*>*/}
+            {/*  <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={onNgayCapCCCDChange} />*/}
+            {/*</Form.Item>*/}
 
             <Form.Item label="Dân tộc">
               <Space direction="vertical" style={{ width: '100%' }}>
@@ -947,14 +947,6 @@ const VewAllStudent = () => {
               layout: formLayout
             }}
           >
-            <Form.Item label="Mã học viên">
-              <Input
-                onChange={(e) => {
-                  SetHocVienInputData({ ...hocVienInputData, MaHocVien: e.target.value });
-                }}
-              />
-            </Form.Item>
-
             <Form.Item label="Trình độ">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
@@ -1039,27 +1031,27 @@ const VewAllStudent = () => {
             </Form.Item>
 
             <Form.Item
-              label="Số CMND"
-              name="Số CMND"
+              label="Mã học viên"
+              name="MaHocVien"
               rules={[
                 {
                   required: true,
-                  message: 'Nhập số CMND'
+                  message: 'Nhập mã học viên'
                 }
               ]}
             >
               <Input
                 onChange={(e) => {
-                  SetHocVienInputData({ ...hocVienInputData, cccd: e.target.value });
-                  SetHocVienCNTNData({ ...hocVienCNTNData, cccd: e.target.value });
-                  SetHocVienCNBBData({ ...hocVienCNBBData, cccd: e.target.value });
-                  SetKyLuatData({ ...KyLuat, cccd: e.target.value });
-                  SetKhenThuongData({ ...KhenThuongData, cccd: e.target.value });
-                  SetBanGiaoData({ ...BanGiaoData, cccd: e.target.value });
-                  SetTronVienPhepData({ ...TronVienPhepData, cccd: e.target.value });
-                  SetChaData({ ...ChaData, cccdHocVien: e.target.value });
-                  SetMeData({ ...MeData, cccdHocVien: e.target.value });
-                  SetVoChongData({ ...VoChongData, cccdHocVien: e.target.value });
+                  SetHocVienInputData({ ...hocVienInputData, MaHocVien: e.target.value });
+                  SetHocVienCNTNData({ ...hocVienCNTNData, MaHocVien: e.target.value });
+                  SetHocVienCNBBData({ ...hocVienCNBBData, MaHocVien: e.target.value });
+                  SetKyLuatData({ ...KyLuat, MaHocVien: e.target.value });
+                  SetKhenThuongData({ ...KhenThuongData, MaHocVien: e.target.value });
+                  SetBanGiaoData({ ...BanGiaoData, MaHocVien: e.target.value });
+                  SetTronVienPhepData({ ...TronVienPhepData, MaHocVien: e.target.value });
+                  SetChaData({ ...ChaData, MaHocVien: e.target.value });
+                  SetMeData({ ...MeData, MaHocVien: e.target.value });
+                  SetVoChongData({ ...VoChongData, MaHocVien: e.target.value });
                 }}
               />
             </Form.Item>

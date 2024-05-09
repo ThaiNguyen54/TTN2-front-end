@@ -8,9 +8,9 @@ const NguoiThanColumn = [
   },
 
   {
-    key: 'cccdHocVien',
-    title: 'Căn cước công dân của học viên',
-    dataIndex: 'cccdHocVien',
+    key: 'MaHocVien',
+    title: 'Mã học viên',
+    dataIndex: 'MaHocVien',
     fixed: 'left',
     editable: false
   },

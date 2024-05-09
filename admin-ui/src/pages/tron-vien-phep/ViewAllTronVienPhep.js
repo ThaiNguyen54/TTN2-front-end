@@ -152,7 +152,7 @@ const ViewAllTronVienPhep = () => {
   const edit = (record) => {
     form.setFieldsValue({
       id: '',
-      cccd: '',
+      MaHocVien: '',
       NgayTron: '',
       SoThongBao: '',
       NgayRaThongBao: '',

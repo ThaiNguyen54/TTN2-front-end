@@ -65,18 +65,18 @@ const AddCongTien = () => {
       <Title style={{ color: '#00A9FF' }}>Cộng tiền cho học viên</Title>
       <Divider style={{ marginBottom: '50px' }}></Divider>
       <Form.Item
-        name="cccd"
+        name="MaHocVien"
         rules={[
           {
             required: true,
-            message: 'Nhập căn cước công dân của học viên'
+            message: 'Nhập mã học viên'
           }
         ]}
-        label="cccd"
+        label="MaHocVien"
       >
         <Input
           onChange={(e) => {
-            SetCongTien({ ...CongTien, cccd: e.target.value });
+            SetCongTien({ ...CongTien, MaHocVien: e.target.value });
           }}
         />
       </Form.Item>
