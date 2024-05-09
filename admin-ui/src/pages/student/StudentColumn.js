@@ -9,6 +9,12 @@ const StudentColumn = [
     editable: false
   },
   {
+    key: 'MaHocVien',
+    title: 'Mã học viên',
+    dataIndex: 'MaHocVien',
+    editable: true
+  },
+  {
     key: 'HinhAnh',
     title: 'Hình ảnh',
     dataIndex: 'HinhAnh',
@@ -50,7 +56,6 @@ const StudentColumn = [
     dataIndex: 'SoDu',
     editable: false
   },
-
   {
     key: 'Tuoi',
     title: 'Tuổi',
@@ -117,12 +122,7 @@ const StudentColumn = [
     dataIndex: 'TienSu',
     editable: true
   },
-  {
-    key: 'MaHocVien',
-    title: 'Mã học viên',
-    dataIndex: 'MaHocVien',
-    editable: true
-  },
+
   {
     key: 'TrinhDo',
     title: 'Trình độ',
