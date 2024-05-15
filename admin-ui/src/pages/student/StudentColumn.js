@@ -9,6 +9,13 @@ const StudentColumn = [
     editable: false
   },
   {
+    key: 'CCCD',
+    title: 'CCCD',
+    dataIndex: 'CCCD',
+    fixed: 'left',
+    editable: true
+  },
+  {
     key: 'HinhAnh',
     title: 'Hình ảnh',
     dataIndex: 'HinhAnh',

@@ -287,7 +287,11 @@ const VewAllStudent = () => {
     const vietnameseRegex =
       /[^a-z0-9A-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u;
     if (vietnameseRegex.test(e.target.value) === true) {
-      SetHocVienInputData({ ...hocVienInputData, Ho: e.target.value.split(' ').slice(0, -1).join(' '), Ten: e.target.value.split(' ').slice(-1)[0] });
+      SetHocVienInputData({
+        ...hocVienInputData,
+        Ho: e.target.value.split(' ').slice(0, -1).join(' '),
+        Ten: e.target.value.split(' ').slice(-1)[0]
+      });
       SetInputNameValidationStatus({
         validateStatus: 'success',
         help: ''
@@ -608,19 +612,6 @@ const VewAllStudent = () => {
               <Input onChange={(e) => SetHocVienInputData({ ...hocVienInputData, DCThuongTru: e.target.value })} />
             </Form.Item>
 
-            {/*<Form.Item*/}
-            {/*  label="Ngày cấp CMND"*/}
-            {/*  name="Ngày cấp CMND"*/}
-            {/*  rules={[*/}
-            {/*    {*/}
-            {/*      required: true,*/}
-            {/*      message: 'Nhập ngày cấp CMND'*/}
-            {/*    }*/}
-            {/*  ]}*/}
-            {/*>*/}
-            {/*  <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={onNgayCapCCCDChange} />*/}
-            {/*</Form.Item>*/}
-
             <Form.Item label="Dân tộc">
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Select
@@ -636,28 +627,6 @@ const VewAllStudent = () => {
                     label: race.name,
                     value: race.name
                   }))}
-                  // options={[
-                  //   {
-                  //     value: 'Kinh',
-                  //     label: 'Kinh'
-                  //   },
-                  //   {
-                  //     value: 'Tày',
-                  //     label: 'Tày'
-                  //   },
-                  //   {
-                  //     value: 'Thái',
-                  //     label: 'Thái'
-                  //   },
-                  //   {
-                  //     value: 'Hoa',
-                  //     label: 'Hoa'
-                  //   },
-                  //   {
-                  //     value: 'Khác',
-                  //     label: 'Khác'
-                  //   }
-                  // ]}
                 />
               </Space>
             </Form.Item>
@@ -789,23 +758,10 @@ const VewAllStudent = () => {
 
             <Form.Item label="Cơ quan bàn giao">
               <Space direction="vertical" style={{ width: '100%' }}>
-                <Select
-                  labelInValue={true}
-                  defaultValue="-- Chọn cấp cơ quan bàn giao --"
-                  style={{
-                    width: '100%'
+                <Input
+                  onChange={(e) => {
+                    SetHocVienInputData({ ...hocVienInputData, CoQuanBanGiao: e.target.value });
                   }}
-                  onChange={onChangeCoQuanBanGiao}
-                  options={[
-                    {
-                      value: 'xa',
-                      label: 'Cấp xã'
-                    },
-                    {
-                      value: 'huyen',
-                      label: 'Cấp huyện'
-                    }
-                  ]}
                 />
               </Space>
             </Form.Item>
@@ -947,89 +903,6 @@ const VewAllStudent = () => {
               layout: formLayout
             }}
           >
-            <Form.Item label="Trình độ">
-              <Space direction="vertical" style={{ width: '100%' }}>
-                <Select
-                  labelInValue={true}
-                  defaultValue="-- Trình độ học vấn --"
-                  style={{
-                    width: '100%'
-                  }}
-                  onChange={handleChangeAcademicLevel}
-                  options={[
-                    {
-                      value: 'mc',
-                      label: 'Mù chữ'
-                    },
-                    {
-                      value: 'dh',
-                      label: 'Đại học'
-                    },
-                    {
-                      value: 'cd',
-                      label: 'Cao đẳng'
-                    },
-                    {
-                      value: '12',
-                      label: '12/12'
-                    },
-                    {
-                      value: '11',
-                      label: '11/12'
-                    },
-                    {
-                      value: '10',
-                      label: '10/12'
-                    },
-                    {
-                      value: '9',
-                      label: '9/12'
-                    },
-                    {
-                      value: '8',
-                      label: '8/12'
-                    },
-                    {
-                      value: '7',
-                      label: '7/12'
-                    },
-                    {
-                      value: '6',
-                      label: '6/12'
-                    },
-                    {
-                      value: '5',
-                      label: '5/12'
-                    },
-                    {
-                      value: '4',
-                      label: '4/12'
-                    },
-                    {
-                      value: '3',
-                      label: '3/12'
-                    },
-                    {
-                      value: '2',
-                      label: '2/12'
-                    },
-                    {
-                      value: '1',
-                      label: '1/12'
-                    }
-                  ]}
-                />
-              </Space>
-            </Form.Item>
-
-            <Form.Item label="Việc làm">
-              <Input
-                onChange={(e) => {
-                  SetHocVienInputData({ ...hocVienInputData, ViecLam: e.target.value });
-                }}
-              />
-            </Form.Item>
-
             <Form.Item
               label="Mã học viên"
               name="MaHocVien"
@@ -1052,6 +925,120 @@ const VewAllStudent = () => {
                   SetChaData({ ...ChaData, MaHocVien: e.target.value });
                   SetMeData({ ...MeData, MaHocVien: e.target.value });
                   SetVoChongData({ ...VoChongData, MaHocVien: e.target.value });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item label="CCCD">
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, CCCD: e.target.value });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item label="Nơi cấp CCCD">
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, NoiCapCCCD: e.target.value });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Ngày cấp CCCD"
+              name="Ngày cấp CCCD"
+            >
+              <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={onNgayCapCCCDChange} />
+            </Form.Item>
+
+            <Form.Item label="Trình độ">
+              <Space direction="vertical" style={{ width: '100%' }}>
+                <Select
+                  labelInValue={true}
+                  defaultValue="-- Trình độ học vấn --"
+                  style={{
+                    width: '100%'
+                  }}
+                  onChange={handleChangeAcademicLevel}
+                  options={[
+                    {
+                      value: 'Mù chữ',
+                      label: 'Mù chữ'
+                    },
+                    {
+                      value: 'Trên đại học',
+                      label: 'Trên đại học'
+                    },
+                    {
+                      value: 'Đại học',
+                      label: 'Đại học'
+                    },
+                    {
+                      value: 'Cao đẳng',
+                      label: 'Cao đẳng'
+                    },
+                    {
+                      value: 'Trung cấp',
+                      label: 'Trung cấp'
+                    },
+                    {
+                      value: '12',
+                      label: 'Lớp 12'
+                    },
+                    {
+                      value: '11',
+                      label: 'Lớp 11'
+                    },
+                    {
+                      value: '10',
+                      label: 'Lớp 10'
+                    },
+                    {
+                      value: '9',
+                      label: 'Lớp 9'
+                    },
+                    {
+                      value: '8',
+                      label: 'Lớp 8'
+                    },
+                    {
+                      value: '7',
+                      label: 'Lớp 7'
+                    },
+                    {
+                      value: '6',
+                      label: 'Lớp 6'
+                    },
+                    {
+                      value: '5',
+                      label: 'Lớp 5'
+                    },
+                    {
+                      value: '4',
+                      label: 'Lớp 4'
+                    },
+                    {
+                      value: '3',
+                      label: 'Lớp 3'
+                    },
+                    {
+                      value: '2',
+                      label: 'Lớp 2'
+                    },
+                    {
+                      value: '1',
+                      label: 'Lớp 1'
+                    }
+                  ]}
+                />
+              </Space>
+            </Form.Item>
+
+            <Form.Item label="Việc làm">
+              <Input
+                onChange={(e) => {
+                  SetHocVienInputData({ ...hocVienInputData, ViecLam: e.target.value });
                 }}
               />
             </Form.Item>
