@@ -6,7 +6,7 @@ const StudentColumn = [
     title: 'Mã học viên',
     dataIndex: 'MaHocVien',
     fixed: 'left',
-    editable: false
+    editable: true
   },
   {
     key: 'CCCD',
