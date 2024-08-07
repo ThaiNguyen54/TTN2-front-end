@@ -6,13 +6,13 @@ const StudentCNBBColumn = [
     fixed: 'left',
     editable: false
   },
-  {
-    key: 'id',
-    title: 'id',
-    dataIndex: 'id',
-    fixed: 'left',
-    editable: false
-  },
+  // {
+  //   key: 'id',
+  //   title: 'id',
+  //   dataIndex: 'id',
+  //   fixed: 'left',
+  //   editable: false
+  // },
   {
     key: 'MaHocVien',
     title: 'Mã học viên',

@@ -6,13 +6,13 @@ const StudentCNTNColumn = [
     fixed: 'left',
     editable: false
   },
-  {
-    key: 'id',
-    title: 'id',
-    dataIndex: 'id',
-    fixed: 'left',
-    editable: false
-  },
+  // {
+  //   key: 'id',
+  //   title: 'id',
+  //   dataIndex: 'id',
+  //   fixed: 'left',
+  //   editable: false
+  // },
 
   {
     key: 'MaHocVien',
