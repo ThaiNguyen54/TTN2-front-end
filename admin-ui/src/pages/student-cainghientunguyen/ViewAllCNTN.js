@@ -312,8 +312,12 @@ const ViewAllStudentCNTN = () => {
           }
         })
         .then((res) => {
-          SetHocVienCNTN(res.data.data.data);
-          SetFilteredHVCNTN(res.data.data.data);
+          const dataWithOrder = res.data.data.data.map((item, index) => ({
+            ...item,
+            order: index + 1
+          }));
+          SetHocVienCNTN(dataWithOrder);
+          SetFilteredHVCNTN(dataWithOrder);
         });
     } catch (error) {
       console.log(error);

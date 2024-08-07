@@ -312,8 +312,12 @@ const ViewAllStudentCNBB = () => {
           }
         })
         .then((res) => {
-          SetHocVienCNBB(res.data.data.data);
-          SetFilteredHVCNBB(res.data.data.data);
+          const dataWithOrder = res.data.data.data.map((item, index) => ({
+            ...item,
+            order: index + 1
+          }));
+          SetHocVienCNBB(dataWithOrder);
+          SetFilteredHVCNBB(dataWithOrder);
         });
     } catch (error) {
       console.log(error);

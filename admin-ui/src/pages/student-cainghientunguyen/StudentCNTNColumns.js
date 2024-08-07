@@ -1,5 +1,12 @@
 const StudentCNTNColumn = [
   {
+    key: 'STT',
+    title: 'STT',
+    dataIndex: 'order',
+    fixed: 'left',
+    editable: false
+  },
+  {
     key: 'id',
     title: 'id',
     dataIndex: 'id',
